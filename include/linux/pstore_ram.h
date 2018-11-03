@@ -50,6 +50,7 @@ struct persistent_ram_zone {
 	void *vaddr;
 	struct persistent_ram_buffer *buffer;
 	size_t buffer_size;
+	enum pstore_type_id type;
 	u32 flags;
 	raw_spinlock_t buffer_lock;
 
