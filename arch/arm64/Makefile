@@ -136,7 +136,9 @@ endif
 KBUILD_DTBS	:= dtbs
 
 ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
+ifneq ($(CONFIG_BUILD_ARM64_EMBEDDED_DTB),y)
 KBUILD_DTBO_IMG := dtbo.img
+endif
 export DTC_FLAGS := -@
 endif
 
@@ -158,6 +160,12 @@ PHONY += dtbs dtbs_install
 
 dtbs: prepare scripts
 	$(Q)$(MAKE) $(build)=$(boot)/dts
+
+ifeq ($(CONFIG_BUILD_ARM64_EMBEDDED_DTB),y)
+$(obj)/kernel/embedded-dtb.c: dtbo.img
+	$(Q)$(MAKE) $(build)=$(boot) $(boot)/../kernel/embedded-dtb.c
+arch/arm64/kernel: $(obj)/kernel/embedded-dtb.c
+endif
 
 dtbs_install:
 	$(Q)$(MAKE) $(dtbinst)=$(boot)/dts
