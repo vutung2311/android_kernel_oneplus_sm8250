@@ -23,6 +23,10 @@ GCOV_PROFILE := n
 # Workaround for bare-metal (ELF) toolchains that neglect to pass -shared
 # down to collect2, resulting in silent corruption of the vDSO image.
 ccflags-y += -Wl,-shared
+ifeq ($(CONFIG_LD_IS_LLD), y)
+ccflags-y += -fuse-ld=lld
+endif
+
 
 obj-y += vdso.o
 extra-y += vdso.lds
