@@ -4178,8 +4178,27 @@ int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
 static void cfi_init(struct module *mod)
 {
 #ifdef CONFIG_CFI_CLANG
-	mod->cfi_check =
-		(cfi_check_fn)mod_find_symname(mod, CFI_CHECK_FN_NAME);
+	initcall_t *init;
+	exitcall_t *exit;
+
+	/*
+	 * Since the module cannot be removed between finding the
+	 * symbol and updating the CFI tables, the RCU read lock
+	 * is sufficient here.
+	 */
+	rcu_read_lock();
+	mod->cfi_check = (cfi_check_fn)
+		mod_find_symname(mod, "__cfi_check");
+	init = (initcall_t *)
+		mod_find_symname(mod, "__cfi_jt_init_module");
+	exit = (exitcall_t *)
+		mod_find_symname(mod, "__cfi_jt_cleanup_module");
+	rcu_read_unlock();
+
+	/* Fix init/exit functions to point to the CFI jump table */
+	if (init) mod->init = *init;
+	if (exit) mod->exit = *exit;
+
 	cfi_module_add(mod, module_addr_min, module_addr_max);
 #endif
 }
