@@ -24,7 +24,7 @@ ifdef CONFIG_ARCH_KONA
 ccflags-y += -march=armv8.2-a -mfpu=crypto-neon-fp-armv8 -mfloat-abi=softfp
 endif
 
-ccflags-y := -fno-common -fno-builtin -fno-stack-protector
+ccflags-y := -fno-common -fno-builtin -fno-stack-protector -ffixed-x18
 ccflags-y += -DDISABLE_BRANCH_PROFILING
 
 VDSO_LDFLAGS := -Bsymbolic
