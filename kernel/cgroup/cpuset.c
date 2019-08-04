@@ -58,6 +58,8 @@
 #include <linux/sort.h>
 #include <linux/oom.h>
 #include <linux/sched/isolation.h>
+#include <linux/binfmts.h>
+
 #include <linux/uaccess.h>
 #include <linux/atomic.h>
 #include <linux/mutex.h>
@@ -1794,13 +1796,18 @@ static ssize_t cpuset_write_resmask_wrapper(struct kernfs_open_file *of,
 {
 #ifdef CONFIG_CPUSET_ASSIST
 	static struct cs_target cs_targets[] = {
-		{ "display",		"0-3"},
-		{ "restricted",		"0-3"},
+		{ "audio-app",		CONFIG_CPUSET_AUDIO_APP },
+		{ "background",		CONFIG_CPUSET_BG },
+		{ "camera-daemon",	CONFIG_CPUSET_CAMERA },
+		{ "foreground",		CONFIG_CPUSET_FG },
+		{ "restricted",		CONFIG_CPUSET_RESTRICTED },
+		{ "system-background",	CONFIG_CPUSET_SYSTEM_BG },
+		{ "top-app",		CONFIG_CPUSET_TOP_APP },
 	};
 	struct cpuset *cs = css_cs(of_css(of));
 	int i;
 
-	if (!strcmp(current->comm, "init")) {
+	if (task_is_booster(current)) {
 		for (i = 0; i < ARRAY_SIZE(cs_targets); i++) {
 			struct cs_target tgt = cs_targets[i];
 
@@ -1810,6 +1817,8 @@ static ssize_t cpuset_write_resmask_wrapper(struct kernfs_open_file *of,
 		}
 	}
 #endif
+
+	buf = strstrip(buf);
 
 	return cpuset_write_resmask(of, buf, nbytes, off);
 }
