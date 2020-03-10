@@ -692,12 +692,20 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, address-of-packed-member)
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
-else
-ifdef CONFIG_PROFILE_ALL_BRANCHES
-KBUILD_CFLAGS	+= -O2 $(call cc-disable-warning,maybe-uninitialized,)
-else
-KBUILD_CFLAGS   += -O2
+ifeq ($(CONFIG_LTO_CLANG),y)
+ifdef CONFIG_LD_IS_LLD
+LDFLAGS += --lto-Oz
 endif
+endif
+else ifdef CONFIG_PROFILE_ALL_BRANCHES
+KBUILD_CFLAGS	+= -O2 $(call cc-disable-warning,maybe-uninitialized,)
+else ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
+ifeq ($(CONFIG_LTO_CLANG),y)
+ifdef CONFIG_LD_IS_LLD
+LDFLAGS += --lto-O2
+endif
+endif
+KBUILD_CFLAGS   += -O2
 endif
 
 KBUILD_CFLAGS += $(call cc-ifversion, -lt, 0409, \
