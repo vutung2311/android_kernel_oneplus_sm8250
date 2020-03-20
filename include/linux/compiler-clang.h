@@ -46,6 +46,7 @@
 
 #ifdef CONFIG_CFI_CLANG
 #define __nocfi		__attribute__((no_sanitize("cfi")))
+#define __cficanonical	__attribute__((__cfi_canonical_jump_table__))
 #endif
 
 #ifdef CONFIG_LTO_CLANG

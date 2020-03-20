@@ -148,6 +148,10 @@ struct ftrace_likely_data {
 #define __nocfi
 #endif
 
+#ifndef __cficanonical
+# define __cficanonical
+#endif
+
 /*
  * Assume alignment of return value.
  */
