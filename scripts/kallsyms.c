@@ -112,12 +112,14 @@ static int check_symbol_range(const char *sym, unsigned long long addr,
 static int read_symbol(FILE *in, struct sym_entry *s)
 {
 	char sym[500], stype;
+	char buf[LINE_MAX];
 	int rc;
 
-	rc = fscanf(in, "%llx %c %499s\n", &s->addr, &stype, sym);
-	if (rc != 3) {
-		if (rc != EOF && fgets(sym, 500, in) == NULL)
-			fprintf(stderr, "Read error or end of file.\n");
+	if (fgets(buf, sizeof(buf), in) == NULL) {
+		return -1;
+	}
+	rc = sscanf(buf, "%llx %c %499s\n", &s->addr, &stype, sym);
+	if (rc < 3) {
 		return -1;
 	}
 	if (strlen(sym) >= KSYM_NAME_LEN) {
