@@ -49,7 +49,11 @@ sub find_initcalls {
 	while (<$fh>) {
 		chomp;
 
-		my ($counter, $line, $symbol) = $_ =~ /^__initcall_(\d+)_(\d+)_(.*)$/;
+		my ($module, $counter, $line, $symbol) = $_ =~ /^__initcall__(\S*)__(\d+)_(\d+)_(.*)$/;
+
+		if (!defined($module)) {
+			$module = ''
+		}
 
 		if (!defined($counter) || !defined($line) || !defined($symbol)) {
 			next;
@@ -62,6 +66,7 @@ sub find_initcalls {
 			if exists($initcalls->{$counter});
 
 		$initcalls->{$counter} = {
+			'module'   => $module,
 			'level'    => $level,
 			'line'     => $line,
 			'function' => $function
@@ -74,6 +79,7 @@ sub find_initcalls {
 	# to ensure they are in the order they were defined
 	foreach my $counter (sort { $a <=> $b } keys(%{$initcalls})) {
 		print $initcalls->{$counter}->{"level"} . " " .
+		      $initcalls->{$counter}->{'module'} . " " .
 		      $counter . " " .
 		      $initcalls->{$counter}->{"line"} . " " .
 		      $initcalls->{$counter}->{"function"} . "\n";
@@ -101,8 +107,12 @@ sub wait_for_results {
 
 		while (<$fh>) {
 			chomp;
-			my ($level, $counter, $line, $function) = $_ =~
-				/^([^\ ]+)\ (\d+)\ (\d+)\ (.*)$/;
+			my ($level, $module, $counter, $line, $function) = $_ =~
+				/^([^\ ]+)\ ([^\ ]+)\ (\d+)\ (\d+)\ (.*)$/;
+
+			if (!defined($module)) {
+				$module = ''
+			}
 
 			if (!defined($level) ||
 				!defined($counter) ||
@@ -117,6 +127,7 @@ sub wait_for_results {
 
 			push (@{$results->{$index}}, {
 				'level'    => $level,
+				'module'   => $module,
 				'counter'  => $counter,
 				'line'     => $line,
 				'function' => $function
@@ -211,7 +222,8 @@ foreach my $index (sort { $a <=> $b } keys(%{$results})) {
 			$sections->{$level} = [];
 		}
 
-		my $fsname = $result->{'counter'} . '_' .
+		my $fsname = $result->{'module'} . '__' .
+			     $result->{'counter'} . '_' .
 			     $result->{'line'}    . '_' .
 			     $result->{'function'};
 
