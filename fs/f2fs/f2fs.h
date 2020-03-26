@@ -344,8 +344,8 @@ struct discard_policy {
 	bool io_aware;			/* issue discard in idle time */
 	bool sync;			/* submit discard with REQ_SYNC flag */
 	bool ordered;			/* issue discard by lba order */
+	bool timeout;			/* discard timeout for put_super */
 	unsigned int granularity;	/* discard granularity */
-	int timeout;			/* discard timeout for put_super */
 #ifdef CONFIG_F2FS_OF2FS
 	bool io_busy;			/* interrupt by user io */
 #endif
