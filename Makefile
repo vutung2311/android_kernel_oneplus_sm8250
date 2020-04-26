@@ -490,6 +490,7 @@ ifneq ($(KBUILD_SRC),)
 endif
 
 ifeq ($(cc-name),clang)
+LLVM_BIN_PATH := $(patsubst %/,%,$(dir $(shell which $(CC))))
 ifneq ($(CROSS_COMPILE),)
 CLANG_TRIPLE	?= $(CROSS_COMPILE)
 CLANG_FLAGS	+= --target=$(notdir $(CLANG_TRIPLE:%-=%))
@@ -623,7 +624,6 @@ endif
 ifdef CONFIG_LTO_CLANG
 # use llvm-ar for building symbol tables from IR files, and llvm-nm instead
 # of objdump for processing symbol versions and exports
-LLVM_BIN_PATH := $(patsubst %/,%,$(dir $(shell which $(CC))))
 LLVM_AR		:= $(LLVM_BIN_PATH)/llvm-ar
 LLVM_NM		:= $(LLVM_BIN_PATH)/llvm-nm
 export LLVM_AR LLVM_NM
@@ -735,6 +735,11 @@ KBUILD_CFLAGS += $(stackp-flags-y)
 ifeq ($(cc-name),clang)
 ifeq ($(CONFIG_LD_IS_LLD), y)
 KBUILD_CFLAGS += -fuse-ld=lld
+endif
+HOST_POLLY_LIB	:= $(shell $(LLVM_BIN_PATH)/llvm-config --libdir)/LLVMPolly.so
+ifneq (,$(wildcard $(HOST_POLLY_LIB)))
+KBUILD_CFLAGS += -fplugin=$(HOST_POLLY_LIB) \
+		-fpass-plugin=$(HOST_POLLY_LIB)
 endif
 KBUILD_CFLAGS += -mllvm -polly \
 			-mllvm -polly-parallel -lgomp \
