@@ -347,7 +347,8 @@ ifeq ($(ARCH),sh64)
 endif
 
 KCONFIG_CONFIG	?= .config
-export KCONFIG_CONFIG
+KCONFIG_DECORATE_CONFIG ?= $(KCONFIG_CONFIG)
+export KCONFIG_CONFIG KCONFIG_DECORATE_CONFIG
 
 # SHELL used by kbuild
 CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
