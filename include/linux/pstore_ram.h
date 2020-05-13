@@ -101,7 +101,7 @@ struct ramoops_platform_data {
 	unsigned long	ftrace_size;
 	unsigned long	pmsg_size;
 	unsigned long	device_info_size;
-	int		dump_oops;
+	int		max_reason;
 	u32		flags;
 	struct persistent_ram_ecc_info ecc_info;
 };
@@ -121,7 +121,7 @@ struct ramoops_context {
 	size_t ftrace_size;
 	size_t pmsg_size;
 	size_t device_info_size;
-	int dump_oops;
+	int max_reason;
 	u32 flags;
 	struct persistent_ram_ecc_info ecc_info;
 	unsigned int max_dump_cnt;
