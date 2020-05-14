@@ -24,14 +24,12 @@ ifdef CONFIG_ARCH_KONA
 ccflags-y += -march=armv8.2-a -mfpu=crypto-neon-fp-armv8 -mfloat-abi=softfp
 endif
 
-CFLAGS_REMOVE_vgettimeofday.o += $(CC_FLAGS_SCS)
-
 ccflags-y := -fno-common -fno-builtin -fno-stack-protector
 ccflags-y += -DDISABLE_BRANCH_PROFILING
 
 VDSO_LDFLAGS := -Bsymbolic
 
-CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) -Os
+CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) -Os $(CC_FLAGS_SCS)
 KBUILD_CFLAGS			+= $(DISABLE_LTO)
 KASAN_SANITIZE			:= n
 UBSAN_SANITIZE			:= n
