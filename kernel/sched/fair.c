@@ -6973,7 +6973,6 @@ enum fastpaths {
 	NONE = 0,
 	SYNC_WAKEUP,
 	PREV_CPU_FASTPATH,
-	MANY_WAKEUP,
 };
 
 unsigned int sysctl_sched_skip_affinity;
@@ -7749,12 +7748,17 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu,
 	int delta = 0;
 	int task_boost = per_task_boost(p);
 	int boosted = (schedtune_task_boost(p) > 0) || (task_boost > 0);
-	int start_cpu = get_start_cpu(p);
 	// curtis@ASTI, 2019/4/29, add for uxrealm CONFIG_OPCHAIN
 	bool is_uxtop = is_opc_task(p, UT_FORE);
+	int start_cpu;
 
 	fbt_env.op_path = opc_select_path(current, p, prev_cpu);
 
+	if (is_many_wakeup(sibling_count_hint) && prev_cpu != cpu &&
+			cpumask_test_cpu(prev_cpu, &p->cpus_allowed))
+		return prev_cpu;
+
+	start_cpu = get_start_cpu(p);
 	if (start_cpu < 0)
 		goto eas_not_ready;
 
@@ -7784,13 +7788,6 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu,
 				opc_check_uxtop_cpu(is_uxtop, cpu)) {
 		best_energy_cpu = cpu;
 		fbt_env.fastpath = SYNC_WAKEUP;
-		goto done;
-	}
-
-	if (is_many_wakeup(sibling_count_hint) && prev_cpu != cpu &&
-				bias_to_this_cpu(p, prev_cpu, start_cpu)) {
-		best_energy_cpu = prev_cpu;
-		fbt_env.fastpath = MANY_WAKEUP;
 		goto done;
 	}
 
