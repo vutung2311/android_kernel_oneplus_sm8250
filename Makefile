@@ -417,11 +417,13 @@ LINUXINCLUDE    := \
 		-I$(srctree)/drivers/oneplus/include \
 		$(USERINCLUDE)
 
-KBUILD_AFLAGS   := -D__ASSEMBLY__
+tune-for-big-core := -march=armv8.2-a
+tune-for-small-core := -mcpu=cortex-a55
+KBUILD_AFLAGS   := -D__ASSEMBLY__ $(tune-for-big-core) $(tune-for-small-core)
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common -fshort-wchar \
 		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
+		   -Wno-format-security $(tune-for-big-core) $(tune-for-small-core) \
 		   -std=gnu89
 KBUILD_CPPFLAGS := -D__KERNEL__
 KBUILD_AFLAGS_KERNEL :=
