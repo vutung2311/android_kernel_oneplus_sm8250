@@ -2,3 +2,4 @@
 image-new.img
 unsigned-new.img
 split_img/boot.img-zImage
+split_img/boot.img-dtb
