@@ -4,3 +4,12 @@
 [submodule "scripts/dtc-aosp/dtc"]
 	path = scripts/dtc-aosp/dtc
 	url = https://android.googlesource.com/platform/external/dtc
+[submodule "drivers/staging/qcacld-3.0"]
+	path = drivers/staging/qcacld-3.0
+	url = https://github.com/vutung2311/qcacld-3.0
+[submodule "drivers/staging/qca-wifi-host-cmn"]
+	path = drivers/staging/qca-wifi-host-cmn
+	url = https://source.codeaurora.org/quic/la/platform/vendor/qcom-opensource/wlan/qca-wifi-host-cmn
+[submodule "drivers/staging/fw-api"]
+	path = drivers/staging/fw-api
+	url = https://source.codeaurora.org/quic/la/platform/vendor/qcom-opensource/wlan/fw-api
