@@ -15,7 +15,7 @@ obj-vdso := $(addprefix $(obj)/, $(obj-vdso))
 ccflags-y := -fno-common -fno-builtin -ffixed-x18
 ccflags-y += $(DISABLE_LTO)
 ldflags-y := -shared -nostdlib -soname=linux-vdso.so.1  --hash-style=sysv \
-		--build-id -n -T
+		--build-id $(call ld-option,-n) -T
 
 # Disable gcov profiling for VDSO code
 GCOV_PROFILE := n
