@@ -75,7 +75,7 @@ FUNC_BUILD_KERNEL()
 
 	for var in "$@"
 	do
-		if [[ "$var" = "--with-lto-clang" ]] ; then
+		if [[ "$var" = "--with-cfi-clang" ]] ; then
 			CC=$CLANG_CC
 			LD=$CLANG_LD
 			LDLTO=$CLANG_LDLTO
@@ -85,7 +85,7 @@ FUNC_BUILD_KERNEL()
 			FUNC_MAKE $KERNEL_DEFCONFIG
 
 			echo ""
-			echo "Enable LTO_CLANG"
+			echo "Enable CFI_CLANG"
 			cd $BUILDDIR && ../scripts/config \
 			-e CONFIG_LTO \
 			-e CONFIG_THINLTO \
