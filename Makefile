@@ -505,9 +505,6 @@ CLANG_FLAGS	+= --gcc-toolchain=$(GCC_TOOLCHAIN)
 endif
 CLANG_FLAGS	+= -no-integrated-as
 CLANG_FLAGS	+= -Werror=unknown-warning-option
-ifeq ($(CONFIG_LD_IS_LLD), y)
-CLANG_FLAGS += -fuse-ld=lld
-endif
 KBUILD_CFLAGS	+= $(CLANG_FLAGS)
 KBUILD_AFLAGS	+= $(CLANG_FLAGS)
 export CLANG_FLAGS
@@ -685,7 +682,7 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, address-of-packed-member)
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 ifeq ($(CONFIG_LTO_CLANG),y)
-ifdef CONFIG_LD_IS_LLD
+ifeq ($(CONFIG_LD_IS_LLD), y)
 LDFLAGS += --lto-Oz
 endif
 endif
@@ -693,7 +690,7 @@ else ifdef CONFIG_PROFILE_ALL_BRANCHES
 KBUILD_CFLAGS	+= -O2 $(call cc-disable-warning,maybe-uninitialized,)
 else ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
 ifeq ($(CONFIG_LTO_CLANG),y)
-ifdef CONFIG_LD_IS_LLD
+ifeq ($(CONFIG_LD_IS_LLD), y)
 LDFLAGS += --lto-O2
 endif
 endif
@@ -736,6 +733,9 @@ stackp-flags-$(CONFIG_STACKPROTECTOR_STRONG)      := -fstack-protector-strong
 KBUILD_CFLAGS += $(stackp-flags-y)
 
 ifeq ($(cc-name),clang)
+ifeq ($(CONFIG_LD_IS_LLD), y)
+KBUILD_CFLAGS += -fuse-ld=lld
+endif
 KBUILD_CFLAGS += -mllvm -polly \
 			-mllvm -polly-run-dce \
 			-mllvm -polly-run-inliner \
