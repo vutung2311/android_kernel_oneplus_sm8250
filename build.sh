@@ -111,9 +111,9 @@ FUNC_BUILD_KERNEL()
 FUNC_BUILD_BOOT_IMG()
 {
 	cp "${BUILDDIR}/arch/${ARCH}/boot/Image" "${RDIR}/aik/split_img/boot.img-zImage"
-	cat "${BUILDDIR}/arch/arm64/boot/dts/vendor/oneplus/kona-v1.dtb" \
-		"${BUILDDIR}/arch/arm64/boot/dts/vendor/oneplus/kona-v2.dtb" \
-		"${BUILDDIR}/arch/arm64/boot/dts/vendor/oneplus/kona-v2.1.dtb" > "${RDIR}/aik/split_img/boot.img-dtb"
+	cat "${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona.dtb" \
+		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.dtb" \
+		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.1.dtb" > "${RDIR}/aik/split_img/boot.img-dtb"
 	cd "${RDIR}/aik"
 	./repackimg.sh --nosudo
 	cd "${RDIR}/out/"
