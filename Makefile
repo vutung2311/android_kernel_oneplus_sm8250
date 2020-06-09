@@ -742,8 +742,6 @@ KBUILD_CFLAGS += -fplugin=$(HOST_POLLY_LIB) \
 		-fpass-plugin=$(HOST_POLLY_LIB)
 endif
 KBUILD_CFLAGS += -mllvm -polly \
-			-mllvm -polly-parallel -lgomp \
-			-mllvm -polly-omp-backend=LLVM \
 			-mllvm -polly-run-dce \
 			-mllvm -polly-run-inliner \
 			-mllvm -polly-opt-fusion=max \
