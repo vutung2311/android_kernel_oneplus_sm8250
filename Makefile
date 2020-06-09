@@ -694,7 +694,7 @@ ifeq ($(CONFIG_LD_IS_LLD), y)
 LDFLAGS += --lto-O2
 endif
 endif
-KBUILD_CFLAGS   += -O2
+KBUILD_CFLAGS   += -O2 $(call cc-disable-warning,void-pointer-to-enum-cast)
 endif
 
 KBUILD_CFLAGS += $(call cc-ifversion, -lt, 0409, \
