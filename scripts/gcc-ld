@@ -4,6 +4,12 @@
 # used as a wrapper to execute link time optimizations
 # yes virginia, this is not pretty
 
+# Error out on error
+set -e
+if [ -n "${V}" ]; then
+set -x
+fi
+
 ARGS="-nostdlib"
 
 while [ "$1" != "" ] ; do

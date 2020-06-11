@@ -34,6 +34,9 @@
 
 # Error out on error
 set -e
+if [ -n "${V}" ]; then
+set -x
+fi
 
 # Nice output in kbuild format
 # Will be supressed by "make -s"
