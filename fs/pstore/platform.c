@@ -27,7 +27,7 @@
 #include <linux/kmsg_dump.h>
 #include <linux/console.h>
 #include <linux/module.h>
-#include <linux/pstore.h>
+#include <linux/pstore_ram.h>
 #if IS_ENABLED(CONFIG_PSTORE_LZO_COMPRESS)
 #include <linux/lzo.h>
 #endif
