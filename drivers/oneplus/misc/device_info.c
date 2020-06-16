@@ -5,10 +5,9 @@
 
 #include <linux/types.h>
 
-#include <linux/pstore.h>
 #include <soc/qcom/socinfo.h>
 
-#include <linux/pstore.h>
+#include <linux/pstore_ram.h>
 #include "../../../fs/pstore/internal.h"
 #include <linux/oem/param_rw.h>
 #include <linux/oem/boot_mode.h>

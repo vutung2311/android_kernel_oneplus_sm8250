@@ -23,6 +23,7 @@
 #include <linux/kernel.h>
 #include <linux/list.h>
 #include <linux/types.h>
+#include <linux/pstore.h>
 
 /*
  * Choose whether access to the RAM zone requires locking or not.  If a zone
@@ -102,6 +103,36 @@ struct ramoops_platform_data {
 	int		dump_oops;
 	u32		flags;
 	struct persistent_ram_ecc_info ecc_info;
+};
+
+/*move from ram.c*/
+struct ramoops_context {
+	struct persistent_ram_zone **dprzs;	/* Oops dump zones */
+	struct persistent_ram_zone *cprz;	/* Console zone */
+	struct persistent_ram_zone **fprzs;	/* Ftrace zones */
+	struct persistent_ram_zone *mprz;	/* PMSG zone */
+	struct persistent_ram_zone *dprz;
+	phys_addr_t phys_addr;
+	unsigned long size;
+	unsigned int memtype;
+	size_t record_size;
+	size_t console_size;
+	size_t ftrace_size;
+	size_t pmsg_size;
+	size_t device_info_size;
+	int dump_oops;
+	u32 flags;
+	struct persistent_ram_ecc_info ecc_info;
+	unsigned int max_dump_cnt;
+	unsigned int dump_write_cnt;
+	/* _read_cnt need clear on ramoops_pstore_open */
+	unsigned int dump_read_cnt;
+	unsigned int console_read_cnt;
+	unsigned int max_ftrace_cnt;
+	unsigned int ftrace_read_cnt;
+	unsigned int pmsg_read_cnt;
+	unsigned int device_info_read_cnt;
+	struct pstore_info pstore;
 };
 
 #endif
