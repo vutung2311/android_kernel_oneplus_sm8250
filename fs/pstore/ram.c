@@ -800,7 +800,7 @@ static int ramoops_probe(struct platform_device *pdev)
 	if (err)
 		goto fail_init_mprz;
 
-	err = ramoops_init_prz("devinfo", dev, cxt, &cxt->dprz, &paddr,
+	err = ramoops_init_prz("device-info", dev, cxt, &cxt->dprz, &paddr,
                 cxt->device_info_size, 0);
 	if (err)
 		goto fail_init_dprz;
