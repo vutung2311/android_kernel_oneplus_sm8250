@@ -745,13 +745,13 @@ static int ramoops_probe(struct platform_device *pdev)
 
 	dump_mem_sz = cxt->size - cxt->console_size - cxt->ftrace_size
 			- cxt->pmsg_size  - cxt->device_info_size;
-	err = ramoops_init_przs("dmesg", dev, cxt, &cxt->dprzs, &paddr,
+	err = ramoops_init_przs(pstore_type_to_name(PSTORE_TYPE_DMESG), dev, cxt, &cxt->dprzs, &paddr,
 				dump_mem_sz, cxt->record_size,
 				&cxt->max_dump_cnt, 0, 0);
 	if (err)
 		goto fail_out;
 
-	err = ramoops_init_prz("console", dev, cxt, &cxt->cprz, &paddr,
+	err = ramoops_init_prz(pstore_type_to_name(PSTORE_TYPE_CONSOLE), dev, cxt, &cxt->cprz, &paddr,
 			       cxt->console_size, 0);
 	if (err)
 		goto fail_init_cprz;
@@ -759,7 +759,7 @@ static int ramoops_probe(struct platform_device *pdev)
 	cxt->max_ftrace_cnt = (cxt->flags & RAMOOPS_FLAG_FTRACE_PER_CPU)
 				? nr_cpu_ids
 				: 1;
-	err = ramoops_init_przs("ftrace", dev, cxt, &cxt->fprzs, &paddr,
+	err = ramoops_init_przs(pstore_type_to_name(PSTORE_TYPE_FTRACE), dev, cxt, &cxt->fprzs, &paddr,
 				cxt->ftrace_size, -1,
 				&cxt->max_ftrace_cnt, LINUX_VERSION_CODE,
 				(cxt->flags & RAMOOPS_FLAG_FTRACE_PER_CPU)
@@ -767,12 +767,12 @@ static int ramoops_probe(struct platform_device *pdev)
 	if (err)
 		goto fail_init_fprz;
 
-	err = ramoops_init_prz("pmsg", dev, cxt, &cxt->mprz, &paddr,
+	err = ramoops_init_prz(pstore_type_to_name(PSTORE_TYPE_PMSG), dev, cxt, &cxt->mprz, &paddr,
 				cxt->pmsg_size, 0);
 	if (err)
 		goto fail_init_mprz;
 
-	err = ramoops_init_prz("devinfo", dev, cxt, &cxt->dprz, &paddr,
+	err = ramoops_init_prz(pstore_type_to_name(PSTORE_TYPE_DEVICE_INFO), dev, cxt, &cxt->dprz, &paddr,
 				cxt->device_info_size, 0);
 	if (err)
 		goto fail_init_dprz;
