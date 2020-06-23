@@ -1516,7 +1516,7 @@ exit:
 	return idx;
 }
 
-static void lpm_cpuidle_s2idle(struct cpuidle_device *dev,
+static int lpm_cpuidle_s2idle(struct cpuidle_device *dev,
 		struct cpuidle_driver *drv, int idx)
 {
 	struct lpm_cpu *cpu = per_cpu(cpu_lpm, dev->cpu);
@@ -1529,7 +1529,7 @@ static void lpm_cpuidle_s2idle(struct cpuidle_device *dev,
 	}
 	if (idx < 0) {
 		pr_err("Failed suspend\n");
-		return;
+		return 0;
 	}
 
 	cpu_prepare(cpu, idx, true);
@@ -1539,6 +1539,7 @@ static void lpm_cpuidle_s2idle(struct cpuidle_device *dev,
 
 	cluster_unprepare(cpu->parent, cpumask, idx, false, 0, success);
 	cpu_unprepare(cpu, idx, true);
+	return 0;
 }
 
 #ifdef CONFIG_CPU_IDLE_MULTIPLE_DRIVERS
