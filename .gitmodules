@@ -18,4 +18,4 @@
 	url = https://github.com/vutung2311/android_vendor_qcom_opensource_audio_kernel_sm8250.git
 [submodule "techpack/video"]
 	path = techpack/video
-	url = https://source.codeaurora.org/quic/la/platform/vendor/opensource/video-driver
+	url = https://github.com/vutung2311/video-driver.git
