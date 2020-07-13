@@ -16,3 +16,6 @@
 [submodule "techpack/audio"]
 	path = techpack/audio
 	url = https://github.com/vutung2311/android_vendor_qcom_opensource_audio_kernel_sm8250.git
+[submodule "techpack/rmnet/data"]
+	path = techpack/rmnet/data
+	url = https://github.com/vutung2311/data-kernel.git
