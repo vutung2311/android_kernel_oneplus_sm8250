@@ -21,4 +21,4 @@
 	url = https://github.com/vutung2311/video-driver.git
 [submodule "techpack/rmnet/data"]
 	path = techpack/rmnet/data
-	url = https://source.codeaurora.org/quic/la/platform/vendor/qcom-opensource/data-kernel
+	url = https://github.com/vutung2311/data-kernel.git
