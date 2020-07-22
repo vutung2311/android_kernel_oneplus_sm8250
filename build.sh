@@ -11,7 +11,7 @@ export KBUILD_COMPILER_STRING="LLVM Clang 11.0"
 
 GCC_ARM64_BIN_PATH=$HOME/Toolchains/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin
 GCC_ARM32_BIN_PATH=$HOME/Toolchains/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/bin
-CLANG_BIN_PATH=$HOME/Toolchains/prebuilt_clang/clang-r383902/bin
+CLANG_BIN_PATH=$HOME/Toolchains/prebuilt_clang/bin
 
 BUILD_CROSS_COMPILE=$GCC_ARM64_BIN_PATH/aarch64-none-linux-gnu-
 BUILD_CROSS_COMPILE_ARM32=$GCC_ARM32_BIN_PATH/arm-none-linux-gnueabihf-
