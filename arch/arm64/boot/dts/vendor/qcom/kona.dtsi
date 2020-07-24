@@ -350,7 +350,7 @@
 	};
 
 	chosen {
-		bootargs = "quiet rcu_nocbs=0-7 noirqdebug";
+		bootargs = "quiet nodebugmon rcu_nocbs=0-7 noirqdebug";
 	};
 
 	firmware: firmware {
