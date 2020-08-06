@@ -682,14 +682,14 @@ LDFLAGS += --lto-Oz
 endif
 endif
 else ifdef CONFIG_PROFILE_ALL_BRANCHES
-KBUILD_CFLAGS	+= -O2 $(call cc-disable-warning,maybe-uninitialized,)
+KBUILD_CFLAGS	+= -O3 $(call cc-disable-warning,maybe-uninitialized,)
 else ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
 ifeq ($(CONFIG_LTO_CLANG),y)
 ifeq ($(CONFIG_LD_IS_LLD), y)
-LDFLAGS += --lto-O2
+LDFLAGS += --lto-O3
 endif
 endif
-KBUILD_CFLAGS   += -O2 $(call cc-disable-warning,void-pointer-to-enum-cast)
+KBUILD_CFLAGS   += -O3 $(call cc-disable-warning,void-pointer-to-enum-cast)
 endif
 
 KBUILD_CFLAGS += $(call cc-ifversion, -lt, 0409, \
