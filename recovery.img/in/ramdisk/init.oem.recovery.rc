@@ -1,0 +1,19 @@
+on init
+# ajinath@SYSTEM, 2019/11/13, [AN-733] synthetic password support
+    start servicemanager
+    start hwservicemanager
+
+# ajinath@SYSTEM, 2019/11/13, [AN-733] synthetic password support
+service keystore /system/bin/keystore /tmp/misc/keystore
+    disabled
+    seclabel u:r:recovery:s0
+
+service servicemanager /system/bin/servicemanager
+    disabled
+    seclabel u:r:recovery:s0
+
+service keystore_auth /system/bin/keystore_auth
+    disabled
+    user system
+    oneshot
+    seclabel u:r:recovery:s0

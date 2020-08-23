@@ -99,14 +99,25 @@ FUNC_BUILD_KERNEL()
 
 FUNC_BUILD_BOOT_IMG()
 {
-	cp "${BUILDDIR}/arch/${ARCH}/boot/Image" "${RDIR}/aik/split_img/boot.img-zImage"
+	cp "${BUILDDIR}/arch/${ARCH}/boot/Image" "${RDIR}/boot.img/in/split_img/boot.img-zImage"
 	cat "${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona.dtb" \
 		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.dtb" \
-		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.1.dtb" > "${RDIR}/aik/split_img/boot.img-dtb"
-	cd "${RDIR}/aik"
+		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.1.dtb" > "${RDIR}/boot.img/in/split_img/boot.img-dtb"
+	cd "${RDIR}/boot.img/in"
 	./repackimg.sh --nosudo
-	cd "${RDIR}/out/"
-	cp "${RDIR}/aik/image-new.img" "${RDIR}/out/boot.img"
+	mv "${RDIR}/boot.img/in/image-new.img" "${RDIR}/boot.img/out/boot.img"
+}
+
+FUNC_BUILD_RECOVERY_IMG()
+{
+	cp "${BUILDDIR}/arch/${ARCH}/boot/Image" "${RDIR}/recovery.img/in/split_img/recovery.img-zImage"
+	cp "${BUILDDIR}/arch/${ARCH}/boot/dtbo.img" "${RDIR}/recovery.img/in/split_img/recovery.img-recovery_dtbo"
+	cat "${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona.dtb" \
+		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.dtb" \
+		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.1.dtb" > "${RDIR}/recovery.img/in/split_img/recovery.img-dtb"
+	cd "${RDIR}/recovery.img/in"
+	./repackimg.sh --nosudo
+	mv "${RDIR}/recovery.img/in/image-new.img" "${RDIR}/recovery.img/out/recovery.img"
 }
 
 # MAIN FUNCTION
@@ -116,6 +127,7 @@ rm -rf ./build.log
 
 	FUNC_BUILD_KERNEL "$@"
 	FUNC_BUILD_BOOT_IMG
+	FUNC_BUILD_RECOVERY_IMG
 
 	END_TIME=`date +%s`
 
