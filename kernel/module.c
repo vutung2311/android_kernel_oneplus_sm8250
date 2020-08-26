@@ -1372,7 +1372,7 @@ static inline int check_modstruct_version(const struct load_info *info,
 static inline int same_magic(const char *amagic, const char *bmagic,
 			     bool has_crcs)
 {
-	return 1;
+	return strcmp(amagic, bmagic) == 0;
 }
 #endif /* CONFIG_MODVERSIONS */
 
@@ -3682,9 +3682,6 @@ static int load_module(struct load_info *info, const char __user *uargs,
 	struct module *mod;
 	long err = 0;
 	char *after_dashes;
-
-	flags |= MODULE_INIT_IGNORE_MODVERSIONS;
-	flags |= MODULE_INIT_IGNORE_VERMAGIC;
 
 	err = elf_header_check(info);
 	if (err)
