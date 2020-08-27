@@ -36,6 +36,9 @@ mkdir -p $BUILDDIR
 KERNEL_DEFCONFIG=vendor/kona-perf_defconfig
 KERNEL_DECORATE_DEFCONFIG=arch/arm64/configs/op8-perf_defconfig
 
+COMPILE_KERNEL=true
+WITH_CFI_CLANG=false
+
 FUNC_MAKE()
 {
 	cd $RDIR && make -j$BUILD_JOB_NUMBER ARCH=$ARCH SUBARCH=$ARCH \
@@ -52,6 +55,13 @@ FUNC_MAKE()
 
 FUNC_BUILD_KERNEL()
 {
+	if [[ "$COMPILE_KERNEL" = "false" ]]; then
+		echo ""
+		echo "Skip compilling kernel"
+		echo ""
+		return
+	fi
+
 	echo ""
 	echo "=============================================="
 	echo "START : FUNC_BUILD_KERNEL"
@@ -63,29 +73,25 @@ FUNC_BUILD_KERNEL()
 		FUNC_MAKE $KERNEL_DEFCONFIG
 	fi
 
-	for var in "$@"
-	do
-		if [[ "$var" = "--with-cfi-clang" ]] ; then
-			CC=$CLANG_CC
-			LD=$CLANG_LD
-			AR=$CLANG_AR
-			NM=$CLANG_NM
+	if [[ "$WITH_CFI_CLANG" = "true" ]] ; then
+		CC=$CLANG_CC
+		LD=$CLANG_LD
+		AR=$CLANG_AR
+		NM=$CLANG_NM
 
-			FUNC_MAKE $KERNEL_DEFCONFIG
+		FUNC_MAKE $KERNEL_DEFCONFIG
 
-			echo ""
-			echo "Enable CFI_CLANG"
-			cd $BUILDDIR && ../scripts/config \
-			-e CONFIG_LTO \
-			-e CONFIG_THINLTO \
-			-d CONFIG_LTO_NONE \
-			-e CONFIG_LTO_CLANG \
-			-e CONFIG_CFI_CLANG \
-			-d CONFIG_CFI_PERMISSIVE \
-			-e CONFIG_CFI_CLANG_SHADOW
-			continue
-        fi
-	done
+		echo ""
+		echo "Enable CFI_CLANG"
+		cd $BUILDDIR && ../scripts/config \
+		-e CONFIG_LTO \
+		-e CONFIG_THINLTO \
+		-d CONFIG_LTO_NONE \
+		-e CONFIG_LTO_CLANG \
+		-e CONFIG_CFI_CLANG \
+		-d CONFIG_CFI_PERMISSIVE \
+		-e CONFIG_CFI_CLANG_SHADOW
+	fi
 	echo ""
 
 	FUNC_MAKE
@@ -124,6 +130,18 @@ FUNC_BUILD_RECOVERY_IMG()
 rm -rf ./build.log
 (
 	START_TIME=`date +%s`
+
+	for var in "$@"
+	do
+		case $var in
+			"--with-cfi-clang")
+				WITH_CFI_CLANG=true
+			;;
+			"--packaging-only")
+				COMPILE_KERNEL=false
+			;;
+		esac
+	done
 
 	FUNC_BUILD_KERNEL "$@"
 	FUNC_BUILD_BOOT_IMG
