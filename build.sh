@@ -9,17 +9,18 @@ export KBUILD_BUILD_USER=BuildUser
 export KBUILD_BUILD_HOST=BuildHost
 export KBUILD_COMPILER_STRING="LLVM Clang 11.0"
 
-GCC_ARM64_BIN_PATH=$HOME/Toolchains/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu/bin
-GCC_ARM32_BIN_PATH=$HOME/Toolchains/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf/bin
+GCC_ARM64_BIN_PATH=$HOME/Toolchains/aarch64-linux-android-4.9/bin
+GCC_ARM32_BIN_PATH=$HOME/Toolchains/arm-linux-androideabi-4.9/bin
 CLANG_BIN_PATH=$HOME/Toolchains/prebuilt_clang/bin
 
-BUILD_CROSS_COMPILE=$GCC_ARM64_BIN_PATH/aarch64-none-linux-gnu-
-BUILD_CROSS_COMPILE_ARM32=$GCC_ARM32_BIN_PATH/arm-none-linux-gnueabihf-
+BUILD_CROSS_COMPILE=$GCC_ARM64_BIN_PATH/aarch64-linux-android-
+BUILD_CROSS_COMPILE_ARM32=$GCC_ARM32_BIN_PATH/arm-linux-androideabi-
 
 CLANG_AR=$CLANG_BIN_PATH/llvm-ar
 CLANG_CC=$CLANG_BIN_PATH/clang
 CLANG_LD=$CLANG_BIN_PATH/ld.lld
 CLANG_NM=$CLANG_BIN_PATH/llvm-nm
+CLANG_TRIPLE=aarch64-none-linux-gnu-
 
 CC=$CLANG_CC
 LD=$CLANG_LD
@@ -50,6 +51,7 @@ FUNC_MAKE()
 			NM=$NM \
 			CROSS_COMPILE="${BUILD_CROSS_COMPILE}" \
 			CROSS_COMPILE_ARM32="${BUILD_CROSS_COMPILE_ARM32}" \
+			CLANG_TRIPLE=$CLANG_TRIPLE \
 			$@ || exit 1
 }
 

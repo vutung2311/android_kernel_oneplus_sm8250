@@ -739,8 +739,8 @@ KBUILD_CFLAGS += -fuse-ld=lld
 endif
 HOST_POLLY_LIB	:= $(shell $(LLVM_BIN_PATH)/llvm-config --libdir)/LLVMPolly.so
 ifneq (,$(wildcard $(HOST_POLLY_LIB)))
-KBUILD_CFLAGS += -fplugin=$(HOST_POLLY_LIB) \
-		-fpass-plugin=$(HOST_POLLY_LIB)
+KBUILD_CFLAGS += $(call cc-option,-fplugin=$(HOST_POLLY_LIB),) \
+		$(call cc-option,-fpass-plugin=$(HOST_POLLY_LIB),)
 endif
 KBUILD_CFLAGS += -mllvm -polly \
 			-mllvm -polly-run-dce \
