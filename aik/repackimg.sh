@@ -103,7 +103,7 @@ rm -f "*-new.*";
 if [ -d ramdisk ] && [ "$(stat $statarg ramdisk | head -n 1)" = "root" ]; then
   sudo=sudo; sumsg=" (as root)";
 else
-  cpioarg="-R 0:0";
+  cpioarg="-R +0:+0 --reproducible";
 fi;
 
 if [ "$original" ]; then

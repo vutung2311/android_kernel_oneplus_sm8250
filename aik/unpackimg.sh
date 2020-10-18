@@ -348,7 +348,7 @@ else
   fi;
   $sudo chown 0:0 ramdisk 2>/dev/null;
   cd ramdisk;
-  $unpackcmd "../split_img/$file-ramdisk.cpio$compext" | $sudo $cpio -i -d --no-absolute-filenames;
+  $unpackcmd "../split_img/$file-ramdisk.cpio$compext" | $sudo $cpio -i -d -m --no-absolute-filenames --no-preserve-owner;
   if [ ! $? -eq "0" ]; then
     test "$nosudo" && echo "Unpacking failed, try without --nosudo.";
     cd ..;
