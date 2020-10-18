@@ -117,8 +117,7 @@ FUNC_BUILD_BOOT_IMG()
 	cat "${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona.dtb" \
 		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.dtb" \
 		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.1.dtb" > "${RDIR}/boot.img/in/split_img/boot.img-dtb"
-	cd "${RDIR}/boot.img/in"
-	./repackimg.sh --level 9
+	(cd "${RDIR}/boot.img/in" && $RDIR/aik/repackimg.sh --local --level 9)
 	mv "${RDIR}/boot.img/in/image-new.img" "${RDIR}/boot.img/out/boot.img"
 }
 
@@ -129,8 +128,7 @@ FUNC_BUILD_RECOVERY_IMG()
 	cat "${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona.dtb" \
 		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.dtb" \
 		"${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.1.dtb" > "${RDIR}/recovery.img/in/split_img/recovery.img-dtb"
-	cd "${RDIR}/recovery.img/in"
-	./repackimg.sh --level 9
+	(cd "${RDIR}/recovery.img/in" && $RDIR/aik/repackimg.sh --local --level 9)
 	mv "${RDIR}/recovery.img/in/image-new.img" "${RDIR}/recovery.img/out/recovery.img"
 }
 

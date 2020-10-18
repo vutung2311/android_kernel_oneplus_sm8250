@@ -138,7 +138,7 @@ else
     compext=.$compext;
   fi;
   cd ramdisk;
-  $sudo find * | $sudo $cpio $cpioarg -H newc -o 2>/dev/null | $repackcmd > ../ramdisk-new.cpio$compext;
+  $sudo find . | $sudo $cpio $cpioarg -H newc -o 2>/dev/null | $repackcmd > ../ramdisk-new.cpio$compext;
   if [ ! $? -eq "0" ]; then
     abort;
     exit 1;
