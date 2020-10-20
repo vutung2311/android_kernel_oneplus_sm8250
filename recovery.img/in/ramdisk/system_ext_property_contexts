@@ -109,7 +109,7 @@ ro.vendor.op.wipe.data                    u:object_r:system_prop:s0
 persist.vendor.op.last.slot_suffix        u:object_r:system_prop:s0
 persist.vendor.op.last.version.ota        u:object_r:system_prop:s0
 ro.vendor.op.update.completed             u:object_r:system_prop:s0
-ro.vendor.op.gota                         u:object_r:system_prop:s0
+vendor.op.gota                         u:object_r:system_prop:s0
 
 # v-takey.zheng@SYSTEM, 2020/05/27, add for camera OPTODO-30
 persist.vendor.camera.overrideLogLevels   u:object_r:ctl_default_prop:s0
