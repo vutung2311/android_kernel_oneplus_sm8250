@@ -492,6 +492,20 @@ ifneq ($(KBUILD_SRC),)
 endif
 
 ifeq ($(cc-name),clang)
+LLVM_BIN_PATH := $(patsubst %/,%,$(dir $(shell which $(CC))))
+HOST_POLLY_LIB	:= $(shell $(LLVM_BIN_PATH)/llvm-config --libdir)/LLVMPolly.so
+ifneq (,$(wildcard $(HOST_POLLY_LIB)))
+KBUILD_CFLAGS += $(call cc-option,-fplugin=$(HOST_POLLY_LIB) \
+		-fpass-plugin=$(HOST_POLLY_LIB))
+endif
+KBUILD_CFLAGS	+= -mllvm -polly \
+			-mllvm -polly-run-dce \
+			-mllvm -polly-run-inliner \
+			-mllvm -polly-opt-fusion=max \
+			-mllvm -polly-ast-use-context \
+			-mllvm -polly-detect-keep-going \
+			-mllvm -polly-vectorizer=stripmine \
+			-mllvm -polly-invariant-load-hoisting
 ifneq ($(CROSS_COMPILE),)
 CLANG_TRIPLE	?= $(CROSS_COMPILE)
 CLANG_FLAGS	+= --target=$(notdir $(CLANG_TRIPLE:%-=%))
