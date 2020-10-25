@@ -2838,16 +2838,16 @@ static int smb5_batt_get_prop(struct power_supply *psy,
 	case POWER_SUPPLY_PROP_FORCE_RECHARGE:
 		val->intval = 0;
 		break;
+	case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
+		rc = smblib_get_prop_from_bms(chg,
+				POWER_SUPPLY_PROP_TIME_TO_FULL_NOW, val);
+		break;
 	case POWER_SUPPLY_PROP_FCC_STEPPER_ENABLE:
 		val->intval = chg->fcc_stepper_enable;
 		break;
 	case POWER_SUPPLY_PROP_TIME_TO_FULL_AVG:
 		rc = smblib_get_prop_from_bms(chg,
 				POWER_SUPPLY_PROP_TIME_TO_FULL_AVG, val);
-		break;
-	case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
-		rc = smblib_get_prop_from_bms(chg,
-				POWER_SUPPLY_PROP_TIME_TO_FULL_NOW, val);
 		break;
 	default:
 		pr_err("batt power supply prop %d not supported\n", psp);
