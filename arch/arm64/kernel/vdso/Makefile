@@ -16,6 +16,9 @@ ccflags-y := -shared -fno-common -fno-builtin
 ccflags-y += -nostdlib -Wl,-soname=linux-vdso.so.1 \
 		$(call cc-ldoption, -Wl$(comma)--hash-style=sysv)
 ccflags-y += $(DISABLE_LTO)
+ifdef CONFIG_ARCH_KONA
+ccflags-y += -mfpu=crypto-neon-fp-armv8 -mfloat-abi=softfp
+endif
 
 CFLAGS_REMOVE_vgettimeofday.o += $(CC_FLAGS_SCS)
 
