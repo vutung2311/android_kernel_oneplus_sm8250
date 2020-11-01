@@ -126,6 +126,7 @@ FUNC_BUILD_BOOT_IMG()
 
 FUNC_BUILD_RECOVERY_IMG()
 {
+	cd $RDIR && ./fix_ramdisk_permission.sh
 	cp "${BUILDDIR}/arch/${ARCH}/boot/Image" "${RDIR}/recovery.img/in/split_img/recovery.img-zImage"
 	cp "${BUILDDIR}/arch/${ARCH}/boot/dtbo.img" "${RDIR}/recovery.img/in/split_img/recovery.img-recovery_dtbo"
 	cat "${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona.dtb" \
