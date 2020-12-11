@@ -1835,23 +1835,37 @@ enum pci_fixup_pass {
 
 #ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
 #define ___DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
-				    class_shift, hook, stub)		\
-	void __cficanonical stub(struct pci_dev *dev);					\
-	void __cficanonical stub(struct pci_dev *dev)					\
-	{ 								\
-		hook(dev); 						\
-	}								\
+				    class_shift, hook)			\
+	__ADDRESSABLE(hook)						\
 	asm(".section "	#sec ", \"a\"				\n"	\
 	    ".balign	16					\n"	\
 	    ".short "	#vendor ", " #device "			\n"	\
 	    ".long "	#class ", " #class_shift "		\n"	\
-	    ".long "	#stub " - .				\n"	\
+	    ".long "	#hook " - .				\n"	\
 	    ".previous						\n");
 
+/*
+ * Clang's LTO may rename static functions in C, but has no way to
+ * handle such renamings when referenced from inline asm. To work
+ * around this, create global C stubs for these cases.
+ */
+#ifdef CONFIG_LTO_CLANG
+#define __DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
+				  class_shift, hook, stub)		\
+	void __cficanonical stub(struct pci_dev *dev);			\
+	void __cficanonical stub(struct pci_dev *dev)			\
+	{ 								\
+		hook(dev); 						\
+	}								\
+	___DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
+				  class_shift, stub)
+#else
 #define __DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
 				  class_shift, hook, stub)		\
 	___DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
-				  class_shift, hook, stub)
+				  class_shift, hook)
+#endif
+
 #define DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
 				  class_shift, hook)			\
 	__DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
