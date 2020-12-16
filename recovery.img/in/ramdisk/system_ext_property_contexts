@@ -143,6 +143,14 @@ persist.vendor.camera.systemLogEnable     u:object_r:ctl_default_prop:s0
 persist.vendor.camera.traceGroupsEnable   u:object_r:ctl_default_prop:s0
 vendor.debug.camera.af.fullsweep          u:object_r:ctl_default_prop:s0
 persist.camera.cfr.disable                u:object_r:ctl_default_prop:s0
+
+# rad.yeh@NETWORK, 2020/10/12, add for USV system clock feature
+persist.vendor.radio.utcReceiveTime      u:object_r:boottime_prop:s0
+persist.vendor.radio.currentUtc          u:object_r:boottime_prop:s0
+persist.vendor.radio.localTimeOffset     u:object_r:boottime_prop:s0
+# rad.yeh@NETWORK, 2020/10/12, add for warranty property
+persist.vendor.radio.warranty            u:object_r:boottime_prop:s0
+
 #line 1 "device/qcom/sepolicy/generic/private/property_contexts"
 # Copyright (c) 2019, The Linux Foundation. All rights reserved.
 #
