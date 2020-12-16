@@ -265,7 +265,11 @@ ifeq ($(DTC_EXT),)
 DTC_FLAGS += -Wno-simple_bus_reg \
 	-Wno-unit_address_format \
 	-Wno-reg_format \
-	-Wno-avoid_default_addr_size
+	-Wno-avoid_default_addr_size \
+	-Wno-gpios_property \
+	-Wno-graph_port \
+	-Wno-interrupts_property \
+	-Wno-interrupt_provider
 endif
 
 ifneq ($(findstring 2,$(KBUILD_ENABLE_EXTRA_GCC_CHECKS)),)
