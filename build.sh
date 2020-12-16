@@ -38,6 +38,10 @@ RDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 BUILDDIR="${RDIR}/.build"
 mkdir -p $BUILDDIR
 
+if [ ! "$(ls -A ${BUILDDIR})" ]; then
+	sudo mount -t tmpfs -o size=5g tmpfs ${RDIR}/.build
+fi
+
 KERNEL_DEFCONFIG=vendor/kona-perf_defconfig
 KERNEL_DECORATE_DEFCONFIG=arch/arm64/configs/op8-perf_defconfig
 OEM_TARGET_PRODUCT=instantnoodlep
