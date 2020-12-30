@@ -4702,12 +4702,13 @@ static int fg_psy_get_property(struct power_supply *psy,
 		rc = fg_get_sram_prop(fg, FG_SRAM_VBATT_FULL, &pval->intval);
 		break;
 	case POWER_SUPPLY_PROP_TIME_TO_FULL_AVG:
-		if (fg->use_external_fg && external_fg
-			&& external_fg->get_time_to_full)
-			rc = external_fg->get_time_to_full();
-			if (rc >= 0)
-				pval->intval = rc;
-		else
+		if (fg->iskebab) {
+			if (fg->use_external_fg && external_fg
+				&& external_fg->get_time_to_full)
+				rc = external_fg->get_time_to_full();
+				if (rc >= 0)
+					pval->intval = rc;
+		} else
 			rc = ttf_get_time_to_full(chip->ttf, &pval->intval);
 		break;
 	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
