@@ -45,6 +45,10 @@
 
 #define STR_BUFFER_MAX_LENGTH  1024
 
+#ifdef DEBUG
+#undef DEBUG
+#endif
+
 /*
  *  cam_debug_log()
  *
@@ -58,8 +62,13 @@
  * @fmt       :  Formatted string which needs to be print in the log
  *
  */
+#ifdef DEBUG
 void cam_debug_log(unsigned int module_id, const char *func, const int line,
 	const char *fmt, ...);
+#else
+static inline void cam_debug_log(unsigned int module_id, const char *func, const int line,
+	const char *fmt, ...) {}
+#endif
 
 /*
  * cam_get_module_name()

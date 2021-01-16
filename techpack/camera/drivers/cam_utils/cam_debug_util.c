@@ -102,6 +102,7 @@ const char *cam_get_module_name(unsigned int module_id)
 	return name;
 }
 
+#ifdef DEBUG
 void cam_debug_log(unsigned int module_id, const char *func, const int line,
 	const char *fmt, ...)
 {
@@ -120,6 +121,7 @@ void cam_debug_log(unsigned int module_id, const char *func, const int line,
 
 	va_end(args);
 }
+#endif
 
 bool cam_is_log_enabled(unsigned int module_id)
 {
