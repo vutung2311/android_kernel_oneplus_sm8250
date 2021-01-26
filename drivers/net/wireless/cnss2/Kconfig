@@ -84,3 +84,11 @@ config CNSS_QCA6490
 	  CNSS QCA6490 chipset.
 	  These changes are needed to support the new hardware architecture
 	  for CNSS QCA6490 chipset.
+
+config CNSS_REQ_FW_DIRECT
+	bool "Enable request_firmware_direct for firmware or configuration file"
+	depends on CNSS2
+	help
+	  This enables calling request_firmware_direct for firmware or
+	  configuration file to avoid 60s timeout while search file under user
+	  space failure.

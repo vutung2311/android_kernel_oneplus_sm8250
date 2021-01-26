@@ -1977,6 +1977,18 @@ int cnss_minidump_add_region(struct cnss_plat_data *plat_priv,
 	return ret;
 }
 
+int cnss_request_firmware_direct(struct cnss_plat_data *plat_priv,
+				 const struct firmware **fw_entry,
+				 const char *filename)
+{
+	if (IS_ENABLED(CONFIG_CNSS_REQ_FW_DIRECT))
+		return request_firmware_direct(fw_entry, filename,
+					       &plat_priv->plat_dev->dev);
+	else
+		return request_firmware(fw_entry, filename,
+					&plat_priv->plat_dev->dev);
+}
+
 int cnss_minidump_remove_region(struct cnss_plat_data *plat_priv,
 				enum cnss_fw_dump_type type, int seg_no,
 				void *va, phys_addr_t pa, size_t size)

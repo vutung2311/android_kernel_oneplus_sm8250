@@ -9,6 +9,7 @@
 #include <linux/etherdevice.h>
 #include <linux/msm-bus.h>
 #include <linux/pm_qos.h>
+#include <linux/firmware.h>
 #include <net/cnss2.h>
 #include <soc/qcom/memory_dump.h>
 #include <soc/qcom/subsystem_restart.h>
@@ -449,5 +450,7 @@ int cnss_minidump_add_region(struct cnss_plat_data *plat_priv,
 int cnss_minidump_remove_region(struct cnss_plat_data *plat_priv,
 				enum cnss_fw_dump_type type, int seg_no,
 				void *va, phys_addr_t pa, size_t size);
-
+int cnss_request_firmware_direct(struct cnss_plat_data *plat_priv,
+				 const struct firmware **fw_entry,
+				 const char *filename);
 #endif /* _CNSS_MAIN_H */
