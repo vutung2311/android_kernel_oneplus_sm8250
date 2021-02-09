@@ -39,7 +39,7 @@ BUILDDIR="${RDIR}/.build"
 mkdir -p $BUILDDIR
 
 if [ ! "$(ls -A ${BUILDDIR})" ]; then
-	sudo mount -t tmpfs -o size=8g tmpfs ${RDIR}/.build
+	sudo mount -t tmpfs -o size=10g tmpfs ${RDIR}/.build
 fi
 
 KERNEL_DEFCONFIG=vendor/kona-perf_defconfig
@@ -107,7 +107,8 @@ FUNC_BUILD_KERNEL()
 		-e CONFIG_CFI_CLANG \
 		-e CONFIG_CFI_PERMISSIVE \
 		-e CONFIG_CFI_CLANG_SHADOW \
-		--set-str CONFIG_UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist abi_gki_aarch64_qcom_internal_whitelist abi_gki_aarch64_whitelist"
+		--set-str CONFIG_UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist abi_gki_aarch64_qcom_internal_whitelist abi_gki_aarch64_whitelist" \
+		-e CONFIG_UNUSED_KSYMS_WHITELIST_ONLY
 	fi
 	echo ""
 
