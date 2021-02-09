@@ -39,7 +39,7 @@ BUILDDIR="${RDIR}/.build"
 mkdir -p $BUILDDIR
 
 if [ ! "$(ls -A ${BUILDDIR})" ]; then
-	sudo mount -t tmpfs -o size=5g tmpfs ${RDIR}/.build
+	sudo mount -t tmpfs -o size=8g tmpfs ${RDIR}/.build
 fi
 
 KERNEL_DEFCONFIG=vendor/kona-perf_defconfig
