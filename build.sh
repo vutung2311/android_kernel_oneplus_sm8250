@@ -42,7 +42,7 @@ if [ ! "$(ls -A ${BUILDDIR})" ]; then
 	sudo mount -t tmpfs -o size=10g tmpfs ${RDIR}/.build
 fi
 
-KERNEL_DEFCONFIG=vendor/kona-perf_defconfig
+KERNEL_DEFCONFIG=vendor/instantnoodlep-perf_defconfig
 KERNEL_DECORATE_DEFCONFIG=arch/arm64/configs/op8-perf_defconfig
 OEM_TARGET_PRODUCT=instantnoodlep
 WLAN_DISABLE_BUILD_TAG=y

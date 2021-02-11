@@ -21,6 +21,9 @@ kona-xrfusion-overlay.dtbo-base := kona.dtb kona-v2.dtb kona-v2.1.dtb
 kona-hdk-overlay.dtbo-base := kona.dtb kona-v2.dtb kona-v2.1.dtb
 else
 ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
+ifneq ($(CONFIG_MACH_ONEPLUS_8),y)
+ifneq ($(CONFIG_MACH_ONEPLUS_8PRO),y)
+ifneq ($(CONFIG_MACH_ONEPLUS_8T),y)
         dtbo-$(CONFIG_ARCH_KONA) += \
                 instantnoodlep-overlay-evb.dtbo \
                 instantnoodlep-overlay-t0.dtbo \
@@ -33,6 +36,26 @@ ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
                 instantnoodlev-overlay-evt1.dtbo \
                 instantnoodlev-overlay-dvt.dtbo \
                 kebab-overlay.dtbo
+endif
+endif
+endif
+
+dtbo-$(CONFIG_MACH_ONEPLUS_8) += \
+	instantnoodle-overlay-t0.dtbo \
+	instantnoodle-overlay-evt1.dtbo \
+	instantnoodle-overlay-dvt.dtbo \
+	instantnoodlev-overlay-t0.dtbo \
+	instantnoodlev-overlay-evt1.dtbo \
+	instantnoodlev-overlay-dvt.dtbo
+
+dtbo-$(CONFIG_MACH_ONEPLUS_8PRO) += \
+	instantnoodlep-overlay-evb.dtbo \
+	instantnoodlep-overlay-t0.dtbo \
+	instantnoodlep-overlay-evt1.dtbo \
+	instantnoodlep-overlay-dvt.dtbo
+
+dtbo-$(CONFIG_MACH_ONEPLUS_8T) += \
+	kebab-overlay.dtbo
 
 instantnoodlep-overlay-evb.dtbo-base := kona-v2.1.dtb
 instantnoodlep-overlay-t0.dtbo-base := kona-v2.1.dtb
