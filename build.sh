@@ -107,7 +107,10 @@ FUNC_BUILD_KERNEL()
 		-e CONFIG_CFI_CLANG \
 		-e CONFIG_CFI_PERMISSIVE \
 		-e CONFIG_CFI_CLANG_SHADOW \
-		--set-str CONFIG_UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist abi_gki_aarch64_qcom_internal_whitelist abi_gki_aarch64_whitelist" \
+		--set-str CONFIG_UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist \
+abi_gki_aarch64_qcom_internal_whitelist \
+abi_gki_aarch64_whitelist \
+scripts/lto-used-symbollist.txt" \
 		-e CONFIG_UNUSED_KSYMS_WHITELIST_ONLY
 	fi
 	echo ""
