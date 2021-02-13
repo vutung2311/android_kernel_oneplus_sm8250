@@ -2,7 +2,6 @@
     Input:
         vendor_framework_compatibility_matrix.xml
         vendor_framework_compatibility_matrix.xml
-        ozo_framework_compatibility_matrix.xml
 -->
 <compatibility-matrix version="2.0" type="framework">
     <hal format="hidl" optional="true">
@@ -32,14 +31,6 @@
             <name>IComponentStore</name>
             <instance>default</instance>
             <instance>software</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="true">
-        <name>android.hardware.media.c2</name>
-        <version>1.0</version>
-        <interface>
-            <name>IComponentStore</name>
-            <instance>ozoaudio</instance>
         </interface>
     </hal>
     <hal format="hidl" optional="true">
@@ -191,11 +182,19 @@
             <instance>default</instance>
         </interface>
     </hal>
-    <hal format="hidl" optional="false">
+    <hal format="hidl" optional="true">
         <name>vendor.goodix.hardware.biometrics.fingerprint</name>
         <version>2.1</version>
         <interface>
             <name>IGoodixFingerprintDaemon</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>vendor.nxp.eventprocessor</name>
+        <version>1.0</version>
+        <interface>
+            <name>INxpEseEvtProcessor</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -205,6 +204,22 @@
         <version>2.0</version>
         <interface>
             <name>INqNfc</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>vendor.nxp.nxpese</name>
+        <version>1.0</version>
+        <interface>
+            <name>INxpEse</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>vendor.nxp.nxpnfc</name>
+        <version>1.0</version>
+        <interface>
+            <name>INxpNfc</name>
             <instance>default</instance>
         </interface>
     </hal>
