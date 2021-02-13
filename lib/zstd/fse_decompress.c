@@ -49,7 +49,7 @@
 #include "fse.h"
 #include <linux/compiler.h>
 #include <linux/kernel.h>
-#include <linux/string.h> /* memcpy, memset */
+#include <linux/string.h> /* ZSTD_memcpy, memset */
 
 /* **************************************************************
 *  Error Management
@@ -129,7 +129,7 @@ size_t FSE_buildDTable_wksp(FSE_DTable *dt, const short *normalizedCounter, unsi
 				}
 			}
 		}
-		memcpy(dt, &DTableH, sizeof(DTableH));
+		ZSTD_memcpy(dt, &DTableH, sizeof(DTableH));
 	}
 
 	/* Spread symbols */

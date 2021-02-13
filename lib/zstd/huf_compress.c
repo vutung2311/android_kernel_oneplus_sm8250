@@ -44,7 +44,7 @@
 #include "fse.h" /* header compression */
 #include "huf.h"
 #include <linux/kernel.h>
-#include <linux/string.h> /* memcpy, memset */
+#include <linux/string.h> /* ZSTD_memcpy, memset */
 
 /* **************************************************************
 *  Error Management
@@ -737,7 +737,7 @@ static size_t HUF_compress_internal(void *dst, size_t dstSize, const void *src, 
 			*repeat = HUF_repeat_none;
 		}
 		if (oldHufTable) {
-			memcpy(oldHufTable, CTable, CTableSize);
+			ZSTD_memcpy(oldHufTable, CTable, CTableSize);
 		} /* Save the new table */
 	}
 	return HUF_compressCTable_internal(ostart, op, oend, src, srcSize, singleStream, CTable);

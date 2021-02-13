@@ -35,7 +35,7 @@
 #include "zstd_internal.h"
 #include <linux/kernel.h>
 #include <linux/module.h>
-#include <linux/string.h> /* memcpy, memmove, memset */
+#include <linux/string.h> /* ZSTD_memcpy, memmove, memset */
 
 #define ZSTD_PREFETCH(ptr) __builtin_prefetch(ptr, 0, 0)
 
@@ -49,7 +49,7 @@
 /*_*******************************************************
 *  Memory operations
 **********************************************************/
-static void ZSTD_copy4(void *dst, const void *src) { memcpy(dst, src, 4); }
+static void ZSTD_copy4(void *dst, const void *src) { ZSTD_memcpy(dst, src, 4); }
 
 /*-*************************************************************
 *   Context management
@@ -115,7 +115,7 @@ size_t ZSTD_decompressBegin(ZSTD_DCtx *dctx)
 	dctx->litEntropy = dctx->fseEntropy = 0;
 	dctx->dictID = 0;
 	ZSTD_STATIC_ASSERT(sizeof(dctx->entropy.rep) == sizeof(repStartValue));
-	memcpy(dctx->entropy.rep, repStartValue, sizeof(repStartValue)); /* initial repcodes */
+	ZSTD_memcpy(dctx->entropy.rep, repStartValue, sizeof(repStartValue)); /* initial repcodes */
 	dctx->LLTptr = dctx->entropy.LLTable;
 	dctx->MLTptr = dctx->entropy.MLTable;
 	dctx->OFTptr = dctx->entropy.OFTable;
@@ -133,7 +133,7 @@ ZSTD_DCtx *ZSTD_createDCtx_advanced(ZSTD_customMem customMem)
 	dctx = (ZSTD_DCtx *)ZSTD_malloc(sizeof(ZSTD_DCtx), customMem);
 	if (!dctx)
 		return NULL;
-	memcpy(&dctx->customMem, &customMem, sizeof(customMem));
+	ZSTD_memcpy(&dctx->customMem, &customMem, sizeof(customMem));
 	ZSTD_decompressBegin(dctx);
 	return dctx;
 }
@@ -155,7 +155,7 @@ size_t ZSTD_freeDCtx(ZSTD_DCtx *dctx)
 void ZSTD_copyDCtx(ZSTD_DCtx *dstDCtx, const ZSTD_DCtx *srcDCtx)
 {
 	size_t const workSpaceSize = (ZSTD_BLOCKSIZE_ABSOLUTEMAX + WILDCOPY_OVERLENGTH) + ZSTD_frameHeaderSize_max;
-	memcpy(dstDCtx, srcDCtx, sizeof(ZSTD_DCtx) - workSpaceSize); /* no need to copy workspace */
+	ZSTD_memcpy(dstDCtx, srcDCtx, sizeof(ZSTD_DCtx) - workSpaceSize); /* no need to copy workspace */
 }
 
 static void ZSTD_refDDict(ZSTD_DCtx *dstDCtx, const ZSTD_DDict *ddict);
@@ -413,7 +413,7 @@ static size_t ZSTD_copyRawBlock(void *dst, size_t dstCapacity, const void *src, 
 {
 	if (srcSize > dstCapacity)
 		return ERROR(dstSize_tooSmall);
-	memcpy(dst, src, srcSize);
+	ZSTD_memcpy(dst, src, srcSize);
 	return srcSize;
 }
 
@@ -522,7 +522,7 @@ size_t ZSTD_decodeLiteralsBlock(ZSTD_DCtx *dctx, const void *src, size_t srcSize
 			if (lhSize + litSize + WILDCOPY_OVERLENGTH > srcSize) { /* risk reading beyond src buffer with wildcopy */
 				if (litSize + lhSize > srcSize)
 					return ERROR(corruption_detected);
-				memcpy(dctx->litBuffer, istart + lhSize, litSize);
+				ZSTD_memcpy(dctx->litBuffer, istart + lhSize, litSize);
 				dctx->litPtr = dctx->litBuffer;
 				dctx->litSize = litSize;
 				memset(dctx->litBuffer + dctx->litSize, 0, WILDCOPY_OVERLENGTH);
@@ -1153,7 +1153,7 @@ static size_t ZSTD_decompressSequences(ZSTD_DCtx *dctx, void *dst, size_t maxDst
 		size_t const lastLLSize = litEnd - litPtr;
 		if (lastLLSize > (size_t)(oend - op))
 			return ERROR(dstSize_tooSmall);
-		memcpy(op, litPtr, lastLLSize);
+		ZSTD_memcpy(op, litPtr, lastLLSize);
 		op += lastLLSize;
 	}
 
@@ -1435,7 +1435,7 @@ static size_t ZSTD_decompressSequencesLong(ZSTD_DCtx *dctx, void *dst, size_t ma
 		size_t const lastLLSize = litEnd - litPtr;
 		if (lastLLSize > (size_t)(oend - op))
 			return ERROR(dstSize_tooSmall);
-		memcpy(op, litPtr, lastLLSize);
+		ZSTD_memcpy(op, litPtr, lastLLSize);
 		op += lastLLSize;
 	}
 
@@ -1753,7 +1753,7 @@ size_t ZSTD_decompressContinue(ZSTD_DCtx *dctx, void *dst, size_t dstCapacity, c
 		if (srcSize != ZSTD_frameHeaderSize_prefix)
 			return ERROR(srcSize_wrong);					/* impossible */
 		if ((ZSTD_readLE32(src) & 0xFFFFFFF0U) == ZSTD_MAGIC_SKIPPABLE_START) { /* skippable frame */
-			memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_prefix);
+			ZSTD_memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_prefix);
 			dctx->expected = ZSTD_skippableHeaderSize - ZSTD_frameHeaderSize_prefix; /* magic number + skippable frame length */
 			dctx->stage = ZSTDds_decodeSkippableHeader;
 			return 0;
@@ -1761,7 +1761,7 @@ size_t ZSTD_decompressContinue(ZSTD_DCtx *dctx, void *dst, size_t dstCapacity, c
 		dctx->headerSize = ZSTD_frameHeaderSize(src, ZSTD_frameHeaderSize_prefix);
 		if (ZSTD_isError(dctx->headerSize))
 			return dctx->headerSize;
-		memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_prefix);
+		ZSTD_memcpy(dctx->headerBuffer, src, ZSTD_frameHeaderSize_prefix);
 		if (dctx->headerSize > ZSTD_frameHeaderSize_prefix) {
 			dctx->expected = dctx->headerSize - ZSTD_frameHeaderSize_prefix;
 			dctx->stage = ZSTDds_decodeFrameHeader;
@@ -1770,7 +1770,7 @@ size_t ZSTD_decompressContinue(ZSTD_DCtx *dctx, void *dst, size_t dstCapacity, c
 		dctx->expected = 0; /* not necessary to copy more */
 
 	case ZSTDds_decodeFrameHeader:
-		memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_prefix, src, dctx->expected);
+		ZSTD_memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_prefix, src, dctx->expected);
 		CHECK_F(ZSTD_decodeFrameHeader(dctx, dctx->headerBuffer, dctx->headerSize));
 		dctx->expected = ZSTD_blockHeaderSize;
 		dctx->stage = ZSTDds_decodeBlockHeader;
@@ -1843,7 +1843,7 @@ size_t ZSTD_decompressContinue(ZSTD_DCtx *dctx, void *dst, size_t dstCapacity, c
 		return 0;
 	}
 	case ZSTDds_decodeSkippableHeader: {
-		memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_prefix, src, dctx->expected);
+		ZSTD_memcpy(dctx->headerBuffer + ZSTD_frameHeaderSize_prefix, src, dctx->expected);
 		dctx->expected = ZSTD_readLE32(dctx->headerBuffer + 4);
 		dctx->stage = ZSTDds_skipFrame;
 		return 0;
@@ -2056,7 +2056,7 @@ static ZSTD_DDict *ZSTD_createDDict_advanced(const void *dict, size_t dictSize, 
 				ZSTD_freeDDict(ddict);
 				return NULL;
 			}
-			memcpy(internalBuffer, dict, dictSize);
+			ZSTD_memcpy(internalBuffer, dict, dictSize);
 			ddict->dictBuffer = internalBuffer;
 			ddict->dictContent = internalBuffer;
 		}
@@ -2199,7 +2199,7 @@ static ZSTD_DStream *ZSTD_createDStream_advanced(ZSTD_customMem customMem)
 	if (zds == NULL)
 		return NULL;
 	memset(zds, 0, sizeof(ZSTD_DStream));
-	memcpy(&zds->customMem, &customMem, sizeof(ZSTD_customMem));
+	ZSTD_memcpy(&zds->customMem, &customMem, sizeof(ZSTD_customMem));
 	zds->dctx = ZSTD_createDCtx_advanced(customMem);
 	if (zds->dctx == NULL) {
 		ZSTD_freeDStream(zds);
@@ -2290,7 +2290,7 @@ size_t ZSTD_resetDStream(ZSTD_DStream *zds)
 ZSTD_STATIC size_t ZSTD_limitCopy(void *dst, size_t dstCapacity, const void *src, size_t srcSize)
 {
 	size_t const length = MIN(dstCapacity, srcSize);
-	memcpy(dst, src, length);
+	ZSTD_memcpy(dst, src, length);
 	return length;
 }
 
@@ -2317,13 +2317,13 @@ size_t ZSTD_decompressStream(ZSTD_DStream *zds, ZSTD_outBuffer *output, ZSTD_inB
 			if (hSize != 0) {				   /* need more input */
 				size_t const toLoad = hSize - zds->lhSize; /* if hSize!=0, hSize > zds->lhSize */
 				if (toLoad > (size_t)(iend - ip)) {	/* not enough input to load full header */
-					memcpy(zds->headerBuffer + zds->lhSize, ip, iend - ip);
+					ZSTD_memcpy(zds->headerBuffer + zds->lhSize, ip, iend - ip);
 					zds->lhSize += iend - ip;
 					input->pos = input->size;
 					return (MAX(ZSTD_frameHeaderSize_min, hSize) - zds->lhSize) +
 					       ZSTD_blockHeaderSize; /* remaining header bytes + next block header */
 				}
-				memcpy(zds->headerBuffer + zds->lhSize, ip, toLoad);
+				ZSTD_memcpy(zds->headerBuffer + zds->lhSize, ip, toLoad);
 				zds->lhSize = hSize;
 				ip += toLoad;
 				break;

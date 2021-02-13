@@ -350,7 +350,7 @@ size_t ZSTD_copyCCtx(ZSTD_CCtx *dstCCtx, const ZSTD_CCtx *srcCCtx, unsigned long
 	if (srcCCtx->stage != ZSTDcs_init)
 		return ERROR(stage_wrong);
 
-	memcpy(&dstCCtx->customMem, &srcCCtx->customMem, sizeof(ZSTD_customMem));
+	ZSTD_memcpy(&dstCCtx->customMem, &srcCCtx->customMem, sizeof(ZSTD_customMem));
 	{
 		ZSTD_parameters params = srcCCtx->params;
 		params.fParams.contentSizeFlag = (pledgedSrcSize > 0);
@@ -363,7 +363,7 @@ size_t ZSTD_copyCCtx(ZSTD_CCtx *dstCCtx, const ZSTD_CCtx *srcCCtx, unsigned long
 		size_t const hSize = ((size_t)1) << srcCCtx->params.cParams.hashLog;
 		size_t const h3Size = (size_t)1 << srcCCtx->hashLog3;
 		size_t const tableSpace = (chainSize + hSize + h3Size) * sizeof(U32);
-		memcpy(dstCCtx->workSpace, srcCCtx->workSpace, tableSpace);
+		ZSTD_memcpy(dstCCtx->workSpace, srcCCtx->workSpace, tableSpace);
 	}
 
 	/* copy dictionary offsets */
@@ -381,12 +381,12 @@ size_t ZSTD_copyCCtx(ZSTD_CCtx *dstCCtx, const ZSTD_CCtx *srcCCtx, unsigned long
 	dstCCtx->flagStaticTables = srcCCtx->flagStaticTables;
 	dstCCtx->flagStaticHufTable = srcCCtx->flagStaticHufTable;
 	if (srcCCtx->flagStaticTables) {
-		memcpy(dstCCtx->litlengthCTable, srcCCtx->litlengthCTable, sizeof(dstCCtx->litlengthCTable));
-		memcpy(dstCCtx->matchlengthCTable, srcCCtx->matchlengthCTable, sizeof(dstCCtx->matchlengthCTable));
-		memcpy(dstCCtx->offcodeCTable, srcCCtx->offcodeCTable, sizeof(dstCCtx->offcodeCTable));
+		ZSTD_memcpy(dstCCtx->litlengthCTable, srcCCtx->litlengthCTable, sizeof(dstCCtx->litlengthCTable));
+		ZSTD_memcpy(dstCCtx->matchlengthCTable, srcCCtx->matchlengthCTable, sizeof(dstCCtx->matchlengthCTable));
+		ZSTD_memcpy(dstCCtx->offcodeCTable, srcCCtx->offcodeCTable, sizeof(dstCCtx->offcodeCTable));
 	}
 	if (srcCCtx->flagStaticHufTable) {
-		memcpy(dstCCtx->hufTable, srcCCtx->hufTable, 256 * 4);
+		ZSTD_memcpy(dstCCtx->hufTable, srcCCtx->hufTable, 256 * 4);
 	}
 
 	return 0;
@@ -435,7 +435,7 @@ size_t ZSTD_noCompressBlock(void *dst, size_t dstCapacity, const void *src, size
 {
 	if (srcSize + ZSTD_blockHeaderSize > dstCapacity)
 		return ERROR(dstSize_tooSmall);
-	memcpy((BYTE *)dst + ZSTD_blockHeaderSize, src, srcSize);
+	ZSTD_memcpy((BYTE *)dst + ZSTD_blockHeaderSize, src, srcSize);
 	ZSTD_writeLE24(dst, (U32)(srcSize << 2) + (U32)bt_raw);
 	return ZSTD_blockHeaderSize + srcSize;
 }
@@ -455,7 +455,7 @@ static size_t ZSTD_noCompressLiterals(void *dst, size_t dstCapacity, const void 
 	case 3: /* 2 - 2 - 20 */ ZSTD_writeLE32(ostart, (U32)((U32)set_basic + (3 << 2) + (srcSize << 4))); break;
 	}
 
-	memcpy(ostart + flSize, src, srcSize);
+	ZSTD_memcpy(ostart + flSize, src, srcSize);
 	return srcSize + flSize;
 }
 
@@ -1096,7 +1096,7 @@ void ZSTD_compressBlock_fast_generic(ZSTD_CCtx *cctx, const void *src, size_t sr
 	/* Last Literals */
 	{
 		size_t const lastLLSize = iend - anchor;
-		memcpy(seqStorePtr->lit, anchor, lastLLSize);
+		ZSTD_memcpy(seqStorePtr->lit, anchor, lastLLSize);
 		seqStorePtr->lit += lastLLSize;
 	}
 }
@@ -1212,7 +1212,7 @@ static void ZSTD_compressBlock_fast_extDict_generic(ZSTD_CCtx *ctx, const void *
 	/* Last Literals */
 	{
 		size_t const lastLLSize = iend - anchor;
-		memcpy(seqStorePtr->lit, anchor, lastLLSize);
+		ZSTD_memcpy(seqStorePtr->lit, anchor, lastLLSize);
 		seqStorePtr->lit += lastLLSize;
 	}
 }
@@ -1375,7 +1375,7 @@ void ZSTD_compressBlock_doubleFast_generic(ZSTD_CCtx *cctx, const void *src, siz
 	/* Last Literals */
 	{
 		size_t const lastLLSize = iend - anchor;
-		memcpy(seqStorePtr->lit, anchor, lastLLSize);
+		ZSTD_memcpy(seqStorePtr->lit, anchor, lastLLSize);
 		seqStorePtr->lit += lastLLSize;
 	}
 }
@@ -1535,7 +1535,7 @@ static void ZSTD_compressBlock_doubleFast_extDict_generic(ZSTD_CCtx *ctx, const 
 	/* Last Literals */
 	{
 		size_t const lastLLSize = iend - anchor;
-		memcpy(seqStorePtr->lit, anchor, lastLLSize);
+		ZSTD_memcpy(seqStorePtr->lit, anchor, lastLLSize);
 		seqStorePtr->lit += lastLLSize;
 	}
 }
@@ -2041,7 +2041,7 @@ _storeSequence:
 	/* Last Literals */
 	{
 		size_t const lastLLSize = iend - anchor;
-		memcpy(seqStorePtr->lit, anchor, lastLLSize);
+		ZSTD_memcpy(seqStorePtr->lit, anchor, lastLLSize);
 		seqStorePtr->lit += lastLLSize;
 	}
 }
@@ -2244,7 +2244,7 @@ void ZSTD_compressBlock_lazy_extDict_generic(ZSTD_CCtx *ctx, const void *src, si
 	/* Last Literals */
 	{
 		size_t const lastLLSize = iend - anchor;
-		memcpy(seqStorePtr->lit, anchor, lastLLSize);
+		ZSTD_memcpy(seqStorePtr->lit, anchor, lastLLSize);
 		seqStorePtr->lit += lastLLSize;
 	}
 }
@@ -2409,7 +2409,7 @@ static size_t ZSTD_compress_generic(ZSTD_CCtx *cctx, void *dst, size_t dstCapaci
 			if (blockSize + ZSTD_blockHeaderSize > dstCapacity)
 				return ERROR(dstSize_tooSmall);
 			ZSTD_writeLE32(op, cBlockHeader24); /* no pb, 4th byte will be overwritten */
-			memcpy(op + ZSTD_blockHeaderSize, ip, blockSize);
+			ZSTD_memcpy(op + ZSTD_blockHeaderSize, ip, blockSize);
 			cSize = ZSTD_blockHeaderSize + blockSize;
 		} else {
 			U32 const cBlockHeader24 = lastBlock + (((U32)bt_compressed) << 1) + (U32)(cSize << 3);
@@ -2869,7 +2869,7 @@ static ZSTD_CDict *ZSTD_createCDict_advanced(const void *dictBuffer, size_t dict
 				ZSTD_free(cdict, customMem);
 				return NULL;
 			}
-			memcpy(internalBuffer, dictBuffer, dictSize);
+			ZSTD_memcpy(internalBuffer, dictBuffer, dictSize);
 			cdict->dictBuffer = internalBuffer;
 			cdict->dictContent = internalBuffer;
 		}
@@ -2990,7 +2990,7 @@ ZSTD_CStream *ZSTD_createCStream_advanced(ZSTD_customMem customMem)
 	if (zcs == NULL)
 		return NULL;
 	memset(zcs, 0, sizeof(ZSTD_CStream));
-	memcpy(&zcs->customMem, &customMem, sizeof(ZSTD_customMem));
+	ZSTD_memcpy(&zcs->customMem, &customMem, sizeof(ZSTD_customMem));
 	zcs->cctx = ZSTD_createCCtx_advanced(customMem);
 	if (zcs->cctx == NULL) {
 		ZSTD_freeCStream(zcs);
@@ -3122,7 +3122,7 @@ typedef enum { zsf_gather, zsf_flush, zsf_end } ZSTD_flush_e;
 ZSTD_STATIC size_t ZSTD_limitCopy(void *dst, size_t dstCapacity, const void *src, size_t srcSize)
 {
 	size_t const length = MIN(dstCapacity, srcSize);
-	memcpy(dst, src, length);
+	ZSTD_memcpy(dst, src, length);
 	return length;
 }
 

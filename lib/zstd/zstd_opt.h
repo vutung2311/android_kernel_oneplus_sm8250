@@ -691,7 +691,7 @@ _storeSequence: /* cur, last_pos, best_mlen, best_off have to be set */
 	/* Last Literals */
 	{
 		size_t const lastLLSize = iend - anchor;
-		memcpy(seqStorePtr->lit, anchor, lastLLSize);
+		ZSTD_memcpy(seqStorePtr->lit, anchor, lastLLSize);
 		seqStorePtr->lit += lastLLSize;
 	}
 }
@@ -1006,7 +1006,7 @@ _storeSequence: /* cur, last_pos, best_mlen, best_off have to be set */
 	/* Last Literals */
 	{
 		size_t lastLLSize = iend - anchor;
-		memcpy(seqStorePtr->lit, anchor, lastLLSize);
+		ZSTD_memcpy(seqStorePtr->lit, anchor, lastLLSize);
 		seqStorePtr->lit += lastLLSize;
 	}
 }

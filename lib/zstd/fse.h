@@ -200,7 +200,7 @@ FSE_PUBLIC_API size_t FSE_decompress_usingDTable(void *dst, size_t dstCapacity, 
 Tutorial :
 ----------
 (Note : these functions only decompress FSE-compressed blocks.
- If block is uncompressed, use memcpy() instead
+ If block is uncompressed, use ZSTD_memcpy() instead
  If block is a single repeated byte, use memset() instead )
 
 The first step is to obtain the normalized frequencies of symbols.

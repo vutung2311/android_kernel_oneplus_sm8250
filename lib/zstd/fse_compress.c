@@ -50,7 +50,7 @@
 #include <linux/compiler.h>
 #include <linux/kernel.h>
 #include <linux/math64.h>
-#include <linux/string.h> /* memcpy, memset */
+#include <linux/string.h> /* ZSTD_memcpy, memset */
 
 /* **************************************************************
 *  Error Management

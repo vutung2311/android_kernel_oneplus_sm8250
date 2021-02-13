@@ -50,7 +50,7 @@
 #include "huf.h"
 #include <linux/compiler.h>
 #include <linux/kernel.h>
-#include <linux/string.h> /* memcpy, memset */
+#include <linux/string.h> /* ZSTD_memcpy, memset */
 
 /* **************************************************************
 *  Error Management
@@ -74,7 +74,7 @@ typedef struct {
 static DTableDesc HUF_getDTableDesc(const HUF_DTable *table)
 {
 	DTableDesc dtd;
-	memcpy(&dtd, table, sizeof(dtd));
+	ZSTD_memcpy(&dtd, table, sizeof(dtd));
 	return dtd;
 }
 
@@ -123,7 +123,7 @@ size_t HUF_readDTableX2_wksp(HUF_DTable *DTable, const void *src, size_t srcSize
 			return ERROR(tableLog_tooLarge); /* DTable too small, Huffman tree cannot fit in */
 		dtd.tableType = 0;
 		dtd.tableLog = (BYTE)tableLog;
-		memcpy(DTable, &dtd, sizeof(dtd));
+		ZSTD_memcpy(DTable, &dtd, sizeof(dtd));
 	}
 
 	/* Calculate starting value for each rank */
@@ -398,7 +398,7 @@ static void HUF_fillDTableX4Level2(HUF_DEltX4 *DTable, U32 sizeLog, const U32 co
 	U32 rankVal[HUF_TABLELOG_MAX + 1];
 
 	/* get pre-calculated rankVal */
-	memcpy(rankVal, rankValOrigin, sizeof(rankVal));
+	ZSTD_memcpy(rankVal, rankValOrigin, sizeof(rankVal));
 
 	/* fill skipped values */
 	if (minWeight > 1) {
@@ -445,7 +445,7 @@ static void HUF_fillDTableX4(HUF_DEltX4 *DTable, const U32 targetLog, const sort
 	const U32 minBits = nbBitsBaseline - maxWeight;
 	U32 s;
 
-	memcpy(rankVal, rankValOrigin, sizeof(rankVal));
+	ZSTD_memcpy(rankVal, rankValOrigin, sizeof(rankVal));
 
 	/* fill DTable */
 	for (s = 0; s < sortedListSize; s++) {
@@ -588,14 +588,14 @@ size_t HUF_readDTableX4_wksp(HUF_DTable *DTable, const void *src, size_t srcSize
 
 	dtd.tableLog = (BYTE)maxTableLog;
 	dtd.tableType = 1;
-	memcpy(DTable, &dtd, sizeof(dtd));
+	ZSTD_memcpy(DTable, &dtd, sizeof(dtd));
 	return iSize;
 }
 
 static U32 HUF_decodeSymbolX4(void *op, BIT_DStream_t *DStream, const HUF_DEltX4 *dt, const U32 dtLog)
 {
 	size_t const val = BIT_lookBitsFast(DStream, dtLog); /* note : dtLog >= 1 */
-	memcpy(op, dt + val, 2);
+	ZSTD_memcpy(op, dt + val, 2);
 	BIT_skipBits(DStream, dt[val].nbBits);
 	return dt[val].length;
 }
@@ -603,7 +603,7 @@ static U32 HUF_decodeSymbolX4(void *op, BIT_DStream_t *DStream, const HUF_DEltX4
 static U32 HUF_decodeLastSymbolX4(void *op, BIT_DStream_t *DStream, const HUF_DEltX4 *dt, const U32 dtLog)
 {
 	size_t const val = BIT_lookBitsFast(DStream, dtLog); /* note : dtLog >= 1 */
-	memcpy(op, dt + val, 1);
+	ZSTD_memcpy(op, dt + val, 1);
 	if (dt[val].length == 1)
 		BIT_skipBits(DStream, dt[val].nbBits);
 	else {
@@ -906,7 +906,7 @@ size_t HUF_decompress4X_DCtx_wksp(HUF_DTable *dctx, void *dst, size_t dstSize, c
 	if (cSrcSize > dstSize)
 		return ERROR(corruption_detected); /* invalid */
 	if (cSrcSize == dstSize) {
-		memcpy(dst, cSrc, dstSize);
+		ZSTD_memcpy(dst, cSrc, dstSize);
 		return dstSize;
 	} /* not compressed */
 	if (cSrcSize == 1) {
@@ -944,7 +944,7 @@ size_t HUF_decompress1X_DCtx_wksp(HUF_DTable *dctx, void *dst, size_t dstSize, c
 	if (cSrcSize > dstSize)
 		return ERROR(corruption_detected); /* invalid */
 	if (cSrcSize == dstSize) {
-		memcpy(dst, cSrc, dstSize);
+		ZSTD_memcpy(dst, cSrc, dstSize);
 		return dstSize;
 	} /* not compressed */
 	if (cSrcSize == 1) {

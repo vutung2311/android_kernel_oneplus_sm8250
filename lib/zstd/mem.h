@@ -54,6 +54,8 @@ ZSTD_STATIC unsigned ZSTD_64bits(void) { return sizeof(size_t) == 8; }
 #define ZSTD_LITTLE_ENDIAN 0
 #endif
 
+#define ZSTD_memcpy(dst, src, size) __builtin_memcpy(dst, src, size)
+
 ZSTD_STATIC unsigned ZSTD_isLittleEndian(void) { return ZSTD_LITTLE_ENDIAN; }
 
 ZSTD_STATIC U16 ZSTD_read16(const void *memPtr) { return get_unaligned((const U16 *)memPtr); }
