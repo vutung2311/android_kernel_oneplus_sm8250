@@ -6,6 +6,7 @@
 ccflags-y += -Iarch/arm64/kvm -Ivirt/kvm/arm/vgic
 CFLAGS_arm.o := -I.
 CFLAGS_mmu.o := -I.
+CFLAGS_debug.o := $(DISABLE_CFI)
 
 KVM=../../../virt/kvm
 
