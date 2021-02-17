@@ -2063,7 +2063,7 @@ struct qcom_glink *qcom_glink_native_probe(struct device *dev,
 		if (strcmp(sub_name[i].g_name, glink->name) == 0) {
 			ret = devm_request_irq(dev, irq,
 					qcom_glink_native_intr,
-					IRQF_NO_SUSPEND | IRQF_SHARED,
+					IRQF_SHARED,
 					sub_name[i].s_name, glink);
 			if (ret) {
 				dev_err(dev, "failed to request IRQ\n");
