@@ -1021,6 +1021,9 @@ endif
 
 ifeq ($(CONFIG_RELR),y)
 LDFLAGS_vmlinux	+= --pack-dyn-relocs=relr
+ifeq ($(CONFIG_ANDROID),y)
+LDFLAGS_vmlinux += --use-android-relr-tags
+endif
 endif
 
 # insure the checker run with the right endianness
