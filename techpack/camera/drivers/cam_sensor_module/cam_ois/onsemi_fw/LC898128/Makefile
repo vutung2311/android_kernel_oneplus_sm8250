@@ -12,4 +12,6 @@ ccflags-y += -I$(srctree)/techpack/camera/drivers/cam_smmu
 ccflags-y += -I$(srctree)/techpack/camera/drivers/cam_core/
 ccflags-y += -I$(srctree)/techpack/camera/drivers/cam_sensor_module/cam_ois/
 
+CFLAGS_REMOVE_PhoneUpdate.o += -mgeneral-regs-only
+CFLAGS_PhoneUpdate.o += -march=armv8.2-a -mfpu=crypto-neon-fp-armv8 -mfloat-abi=softfp
 obj-$(CONFIG_SPECTRA_CAMERA) += PhoneUpdate.o

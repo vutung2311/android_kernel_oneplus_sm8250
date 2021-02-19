@@ -21,7 +21,7 @@ ldflags-y := -shared -nostdlib -soname=linux-vdso.so.1 --hash-style=sysv \
 		--build-id -n -T
 ccflags-y += $(DISABLE_LTO)
 ifdef CONFIG_ARCH_KONA
-ccflags-y += -mfpu=crypto-neon-fp-armv8 -mfloat-abi=softfp
+ccflags-y += -march=armv8.2-a -mfpu=crypto-neon-fp-armv8 -mfloat-abi=softfp
 endif
 
 CFLAGS_REMOVE_vgettimeofday.o += $(CC_FLAGS_SCS)
