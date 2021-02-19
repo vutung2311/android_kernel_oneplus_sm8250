@@ -12,6 +12,7 @@ export KBUILD_COMPILER_STRING="LLVM Clang 11.0"
 GCC_ARM64_BIN_PATH=$HOME/Toolchains/aarch64-linux-android-4.9/bin
 GCC_ARM32_BIN_PATH=$HOME/Toolchains/arm-linux-androideabi-4.9/bin
 CLANG_BIN_PATH=$HOME/Toolchains/prebuilt_clang/bin
+export PATH=$CLANG_BIN_PATH:$PATH
 
 BUILD_CROSS_COMPILE=$GCC_ARM64_BIN_PATH/aarch64-linux-android-
 BUILD_CROSS_COMPILE_COMPAT=$GCC_ARM32_BIN_PATH/arm-linux-androideabi-
@@ -70,6 +71,7 @@ FUNC_MAKE()
 			CROSS_COMPILE_COMPAT="${BUILD_CROSS_COMPILE_COMPAT}" \
 			CLANG_TRIPLE=$CLANG_TRIPLE \
 			LLVM_IAS=1 \
+			LLVM=1 \
 			$@ || exit 1
 }
 
