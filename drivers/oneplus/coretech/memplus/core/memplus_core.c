@@ -974,7 +974,7 @@ static int gc_fn(void *p)
 		freezable_schedule();
 
 		idx = 0;
-		memset(proc, 0, sizeof(proc));
+		memzero_explicit(proc, sizeof(proc));
 
 		rcu_read_lock();
 		for_each_process(tsk) {
@@ -1223,7 +1223,7 @@ static int memex_fn(void *p)
 
 		idx_sys = 0;
 		idx_app = MEMEX_SIZE - 1;
-		memset(memex_proc, 0, sizeof(memex_proc));
+		memzero_explicit(memex_proc, sizeof(memex_proc));
 
 		rcu_read_lock();
 		for_each_process(tsk) {
