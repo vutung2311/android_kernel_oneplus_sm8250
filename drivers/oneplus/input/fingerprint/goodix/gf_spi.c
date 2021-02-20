@@ -555,26 +555,24 @@ static int gf_open(struct inode *inode, struct file *filp)
 		}
 	}
 	if (status == 0) {
-		if (status == 0) {
-			gf_dev->users++;
-			filp->private_data = gf_dev;
-			nonseekable_open(inode, filp);
-			pr_info("Succeed to open device. irq = %d\n",
-					gf_dev->irq);
-            #if 0  //zoulian@20170727 parse dts move to probe
-			if (gf_dev->users == 1) {
-				status = gf_parse_dts(gf_dev);
-				if (status)
-					goto err_parse_dt;
+		gf_dev->users++;
+		filp->private_data = gf_dev;
+		nonseekable_open(inode, filp);
+		pr_info("Succeed to open device. irq = %d\n",
+				gf_dev->irq);
+		#if 0  //zoulian@20170727 parse dts move to probe
+		if (gf_dev->users == 1) {
+			status = gf_parse_dts(gf_dev);
+			if (status)
+				goto err_parse_dt;
 
-				status = irq_setup(gf_dev);
-				if (status)
-					goto err_irq;
-			}
-            #endif
-			//gf_hw_reset(gf_dev, 5);
-			gf_dev->device_available = 1;
+			status = irq_setup(gf_dev);
+			if (status)
+				goto err_irq;
 		}
+		#endif
+		//gf_hw_reset(gf_dev, 5);
+		gf_dev->device_available = 1;
 	} else {
 		pr_info("No device for minor %d\n", iminor(inode));
 	}

@@ -71,7 +71,7 @@ struct ai_parcel {
 
 #define HT_AI_IOC_PATH "/dev/ht_ctl"
 
-void dump_parcel_thread(struct ai_thread_parcel &t, int idx) {
+void dump_parcel_thread(const struct ai_thread_parcel &t, int idx) {
 		cout << "t[" << idx << "]: tid: " << t.tid << endl;
 		cout << "t[" << idx << "]: exec_time: " << t.exec_time << endl;
 		cout << "t[" << idx << "]: inst: " << t.inst << endl;

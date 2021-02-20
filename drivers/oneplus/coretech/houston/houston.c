@@ -1128,11 +1128,9 @@ static void do_fps_boost(unsigned int val, unsigned int period_us)
 						i, orig[i], cur[i], prev_ddr_target, ddr_target, ais_active);
 			}
 		}
-	}
 
-	if (val > 0)
 		atomic_inc(&boost_cnt);
-
+	}
 }
 #endif
 
