@@ -228,7 +228,7 @@ unsigned int __read_mostly disable;
 
 static int disable_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%u", disable);
+	return scnprintf(buf, PAGE_SIZE, "%u", disable);
 }
 
 static int disable_store(const char *buf, const struct kernel_param *kp)

@@ -1647,7 +1647,7 @@ static int memory_plus_wake_memex_store(const char *buf, const struct kernel_par
 
 static int memory_plus_wake_memex_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%u\n", memex_threshold);
+	return scnprintf(buf, PAGE_SIZE, "%u\n", memex_threshold);
 }
 
 static struct kernel_param_ops memory_plus_test_worstcase_ops = {

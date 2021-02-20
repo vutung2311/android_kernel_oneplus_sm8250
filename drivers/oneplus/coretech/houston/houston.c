@@ -579,7 +579,7 @@ static int perf_ready_store(const char *buf, const struct kernel_param *kp)
 
 static int perf_ready_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%d\n", perf_ready);
+	return scnprintf(buf, PAGE_SIZE, "%d\n", perf_ready);
 }
 
 static struct kernel_param_ops perf_ready_ops = {
@@ -673,7 +673,7 @@ static int fps_boost_strategy_store(const char *buf, const struct kernel_param *
 
 static int fps_boost_strategy_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%d,%d\n", fbs_pid, fbs_lv);
+	return scnprintf(buf, PAGE_SIZE, "%d,%d\n", fbs_pid, fbs_lv);
 }
 
 static struct kernel_param_ops fps_boost_strategy_ops = {
@@ -929,7 +929,7 @@ static int ht_enable_store(const char *buf, const struct kernel_param *kp)
 
 static int ht_enable_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%u\n", ht_enable);
+	return scnprintf(buf, PAGE_SIZE, "%u\n", ht_enable);
 }
 
 static struct kernel_param_ops ht_enable_ops = {
@@ -951,7 +951,7 @@ static int sample_rate_store(const char *buf, const struct kernel_param *kp)
 
 static int sample_rate_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%u\n", sample_rate);
+	return scnprintf(buf, PAGE_SIZE, "%u\n", sample_rate);
 }
 
 static struct kernel_param_ops sample_rate_ops = {
@@ -2108,13 +2108,13 @@ static int ht_registered_show(char* buf, const struct kernel_param *kp)
 	for (i = 0; i <= HT_THERM_2; ++i) {
 		tzd = monitor.tzd[i];
 		if (tzd)
-			offset += snprintf(buf + offset, PAGE_SIZE - offset, "%s, id: %d\n", tzd->type, tzd->id);
+			offset += scnprintf(buf + offset, PAGE_SIZE - offset, "%s, id: %d\n", tzd->type, tzd->id);
 		else if (i < HT_CPU_0)
-			offset += snprintf(buf + offset, PAGE_SIZE - offset, "%s\n", ht_monitor_case[i]);
+			offset += scnprintf(buf + offset, PAGE_SIZE - offset, "%s\n", ht_monitor_case[i]);
 	}
 
 	for (i = HT_UTIL_0; i < HT_MONITOR_SIZE; ++i)
-		offset += snprintf(buf + offset, PAGE_SIZE - offset, "%s\n", ht_monitor_case[i]);
+		offset += scnprintf(buf + offset, PAGE_SIZE - offset, "%s\n", ht_monitor_case[i]);
 
 	return offset;
 }
@@ -2494,24 +2494,24 @@ static int rtg_dump_show(char *buf, const struct kernel_param *kp)
 
 	rcu_read_lock();
 	spin_lock(&ht_rtg_lock);
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "RTG list: comm, pid, util, peak, cnt, delta ts, ts\n");
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "RTG list: comm, pid, util, peak, cnt, delta ts, ts\n");
 	list_for_each_entry(t, &ht_rtg_head, rtg_node) {
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "%s %d %hu %u %u %lld %lld\n",
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "%s %d %hu %u %u %lld %lld\n",
 				t->comm, t->pid, t->ravg.demand_scaled,
 				t->rtg_peak, t->rtg_cnt,
 				time - t->rtg_ts, t->rtg_ts);
 		++size;
 	}
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "Total: %d\n", size);
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "Total: %d\n", size);
 	spin_unlock(&ht_rtg_lock);
 	size = 0;
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "RTG perf event created list: comm, pid\n");
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "RTG perf event created list: comm, pid\n");
 	spin_lock(&ht_perf_event_lock);
 	list_for_each_entry(t, &ht_perf_event_head, ht_perf_event_node) {
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "%s %d\n", t->comm, t->pid);
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "%s %d\n", t->comm, t->pid);
 		++size;
 	}
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "Total: %d\n", size);
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "Total: %d\n", size);
 	spin_unlock(&ht_perf_event_lock);
 	rcu_read_unlock();
 	return cnt;

@@ -99,7 +99,7 @@
 
 
 #ifdef _MSC_VER
-#define snprintf _snprintf
+#define scnprintf _scnprintf
 #endif
 
 

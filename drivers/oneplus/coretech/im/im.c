@@ -254,7 +254,7 @@ static int tb_rdg_enable_store(const char *buf, const struct kernel_param *kp)
 
 static int tb_rdg_enable_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%d\n", tb_rdg_enable);
+	return scnprintf(buf, PAGE_SIZE, "%d\n", tb_rdg_enable);
 }
 
 static struct kernel_param_ops tb_rdg_enable_ops = {
@@ -305,7 +305,7 @@ static int tb_rdg_list_show(char *buf, const struct kernel_param *kp)
 		rcu_read_lock();
 		task = find_task_by_vpid(p->pid);
 		if (task) {
-			cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "%s %d\n",
+			cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "%s %d\n",
 				task->comm, task->pid);
 		} else {
 			pr_warn("cannot find task pid=%d\n", p->pid);

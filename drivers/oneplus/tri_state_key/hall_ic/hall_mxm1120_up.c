@@ -654,7 +654,7 @@ static void m1120_input_dev_terminate(m1120_data_t *p_data)
 static ssize_t m1120_enable_show(struct device *dev,
                   struct device_attribute *attr, char *buf)
 {
-    return snprintf(buf, 20, "%d\n", m1120_get_enable(dev));
+    return scnprintf(buf, 20, "%d\n", m1120_get_enable(dev));
 }
 
 static ssize_t m1120_enable_store(struct device *dev,
@@ -673,7 +673,7 @@ static ssize_t m1120_enable_store(struct device *dev,
 static ssize_t m1120_delay_show(struct device *dev,
                  struct device_attribute *attr, char *buf)
 {
-    return snprintf(buf, 20, "%d\n", m1120_get_delay(dev));
+    return scnprintf(buf, 20, "%d\n", m1120_get_delay(dev));
 }
 
 static ssize_t m1120_delay_store(struct device *dev,
@@ -694,7 +694,7 @@ static ssize_t m1120_delay_store(struct device *dev,
 static ssize_t m1120_debug_show(struct device *dev,
                  struct device_attribute *attr, char *buf)
 {
-    return snprintf(buf, 20, "%d\n", m1120_get_debug(dev)); 
+    return scnprintf(buf, 20, "%d\n", m1120_get_debug(dev)); 
 }
 
 static ssize_t m1120_debug_store(struct device *dev,
@@ -722,7 +722,7 @@ static ssize_t m1120_data_show(struct device *dev,
     //m1120_data_t *p_data = i2c_get_clientdata(client);
     short raw = 0;
     m1120_get_data(&raw);
-    return snprintf(buf, 10, "%d\n", raw);
+    return scnprintf(buf, 10, "%d\n", raw);
 }
 
 static int m1120_i2c_read(struct i2c_client *client, u8 reg, u8 *rdata, u8 len)
@@ -793,7 +793,7 @@ static ssize_t m1120_dump_show(struct device *dev,struct device_attribute *attr,
 	printk(KERN_ERR"dkk: the reg_h is 0x%02X", (u8)(reg_h&0xFF));
 	reg = ((reg_h&0xC0) << 2)|reg_l;
 	printk(KERN_ERR"dkk: the down hall reg measure is 0x%02X\n", reg);
-	return snprintf(buf, 10, "%d\n", reg);
+	return scnprintf(buf, 10, "%d\n", reg);
 //return 0;
 	}
 
@@ -1100,14 +1100,14 @@ static void m1120_dump_reg(u8* buf)
 
 		err = m1120_i2c_read_block(p_m1120_data, i, &val, 1);
 		if (err < 0) {
-			snprintf(buf, PAGE_SIZE, "read reg error!\n");
+			scnprintf(buf, PAGE_SIZE, "read reg error!\n");
 			return;
 		}
 
-		snprintf(_buf, sizeof(_buf), "reg 0x%x:0x%x\n", i, val);
+		scnprintf(_buf, sizeof(_buf), "reg 0x%x:0x%x\n", i, val);
 		strcat(buffer, _buf);
 	}
-	snprintf(buf, PAGE_SIZE, "%s\n", buffer);
+	scnprintf(buf, PAGE_SIZE, "%s\n", buffer);
 	TRI_KEY_LOG("%s \n",buf);
 	return;
 }

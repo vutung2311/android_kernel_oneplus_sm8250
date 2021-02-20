@@ -104,27 +104,27 @@ int opchain_status_show_core(char *buf, const struct kernel_param *kp)
 			break;
 		if (CHAIN_TYPE(pos)) {
 			printk(pr_fmt("%d, %d %d\n"), CHAIN_REP(pos, 0), CHAIN_REP(pos, 1), CHAIN_TYPE(pos));
-			size = snprintf(buf_new, PAGE_SIZE - size, "%d, %d %d\n", CHAIN_REP(pos, 0), CHAIN_REP(pos, 1), CHAIN_TYPE(pos));
+			size = scnprintf(buf_new, PAGE_SIZE - size, "%d, %d %d\n", CHAIN_REP(pos, 0), CHAIN_REP(pos, 1), CHAIN_TYPE(pos));
 			buf_new += size;
 			size = buf_new - buf;
 		}
 		else {
 			printk(pr_fmt("%d, %d\n"), CHAIN_REP(pos, 0), CHAIN_REP(pos, 1));
-			size = snprintf(buf_new, PAGE_SIZE - size, "%d, %d\n", CHAIN_REP(pos, 0), CHAIN_REP(pos, 1));
+			size = scnprintf(buf_new, PAGE_SIZE - size, "%d, %d\n", CHAIN_REP(pos, 0), CHAIN_REP(pos, 1));
 			buf_new += size;
 			size = buf_new - buf;
 		}
 	}
-	size += snprintf(buf_new, PAGE_SIZE - size,
+	size += scnprintf(buf_new, PAGE_SIZE - size,
 			"tag %u", atomic_read(&ux_chain.lru_pos));
 	buf_new += size;
 	size = buf_new - buf;
 	printk(pr_fmt("tag %u\n"), atomic_read(&ux_chain.lru_pos));
-	size += snprintf(buf_new, PAGE_SIZE - size,
+	size += scnprintf(buf_new, PAGE_SIZE - size,
 			"claims %x\n", opc_get_claims());
 	buf_new += size;
 	size = buf_new - buf;
-	size += snprintf(buf_new, PAGE_SIZE - size,
+	size += scnprintf(buf_new, PAGE_SIZE - size,
 			"claim_count %d %d %d %d\n", opc_get_claim_on_cpu(0), opc_get_claim_on_cpu(1), opc_get_claim_on_cpu(2), opc_get_claim_on_cpu(3));
 
 	return size;

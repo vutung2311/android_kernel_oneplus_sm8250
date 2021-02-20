@@ -205,46 +205,46 @@ static ssize_t project_info_get(struct kobject *kobj,
 {
     if (project_info_desc) {
         if (attr == &project_name_attribute)
-            return snprintf(buf, BUF_SIZE, "%s\n",
+            return scnprintf(buf, BUF_SIZE, "%s\n",
             project_info_desc->project_name);
         if (attr == &hw_id_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             project_info_desc->hw_version);
         if (attr == &rf_id_v1_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             project_info_desc->rf_v1);
         if (attr == &rf_id_v2_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             project_info_desc->rf_v2);
         if (attr == &rf_id_v3_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             project_info_desc->rf_v3);
         if (attr == &ddr_manufacture_info_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             project_info_desc->ddr_manufacture_info);
         if (attr == &ddr_row_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             project_info_desc->ddr_row);
         if (attr == &ddr_column_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             project_info_desc->ddr_column);
         if (attr == &ddr_fw_version_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             project_info_desc->ddr_fw_version);
         if (attr == &ddr_reserve_info_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             project_info_desc->ddr_reserve_info);
         if (attr == &secboot_status_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             get_secureboot_fuse_status());
         if (attr == &platform_id_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",
+            return scnprintf(buf, BUF_SIZE, "%d\n",
             project_info_desc->platform_id);
         if (attr == &serialno_attribute)
-            return snprintf(buf, BUF_SIZE, "0x%x\n",
+            return scnprintf(buf, BUF_SIZE, "0x%x\n",
             socinfo_get_serial_number());
         if (attr == &aboard_id_attribute)
-            return snprintf(buf, BUF_SIZE, "%d\n",a_board_val);
+            return scnprintf(buf, BUF_SIZE, "%d\n",a_board_val);
     }
 
     return -EINVAL;
@@ -500,116 +500,116 @@ static ssize_t component_info_get(struct kobject *kobj,
                 char *buf)
 {
     if (attr == &ddr_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(DDR),
         get_component_manufacture(DDR));
     if (attr == &emmc_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(EMMC),
         get_component_manufacture(EMMC));
     if (attr == &f_camera_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(F_CAMERA),
         get_component_manufacture(F_CAMERA));
     if (attr == &second_f_camera_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(SECOND_F_CAMERA),
         get_component_manufacture(SECOND_F_CAMERA));
     if (attr == &r_camera_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(R_CAMERA),
         get_component_manufacture(R_CAMERA));
     if (attr == &second_r_camera_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(SECOND_R_CAMERA),
         get_component_manufacture(SECOND_R_CAMERA));
     if (attr == &third_r_camera_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(THIRD_R_CAMERA),
         get_component_manufacture(THIRD_R_CAMERA));
     if (attr == &forth_r_camera_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(FORTH_R_CAMERA),
         get_component_manufacture(FORTH_R_CAMERA));
     if (attr == &r_ois_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(R_OIS),
         get_component_manufacture(R_OIS));
     if (attr == &second_r_ois_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(SECOND_R_OIS),
         get_component_manufacture(SECOND_R_OIS));
     if (attr == &tp_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(TP),
         get_component_manufacture(TP));
     if (attr == &lcd_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(LCD),
         get_component_manufacture(LCD));
     if (attr == &wcn_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(WCN),
         get_component_manufacture(WCN));
     if (attr == &l_sensor_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(I_SENSOR),
         get_component_manufacture(I_SENSOR));
     if (attr == &g_sensor_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(G_SENSOR),
         get_component_manufacture(G_SENSOR));
     if (attr == &m_sensor_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(M_SENSOR),
         get_component_manufacture(M_SENSOR));
     if (attr == &gyro_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(GYRO),
         get_component_manufacture(GYRO));
     if (attr == &backlight_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(BACKLIGHT),
         get_component_manufacture(BACKLIGHT));
     if (attr == &mainboard_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(MAINBOARD),
         get_component_manufacture(MAINBOARD));
     if (attr == &fingerprints_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(FINGERPRINTS),
         get_component_manufacture(FINGERPRINTS));
     if (attr == &touch_key_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(TOUCH_KEY),
         get_component_manufacture(TOUCH_KEY));
     if (attr == &ufs_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(UFS),
         get_component_manufacture(UFS));
     if (attr == &Aboard_attribute) {
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(ABOARD),
         get_component_manufacture(ABOARD));
     }
     if (attr == &nfc_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(NFC),
         get_component_manufacture(NFC));
     if (attr == &fast_charge_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(FAST_CHARGE),
         get_component_manufacture(FAST_CHARGE));
 	if (attr == &wireless_charge_attribute)
-		return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+		return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
 		get_component_version(WIRELESS_CHARGE),
 		get_component_manufacture(WIRELESS_CHARGE));
     if (attr == &cpu_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(CPU),
         get_component_manufacture(CPU));
     if (attr == &rf_version_attribute)
-        return snprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
+        return scnprintf(buf, BUF_SIZE, "VER:\t%s\nMANU:\t%s\n",
         get_component_version(RF_VERSION),
         get_component_manufacture(RF_VERSION));
     return -EINVAL;
@@ -689,7 +689,7 @@ void get_ddr_manufacture_name(void)
         for (i = 0; i < length; i++) {
             if (ddr_manufacture_list[i].id ==
                 project_info_desc->ddr_manufacture_info) {
-                snprintf(ddr_manufacture, sizeof(ddr_manufacture), "%s",
+                scnprintf(ddr_manufacture, sizeof(ddr_manufacture), "%s",
                     ddr_manufacture_list[i].name);
                 break;
             }
@@ -706,7 +706,7 @@ void get_cpu_type(void)
         for (i = 0; i < length; i++) {
             if (cpu_list_msm[i].id ==
                 project_info_desc->platform_id) {
-                snprintf(cpu_type, sizeof(cpu_type),
+                scnprintf(cpu_type, sizeof(cpu_type),
                     "%s", cpu_list_msm[i].name);
                 break;
             }
@@ -845,7 +845,7 @@ int __init init_project_info(void)
         }
     }
 
-    snprintf(mainboard_version, sizeof(mainboard_version), "%d %d %s %s ",
+    scnprintf(mainboard_version, sizeof(mainboard_version), "%d %d %s %s ",
         project_info_desc->prj_version,project_info_desc->hw_version,
         project_info_desc->project_name, p);
 
@@ -854,7 +854,7 @@ int __init init_project_info(void)
         mainboard_version,
         mainboard_manufacture);
 
-    snprintf(rf_version, sizeof(rf_version),  " %d",project_info_desc->rf_v1);
+    scnprintf(rf_version, sizeof(rf_version),  " %d",project_info_desc->rf_v1);
     push_component_info(RF_VERSION, rf_version, mainboard_manufacture);
 
     get_ddr_manufacture_name();
@@ -862,10 +862,10 @@ int __init init_project_info(void)
 	/* approximate as ceiling of total pages */
 	ddr_size = (totalram_pages + (1 << 18) - 1) >> 18;
 
-    snprintf(ddr_version, sizeof(ddr_version), "size_%dG_r_%d_c_%d",
+    scnprintf(ddr_version, sizeof(ddr_version), "size_%dG_r_%d_c_%d",
         ddr_size, project_info_desc->ddr_row,
         project_info_desc->ddr_column);
-    snprintf(ddr_manufacture_and_fw_verion,
+    scnprintf(ddr_manufacture_and_fw_verion,
         sizeof(ddr_manufacture_and_fw_verion),
         "%s%s %u.%u", ddr_manufacture,
         project_info_desc->ddr_reserve_info == 0x05 ? "20nm" :
@@ -930,7 +930,7 @@ static int op_aboard_read_gpio(void)
         gpio1 = gpio_get_value(data->aboard_gpio_1);
 
 	a_board_val = gpio0;
-    snprintf(Aboard_version, sizeof(Aboard_version), "%d %s",
+    scnprintf(Aboard_version, sizeof(Aboard_version), "%d %s",
     a_board_val, a_board_version_string_arry_gpio[a_board_val].name);
 
     push_component_info(ABOARD, Aboard_version, mainboard_manufacture);

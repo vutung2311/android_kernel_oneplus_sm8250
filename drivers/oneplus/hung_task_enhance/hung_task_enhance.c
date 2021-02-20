@@ -93,19 +93,19 @@ static void oplus_check_hung_task(struct task_struct *t, unsigned long timeout,
 	}
 	if (is_userspace_key_process(t)) {
 		if (t->state == TASK_UNINTERRUPTIBLE)
-			snprintf(sysctl_hung_task_kill, HUNG_TASK_KILL_LEN,
+			scnprintf(sysctl_hung_task_kill, HUNG_TASK_KILL_LEN,
 				"%s,uninterruptible for %ld seconds",
 				t->comm, timeout);
 		else if (t->state == TASK_STOPPED)
-			snprintf(sysctl_hung_task_kill, HUNG_TASK_KILL_LEN,
+			scnprintf(sysctl_hung_task_kill, HUNG_TASK_KILL_LEN,
 				"%s,stopped for %ld seconds",
 				t->comm, timeout);
 		else if (t->state == TASK_TRACED)
-			snprintf(sysctl_hung_task_kill, HUNG_TASK_KILL_LEN,
+			scnprintf(sysctl_hung_task_kill, HUNG_TASK_KILL_LEN,
 				"%s,traced for %ld seconds",
 				t->comm, timeout);
 		else
-			snprintf(sysctl_hung_task_kill, HUNG_TASK_KILL_LEN,
+			scnprintf(sysctl_hung_task_kill, HUNG_TASK_KILL_LEN,
 				"%s,unknown hung for %ld seconds",
 				t->comm, timeout);
 

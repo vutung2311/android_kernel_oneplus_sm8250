@@ -5087,7 +5087,7 @@ static ssize_t proc_wireless_voltage_rect_read(struct file *file,
 	vrect = g_rx_chip->chg_data.vrect;
 
 	chg_err("%s: vrect = %d.\n", __func__, vrect);
-	snprintf(page, 10, "%d", vrect);
+	scnprintf(page, 10, "%d", vrect);
 	ret = simple_read_from_buffer(buf, count, ppos, page, strlen(page));
 
 	return ret;
@@ -5113,7 +5113,7 @@ static ssize_t proc_wireless_rx_voltage_read(struct file *file,
 {
 	char vol_string[8];
 	int len = 0;
-	snprintf(vol_string, 8, "%d\n",
+	scnprintf(vol_string, 8, "%d\n",
 		     g_op_chip->wlchg_status.charge_voltage);
 	len = simple_read_from_buffer(buf, count, ppos, vol_string, strlen(vol_string));
 	return len;
@@ -5165,7 +5165,7 @@ static ssize_t proc_wireless_current_out_read(struct file *file,
 	iout = g_rx_chip->chg_data.iout;
 
 	chg_err("%s: iout = %d.\n", __func__, iout);
-	snprintf(page, 10, "%d", iout);
+	scnprintf(page, 10, "%d", iout);
 	ret = simple_read_from_buffer(buf, count, ppos, page, strlen(page));
 
 	return ret;
@@ -5221,10 +5221,10 @@ static ssize_t proc_wireless_ftm_mode_read(struct file *file, char __user *buf,
 	memset(page, 0, 8);
 	if (chip->wlchg_status.ftm_mode) {
 		len = 7;
-		snprintf(page, len, "enable\n");
+		scnprintf(page, len, "enable\n");
 	} else {
 		len = 8;
-		snprintf(page, len, "disable\n");
+		scnprintf(page, len, "disable\n");
 	}
 	ret = simple_read_from_buffer(buf, count, ppos, page, len);
 
@@ -5285,11 +5285,11 @@ static ssize_t proc_wireless_tx_read(struct file *file, char __user *buf,
 
 	if (chip->wireless_mode == WIRELESS_MODE_TX) {
 		if (chip->wlchg_status.tx_online)
-			snprintf(page, 10, "%s\n", "charging");
+			scnprintf(page, 10, "%s\n", "charging");
 		else
-			snprintf(page, 10, "%s\n", "enable");
+			scnprintf(page, 10, "%s\n", "enable");
 	} else
-		snprintf(page, 10, "%s\n", "disable");
+		scnprintf(page, 10, "%s\n", "disable");
 
 	ret = simple_read_from_buffer(buf, count, ppos, page, strlen(page));
 
@@ -5375,7 +5375,7 @@ static ssize_t proc_wireless_quiet_mode_read(struct file *file, char __user *buf
 	}
 
 	chg_status = &chip->wlchg_status;
-	len = snprintf(page, 7, "%s\n",
+	len = scnprintf(page, 7, "%s\n",
 		(chg_status->quiet_mode_enabled && chip->quiet_mode_need) ? "true" : "false");
 	ret = simple_read_from_buffer(buf, count, ppos, page, len);
 	return ret;
@@ -5432,13 +5432,13 @@ static ssize_t proc_wireless_epp_read(struct file *file, char __user *buf,
 
 	memset(page, 0, 6);
 	if (force_epp) {
-		len = snprintf(page, len, "epp\n");
+		len = scnprintf(page, len, "epp\n");
 	} else if (force_bpp) {
-		len = snprintf(page, len, "bpp\n");
+		len = scnprintf(page, len, "bpp\n");
 	} else if (!auto_mode) {
-		len = snprintf(page, len, "manu\n");
+		len = scnprintf(page, len, "manu\n");
 	} else {
-		len = snprintf(page, len, "auto\n");
+		len = scnprintf(page, len, "auto\n");
 	}
 	ret = simple_read_from_buffer(buf, count, ppos, page, len);
 
@@ -5505,7 +5505,7 @@ static ssize_t proc_wireless_charge_pump_read(struct file *file, char __user *bu
 	}
 
 	memset(page, 0, 6);
-	len = snprintf(page, len, "%d\n", proc_charge_pump_status);
+	len = scnprintf(page, len, "%d\n", proc_charge_pump_status);
 	ret = simple_read_from_buffer(buf, count, ppos, page, len);
 	return ret;
 }
@@ -5595,9 +5595,9 @@ static ssize_t proc_wireless_deviated_read(struct file *file, char __user *buf,
 
 	memset(page, 0, 7);
 	if (chip->wlchg_status.is_deviation) {
-		len = snprintf(page, len, "%s\n", "true");
+		len = scnprintf(page, len, "%s\n", "true");
 	} else {
-		len = snprintf(page, len, "%s\n", "false");
+		len = scnprintf(page, len, "%s\n", "false");
 	}
 	ret = simple_read_from_buffer(buf, count, ppos, page, len);
 
@@ -5624,7 +5624,7 @@ static ssize_t proc_wireless_rx_read(struct file *file, char __user *buf,
 
 
 	memset(page, 0, 3);
-	snprintf(page, 3, "%c\n", !g_op_chip->disable_charge ? '1' : '0');
+	scnprintf(page, 3, "%c\n", !g_op_chip->disable_charge ? '1' : '0');
 	ret = simple_read_from_buffer(buf, count, ppos, page, 3);
 
 	return ret;
@@ -5687,7 +5687,7 @@ static ssize_t proc_fast_skin_threld_read(struct file *file, char __user *buf,
 
 
 	memset(page, 0, len);
-	len = snprintf(page, len, "Hi:%d,Lo:%d\n",
+	len = scnprintf(page, len, "Hi:%d,Lo:%d\n",
 		g_op_chip->chg_param.fastchg_skin_temp_max,
 		g_op_chip->chg_param.fastchg_skin_temp_min);
 	ret = simple_read_from_buffer(buf, count, ppos, page, len);
@@ -5763,7 +5763,7 @@ static ssize_t proc_wireless_rx_freq_read(struct file *file,
 
 	memset(string, 0, 8);
 
-	len = snprintf(string, 8, "%d\n", chg_param->freq_threshold);
+	len = scnprintf(string, 8, "%d\n", chg_param->freq_threshold);
 	rc = simple_read_from_buffer(buf, count, ppos, string, len);
 	return rc;
 }
@@ -5814,7 +5814,7 @@ static ssize_t proc_match_q_read(struct file *file,
 
 	memset(string, 0, 8);
 
-	len = snprintf(string, 8, "%d\n", chg_param->fastchg_match_q);
+	len = scnprintf(string, 8, "%d\n", chg_param->fastchg_match_q);
 	rc = simple_read_from_buffer(buf, count, ppos, string, len);
 	return rc;
 }
@@ -5877,7 +5877,7 @@ static ssize_t proc_wireless_ftm_test_read(struct file *file,
 	else if (rc > 0)
 		err_no |= WLCHG_FTM_TEST_CP2_ERR;
 
-	snprintf(string, 2, "%d\n", err_no);
+	scnprintf(string, 2, "%d\n", err_no);
 	rc = simple_read_from_buffer(buf, count, ppos, string, 2);
 
 	return rc;
@@ -5903,7 +5903,7 @@ static ssize_t proc_wireless_w30w_time_read(struct file *file, char __user *buf,
 		return 0;
 	}
 
-	snprintf(page, 32, "w30w_time:%d minutes\n", chip->w30w_time);
+	scnprintf(page, 32, "w30w_time:%d minutes\n", chip->w30w_time);
 	ret = simple_read_from_buffer(buf, count, ppos, page, strlen(page));
 
 	return ret;

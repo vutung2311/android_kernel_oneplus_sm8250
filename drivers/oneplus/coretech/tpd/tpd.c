@@ -34,7 +34,7 @@ static struct monitor_gp mgp[TPD_GROUP_MAX];
 static atomic_t tpd_enable_rc = ATOMIC_INIT(0);
 static int tpd_enable_rc_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%d\n", atomic_read(&tpd_enable_rc));
+	return scnprintf(buf, PAGE_SIZE, "%d\n", atomic_read(&tpd_enable_rc));
 }
 
 static struct kernel_param_ops tpd_enable_rc_ops = {
@@ -84,7 +84,7 @@ static int tpd_enable_store(const char *buf, const struct kernel_param *kp)
 
 static int tpd_enable_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%d\n", tpd_enable);
+	return scnprintf(buf, PAGE_SIZE, "%d\n", tpd_enable);
 }
 
 static struct kernel_param_ops tpd_enable_ops = {
@@ -176,7 +176,7 @@ static int tpd_ctl_store(const char *buf, const struct kernel_param *kp)
 
 static int tpd_ctl_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%d\n", tpd_ctl);
+	return scnprintf(buf, PAGE_SIZE, "%d\n", tpd_ctl);
 }
 
 static struct kernel_param_ops tpd_ctl_ops = {

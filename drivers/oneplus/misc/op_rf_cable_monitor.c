@@ -403,7 +403,7 @@ static ssize_t oem_dump_show(struct device *pdev, struct device_attribute *attr,
 	if (is_oem_dump == true)
 		state = "ENABLE";
 
-	return snprintf(buf, sizeof(state), "%s\n", state);
+	return scnprintf(buf, sizeof(state), "%s\n", state);
 }
 static ssize_t oem_dump_store(struct device *dev, struct device_attribute *attr,
 		const char *buffer, size_t size)
@@ -445,7 +445,7 @@ static ssize_t state_show(struct device *pdev, struct device_attribute *attr,
 
 	if (rf_cable_data->connected == true)
 		state = "CONNECTED";
-	return snprintf(buf, sizeof(state), "%s\n", state);
+	return scnprintf(buf, sizeof(state), "%s\n", state);
 }
 static ssize_t state_store(struct device *dev, struct device_attribute *attr,
 		const char *buffer, size_t size)

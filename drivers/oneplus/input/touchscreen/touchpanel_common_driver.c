@@ -2531,7 +2531,7 @@ static ssize_t sec_update_fw_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
 	struct touchpanel_data *ts = dev_get_drvdata(dev);
-	return snprintf(buf, 2, "%d\n", ts->loading_fw);
+	return scnprintf(buf, 2, "%d\n", ts->loading_fw);
 }
 
 static DEVICE_ATTR(tp_fw_update, 0644, sec_update_fw_show, sec_update_fw_store);
@@ -4803,29 +4803,29 @@ void tp_util_get_vendor(struct touchpanel_data *ts, struct panel_info *panel_dat
 				panel_data->project_name = "19821";
 				panel_data->chip_name = "SY771";
 			}
-			snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+			scnprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
 					"tp/FW_%s_%s.img", panel_data->project_name, panel_data->chip_name);
 
 			if (panel_data->test_limit_name) {
-				snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+				scnprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
 						"tp/LIMIT_%s_%s.img", panel_data->project_name, panel_data->chip_name);
 			}
 		} else {
 			panel_data->chip_name = "SY761";
-			snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+			scnprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
 					"tp/FW_%s_%s.img", panel_data->project_name, panel_data->chip_name);
 
 			if (panel_data->test_limit_name) {
-				snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+				scnprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
 						"tp/LIMIT_%s_%s.img", panel_data->project_name, panel_data->chip_name);
 			}
 		}
 	} else {
-		snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+		scnprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
 				"tp/FW_%s_%s.img", panel_data->project_name, panel_data->chip_name);
 
 		if (panel_data->test_limit_name) {
-			snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+			scnprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
 					"tp/LIMIT_%s_%s.img", panel_data->project_name, panel_data->chip_name);
 		}
 	}

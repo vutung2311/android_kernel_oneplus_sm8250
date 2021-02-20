@@ -852,7 +852,7 @@ static ssize_t stmvl53l1_show_enable_ps_sensor(struct device *dev,
 {
 	struct stmvl53l1_data *data = dev_get_drvdata(dev);
 
-	return snprintf(buf, 5, "%d\n", data->enable_sensor);
+	return scnprintf(buf, 5, "%d\n", data->enable_sensor);
 }
 
 static ssize_t stmvl53l1_store_enable_ps_sensor(struct device *dev,
@@ -1876,7 +1876,7 @@ static int stmvl53l1_display_tuning_key(struct stmvl53l1_data *data, char *buf,
 	if (rc)
 		return 0;
 
-	sz = snprintf(&buf[*pos], PAGE_SIZE - *pos, "%d %d\n", key, value);
+	sz = scnprintf(&buf[*pos], PAGE_SIZE - *pos, "%d %d\n", key, value);
 	if (sz >= PAGE_SIZE - *pos)
 		return -ENOSPC; /* FIXME : another better error ? */
 

@@ -57,7 +57,7 @@ module_param_cb(opchain_status, &param_ops_opchain_status, NULL, 0644);
 
 static int latest_ms_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE,	"%u", latest_ms);
+	return scnprintf(buf, PAGE_SIZE,	"%u", latest_ms);
 }
 
 static int latest_ms_store(const char *buf, const struct kernel_param *kp)

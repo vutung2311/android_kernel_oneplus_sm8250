@@ -1718,7 +1718,7 @@ static int p9415_check_idt_fw_update(struct op_p9415_ic *chip)
 	rc = p9415_read_reg(chip, 0x5870, temp, 2);
 	pr_info("<IDT UPDATE> ID= %02x %02x", temp[0], temp[1]);
 	if (!rc)
-		snprintf(chip->manu_name, 10, "IDTP9415");
+		scnprintf(chip->manu_name, 10, "IDTP9415");
 
 	rc = p9415_read_reg(chip, 0x001C, temp, 4);
 	if (rc) {
@@ -1726,11 +1726,11 @@ static int p9415_check_idt_fw_update(struct op_p9415_ic *chip)
 		chip->check_fw_update = false;
 		idt_update_retry_cnt++;
 	} else {
-		snprintf(pre_hw_version, 10, "%02x%02x%02x%02x", temp[3],
+		scnprintf(pre_hw_version, 10, "%02x%02x%02x%02x", temp[3],
 			temp[2], temp[1], temp[0]);
 		chg_info("<IDT UPDATE>The idt fw version: %s\n", pre_hw_version);
 #ifdef NO_FW_UPGRADE_CRC
-		snprintf(new_hw_version, 10, "%02x%02x%02x%02x", fw_buf[0x130F],
+		scnprintf(new_hw_version, 10, "%02x%02x%02x%02x", fw_buf[0x130F],
 						fw_buf[0x130E], fw_buf[0x130D], fw_buf[0x130C]);
 		chg_info("<IDT UPDATE>The new fw version: %s\n", new_hw_version);
 
@@ -1741,7 +1741,7 @@ static int p9415_check_idt_fw_update(struct op_p9415_ic *chip)
 		    (idt_update_retry_cnt > 0)) {
 #else
 		fw_ver_start_addr = fw_size - 128;
-		snprintf(new_hw_version, 10, "%02x%02x%02x%02x",
+		scnprintf(new_hw_version, 10, "%02x%02x%02x%02x",
 			fw_buf[fw_ver_start_addr + 0x07], fw_buf[fw_ver_start_addr + 0x06],
 			fw_buf[fw_ver_start_addr + 0x05], fw_buf[fw_ver_start_addr + 0x04]);
 		chg_info("<IDT UPDATE>The new fw version: %s\n", new_hw_version);
@@ -1793,9 +1793,9 @@ static int p9415_check_idt_fw_update(struct op_p9415_ic *chip)
 	chip->idt_fw_updating = false;
 
 	if (fw_upgrade_successful)
-		snprintf(chip->fw_id, 16, "0x%s", new_hw_version);
+		scnprintf(chip->fw_id, 16, "0x%s", new_hw_version);
 	else
-		snprintf(chip->fw_id, 16, "0x%s", pre_hw_version);
+		scnprintf(chip->fw_id, 16, "0x%s", pre_hw_version);
 	push_component_info(WIRELESS_CHARGE, chip->fw_id, chip->manu_name);
 
 	return rc;

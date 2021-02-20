@@ -2340,7 +2340,7 @@ static void store_to_file(int fd, char* format, ...)
 	char buf[64] = {0};
 
 	va_start(args, format);
-	vsnprintf(buf, 64, format, args);
+	vscnprintf(buf, 64, format, args);
 	va_end(args);
 
 	if(fd >= 0) {
@@ -2889,7 +2889,7 @@ int execute_selftest(struct chip_data_s6sy761 *chip_info, bool save_result)
 		else if (i / 4 == 19)
 			strncat(pStr, "TXR ", 5);
 
-		snprintf(pTmp, sizeof(pTmp), "%2X, %2X, %2X, %2X",
+		scnprintf(pTmp, sizeof(pTmp), "%2X, %2X, %2X, %2X",
 				rBuff[i], rBuff[i + 1], rBuff[i + 2], rBuff[i + 3]);
 		strncat(pStr, pTmp, strnlen(pTmp, sizeof(pTmp)));
 
@@ -2928,27 +2928,27 @@ static void sec_ts_print_channel(struct chip_data_s6sy761 *chip_info)
 		return;
 
 	memset(pStr, 0x0, 7 * (chip_info->hw_res->TX_NUM + 1));
-	snprintf(pTmp, sizeof(pTmp), " TX");
+	scnprintf(pTmp, sizeof(pTmp), " TX");
 	strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 
 	for (k = 0; k < chip_info->hw_res->TX_NUM; k++) {
-		snprintf(pTmp, sizeof(pTmp), "    %02d", k);
+		scnprintf(pTmp, sizeof(pTmp), "    %02d", k);
 		strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 	}
 	TPD_INFO("%s\n", pStr);
 
 	memset(pStr, 0x0, 7 * (chip_info->hw_res->TX_NUM + 1));
-	snprintf(pTmp, sizeof(pTmp), " +");
+	scnprintf(pTmp, sizeof(pTmp), " +");
 	strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 
 	for (k = 0; k < chip_info->hw_res->TX_NUM; k++) {
-		snprintf(pTmp, sizeof(pTmp), "------");
+		scnprintf(pTmp, sizeof(pTmp), "------");
 		strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 	}
 	TPD_INFO("%s\n", pStr);
 
 	memset(pStr, 0x0, 7 * (chip_info->hw_res->TX_NUM + 1));
-	snprintf(pTmp, sizeof(pTmp), " | ");
+	scnprintf(pTmp, sizeof(pTmp), " | ");
 	strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 
 	for (i = 0; i < (chip_info->hw_res->TX_NUM + chip_info->hw_res->RX_NUM) * 2; i += 2) {
@@ -2956,37 +2956,37 @@ static void sec_ts_print_channel(struct chip_data_s6sy761 *chip_info)
 			TPD_INFO("%s\n", pStr);
 			TPD_INFO("\n");
 			memset(pStr, 0x0, 7 * (chip_info->hw_res->TX_NUM + 1));
-			snprintf(pTmp, sizeof(pTmp), " RX");
+			scnprintf(pTmp, sizeof(pTmp), " RX");
 			strncat(pStr, pTmp, 7 *chip_info->hw_res->TX_NUM);
 
 			for (k = 0; k < chip_info->hw_res->TX_NUM; k++) {
-				snprintf(pTmp, sizeof(pTmp), "    %02d", k);
+				scnprintf(pTmp, sizeof(pTmp), "    %02d", k);
 				strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 			}
 
 			TPD_INFO("%s\n", pStr);
 
 			memset(pStr, 0x0, 7 * (chip_info->hw_res->TX_NUM + 1));
-			snprintf(pTmp, sizeof(pTmp), " +");
+			scnprintf(pTmp, sizeof(pTmp), " +");
 			strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 
 			for (k = 0; k < chip_info->hw_res->TX_NUM; k++) {
-				snprintf(pTmp, sizeof(pTmp), "------");
+				scnprintf(pTmp, sizeof(pTmp), "------");
 				strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 			}
 			TPD_INFO("%s\n", pStr);
 
 			memset(pStr, 0x0, 7 * (chip_info->hw_res->TX_NUM + 1));
-			snprintf(pTmp, sizeof(pTmp), " | ");
+			scnprintf(pTmp, sizeof(pTmp), " | ");
 			strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 		} else if (j && !(j % chip_info->hw_res->TX_NUM)) {
 			TPD_INFO("%s\n", pStr);
 			memset(pStr, 0x0, 7 * (chip_info->hw_res->TX_NUM + 1));
-			snprintf(pTmp, sizeof(pTmp), " | ");
+			scnprintf(pTmp, sizeof(pTmp), " | ");
 			strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 		}
 
-		snprintf(pTmp, sizeof(pTmp), " %5d", chip_info->pFrame[j]);
+		scnprintf(pTmp, sizeof(pTmp), " %5d", chip_info->pFrame[j]);
 		strncat(pStr, pTmp, 7 * chip_info->hw_res->TX_NUM);
 
 		j++;
@@ -3094,11 +3094,11 @@ static void sec_ts_print_frame(struct chip_data_s6sy761 *chip_info, short *min, 
 		return;
 
 	memset(pStr, 0x0, lsize);
-	snprintf(pTmp, sizeof(pTmp), "      TX");
+	scnprintf(pTmp, sizeof(pTmp), "      TX");
 	strncat(pStr, pTmp, lsize);
 
 	for (i = 0; i < chip_info->hw_res->TX_NUM; i++) {
-		snprintf(pTmp, sizeof(pTmp), " %02d ", i);
+		scnprintf(pTmp, sizeof(pTmp), " %02d ", i);
 		strncat(pStr, pTmp, lsize);
 	}
 	if (chip_info->print_num == 1) {
@@ -3107,11 +3107,11 @@ static void sec_ts_print_frame(struct chip_data_s6sy761 *chip_info, short *min, 
 		TPD_DEBUG("%s\n", pStr);
 	}
 	memset(pStr, 0x0, lsize);
-	snprintf(pTmp, sizeof(pTmp), " +");
+	scnprintf(pTmp, sizeof(pTmp), " +");
 	strncat(pStr, pTmp, lsize);
 
 	for (i = 0; i < chip_info->hw_res->TX_NUM; i++) {
-		snprintf(pTmp, sizeof(pTmp), "----");
+		scnprintf(pTmp, sizeof(pTmp), "----");
 		strncat(pStr, pTmp, lsize);
 	}
 	if (chip_info->print_num == 1) {
@@ -3121,11 +3121,11 @@ static void sec_ts_print_frame(struct chip_data_s6sy761 *chip_info, short *min, 
 	}
 	for (i = 0; i < chip_info->hw_res->RX_NUM; i++) {
 		memset(pStr, 0x0, lsize);
-		snprintf(pTmp, sizeof(pTmp), "Rx%02d | ", i);
+		scnprintf(pTmp, sizeof(pTmp), "Rx%02d | ", i);
 		strncat(pStr, pTmp, lsize);
 
 		for (j = 0; j < chip_info->hw_res->TX_NUM; j++) {
-			snprintf(pTmp, sizeof(pTmp), " %3d", chip_info->pFrame[(j * chip_info->hw_res->RX_NUM) + i]);
+			scnprintf(pTmp, sizeof(pTmp), " %3d", chip_info->pFrame[(j * chip_info->hw_res->RX_NUM) + i]);
 
 			if (chip_info->pFrame[(j * chip_info->hw_res->RX_NUM) + i] < *min)
 				*min = chip_info->pFrame[(j * chip_info->hw_res->RX_NUM) + i];

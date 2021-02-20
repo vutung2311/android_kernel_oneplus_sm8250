@@ -550,7 +550,7 @@ static ssize_t chargepump_show_registers(struct device *dev,
 	for (addr = 0x0; addr <= 0x08; addr++) {
 		ret = chargepump_read_reg(addr, &val);
 		if (ret == 0) {
-			len += snprintf(buf + len, PAGE_SIZE - len,
+			len += scnprintf(buf + len, PAGE_SIZE - len,
 					"Reg[%.2X] = 0x%.2x\n", addr, val);
 		}
 	}

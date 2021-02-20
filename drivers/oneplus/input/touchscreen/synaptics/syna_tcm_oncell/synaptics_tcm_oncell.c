@@ -3177,7 +3177,7 @@ static void store_to_file(int fd, char *format, ...)
 	char buf[64] = {0};
 
 	va_start(args, format);
-	vsnprintf(buf, 64, format, args);
+	vscnprintf(buf, 64, format, args);
 	va_end(args);
 
 	if(fd >= 0) {
@@ -4336,10 +4336,10 @@ static int syna_tp_delta_print(struct syna_tcm_data *tcm_info)
 	pdata_16 = (short *)&test_hcd->report.buf[0];
 	for(i = 0; i < 16; i++) {
 		memset(Pstr, 0x0, lsize);
-		snprintf(pTmp, sizeof(pTmp), "[%d]", i);
+		scnprintf(pTmp, sizeof(pTmp), "[%d]", i);
 		strncat(Pstr, pTmp, lsize);
 		for(j = 0; j < 36; j++) {
-			snprintf(pTmp, sizeof(pTmp), "%4d ", *pdata_16);
+			scnprintf(pTmp, sizeof(pTmp), "%4d ", *pdata_16);
 			pdata_16++;
 			strncat(Pstr, pTmp, lsize);
 		}

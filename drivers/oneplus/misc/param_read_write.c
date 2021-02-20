@@ -356,7 +356,7 @@ static int param_get_restart_08_count(char *val, const struct kernel_param *kp)
 	if (ret < 0)
 		pr_info("%s[%d]  failed!\n", __func__, __LINE__);
 
-	cnt = snprintf(val, 4, "%d", restart_08_count);
+	cnt = scnprintf(val, 4, "%d", restart_08_count);
 
 	return cnt;
 }
@@ -393,7 +393,7 @@ static int param_get_restart_other_count(char *val, const struct kernel_param *k
 	if (ret < 0)
 		pr_info("%s[%d]  failed!\n", __func__, __LINE__);
 
-	cnt = snprintf(val, 4, "%d", restart_other_count);
+	cnt = scnprintf(val, 4, "%d", restart_other_count);
 
 	return cnt;
 }

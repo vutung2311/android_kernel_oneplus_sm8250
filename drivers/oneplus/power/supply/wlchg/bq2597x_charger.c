@@ -1697,11 +1697,11 @@ static ssize_t bq2597x_show_registers(struct device *dev,
 	int idx = 0;
 	int ret;
 
-	idx = snprintf(buf, PAGE_SIZE, "%s:\n", "bq25970");
+	idx = scnprintf(buf, PAGE_SIZE, "%s:\n", "bq25970");
 	for (addr = 0x0; addr <= 0x2B; addr++) {
 		ret = bq2597x_read_byte(bq, addr, &val);
 		if (ret == 0) {
-			len = snprintf(tmpbuf, PAGE_SIZE - idx,
+			len = scnprintf(tmpbuf, PAGE_SIZE - idx,
 				       "Reg[%.2X] = 0x%.2x\n", addr, val);
 			memcpy(&buf[idx], tmpbuf, len);
 			idx += len;

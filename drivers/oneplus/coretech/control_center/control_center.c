@@ -91,7 +91,7 @@ static int cc_tb_idle_block_enable_store(const char *buf,
 static int cc_tb_idle_block_enable_show(char *buf,
 		const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%u\n", cc_tb_idle_block_enable);
+	return scnprintf(buf, PAGE_SIZE, "%u\n", cc_tb_idle_block_enable);
 }
 
 static struct kernel_param_ops cc_tb_idle_block_enable_ops = {
@@ -195,7 +195,7 @@ static int cc_tb_cctl_boost_enable_store(const char *buf,
 static int cc_tb_cctl_boost_enable_show(char *buf,
 		const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%u\n", cc_tb_cctl_boost_enable);
+	return scnprintf(buf, PAGE_SIZE, "%u\n", cc_tb_cctl_boost_enable);
 }
 
 static struct kernel_param_ops cc_tb_cctl_boost_enable_ops = {
@@ -1509,22 +1509,22 @@ static int cc_dump_list_show(char *buf, const struct kernel_param *kp)
 	/* request list */
 	size = 0;
 	list_for_each_entry(rq, &cc_request_list, node) {
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "%d ", rq->idx);
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "%d ", rq->idx);
 		++size;
 	}
 	if (size)
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "\n", rq->idx);
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "request list: size: %d\n", size);
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "\n", rq->idx);
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "request list: size: %d\n", size);
 
 	/* pending list */
 	size = 0;
 	list_for_each_entry(rq, &cc_pending_list, node) {
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "%d ", rq->idx);
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "%d ", rq->idx);
 		++size;
 	}
 	if (size)
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "\n", rq->idx);
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "pending list: size: %d\n", size);
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "\n", rq->idx);
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "pending list: size: %d\n", size);
 
 	spin_unlock(&cc_async_lock);
 
@@ -1541,7 +1541,7 @@ static int cc_ddr_freq_show(char *buf, const struct kernel_param *kp)
 	int cnt = 0;
 	u64 freqshow = 0;
 	clk_get_ddr_freq(&freqshow);
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "ddrfreq: %llu\n", freqshow);
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "ddrfreq: %llu\n", freqshow);
 	return cnt;
 }
 
@@ -1558,20 +1558,20 @@ static int cc_dump_status_show(char *buf, const struct kernel_param *kp)
 	u64 val;
 
 	/* dump cpufreq control status */
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "cpufreq:\n");
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "cpufreq:\n");
 	for (i = 0; i < CLUSTER_NUM; ++i) {
 		idx = cc_get_cpu_idx(i);
 		if (idx == -1) {
-			cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "cluster %d offline\n", i);
+			cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "cluster %d offline\n", i);
 			continue;
 		}
 		pol = cpufreq_cpu_get(idx);
 		if (!pol) {
-			cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+			cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 				"cluster %d can't get policy\n", i);
 			continue;
 		}
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 				"cluster %d min %u max %u cur %u, cc_min %u cc_max %u\n",
 			i, pol->min, pol->max, pol->cur, pol->cc_min, pol->cc_max);
 		cpufreq_cpu_put(pol);
@@ -1579,8 +1579,8 @@ static int cc_dump_status_show(char *buf, const struct kernel_param *kp)
 
 	/* dump ddrfreq control status */
 	val = query_ddrfreq();
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "ddrfreq: %llu\n", val);
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "ddrfreq: %llu\n", val);
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 		"expected ddrfreq: %lu\n", cc_expect_ddrfreq);
 	return cnt;
 }
@@ -1607,7 +1607,7 @@ static int ccdm_min_util_threshold_store(const char *buf,
 static int ccdm_min_util_threshold_show(char *buf,
 		const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%u\n", ccdm_min_util_threshold);
+	return scnprintf(buf, PAGE_SIZE, "%u\n", ccdm_min_util_threshold);
 }
 
 static struct kernel_param_ops ccdm_min_thres_ops = {
@@ -1647,55 +1647,55 @@ static int cc_ccdm_status_show(char *buf, const struct kernel_param *kp)
 
 	ccdm_get_status((void *) &info);
 
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "cpufreq:\n");
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "cpufreq:\n");
 	for (i = 0; i < 3; ++i) {
 		idx = cc_get_cpu_idx(i);
 		if (idx == -1) {
-			cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+			cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 				"cluster %d offline\n", i);
 			continue;
 		}
 		pol = cpufreq_cpu_get(idx);
 		if (!pol) {
-			cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+			cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 				"cluster %d can't get policy\n", i);
 			continue;
 		}
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 			"cluster %d min %u max %u cur %u, ",
 			i, pol->min, pol->max, pol->cur);
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 			"ccdm: min %lld max %lld ",
 			info.c_min[i], info.c_max[i]);
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 			"fps_boost %lld trust %lld weight %lld\n",
 			info.c_fps_boost[i], info.trust[i], info.weight[i]);
 		cpufreq_cpu_put(pol);
 	}
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 		"fps_boost hint %lld\n", info.fps_boost_hint);
 
 	/* dump ddrfreq control status */
 	val = query_ddrfreq();
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 		"ddrfreq: %llu exptected: %llu hint: %llu\n",
 		val, info.ddrfreq, info.c_fps_boost_ddrfreq);
 
 	for (i = 0; i < 3; ++i) {
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 		"tb_freq_boost: clus %lld, extra util %lld\n",
 		i, info.tb_freq_boost[i]);
 	}
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 		"tb_place_boost: %lld\n", info.tb_place_boost_hint);
 
 	for (i = 0; i < 8; ++i) {
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 		"tb_idle_block[%d]: %llu %llu\n",
 		i, get_jiffies_64(), (u64)info.tb_idle_block_hint[i]);
 	}
 
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 		"tb_corectl_boost: %lld\n", info.tb_cctl_boost_hint);
 
 	return cnt;
@@ -1746,12 +1746,12 @@ static int cc_dump_record_show(char *buf, const struct kernel_param *kp)
 
 		spin_lock(&cc_record[i].lock);
 		tag = cc_category_tags_mapping(i);
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "%s:\n", tag);
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "%s:\n", tag);
 		for (prio = 0; prio < CC_PRIO_MAX; ++prio) {
-			cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "  p[%d]:\n", prio);
+			cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "  p[%d]:\n", prio);
 			list_for_each_entry(data, &cc_record[i].phead[prio], node) {
 				struct cc_command* cc = &data->cc;
-				cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+				cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 					"    pid: %d, period_us: %u, prio: %u, group: %u, category: %u"
 					", type: %u, [0]: %llu, [1]: %llu, [2]: %llu, [3]: %llu"
 					", response: %llu, status: %d\n",
@@ -1762,7 +1762,7 @@ static int cc_dump_record_show(char *buf, const struct kernel_param *kp)
 		}
 		spin_unlock(&cc_record[i].lock);
 	}
-	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "cnt: %d\n", cnt);
+	cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "cnt: %d\n", cnt);
 	return cnt;
 }
 
@@ -1785,7 +1785,7 @@ static int cc_dump_stat_show(char *buf, const struct kernel_param *kp)
 		atomic64_set(&cc_stat.cnt[i], 0);
 		atomic64_set(&cc_stat.tcnt[i], cc_tcnt);
 
-		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
+		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt,
 			"%s: %lld %lld\n", tag, cc_cnt, cc_tcnt);
 	}
 	return cnt;

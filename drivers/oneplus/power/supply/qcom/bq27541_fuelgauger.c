@@ -1574,11 +1574,11 @@ static ssize_t bq27541_read_stdcmd(struct device *dev,
 	if (reg <= BQ27541_REG_ICR && reg > 0x00) {
 		ret = bq27541_read(reg, &temp, 0, di);
 		if (ret)
-			ret = snprintf(buf, PAGE_SIZE, "Read Error!\n");
+			ret = scnprintf(buf, PAGE_SIZE, "Read Error!\n");
 		else
-			ret = snprintf(buf, PAGE_SIZE, "0x%02x\n", temp);
+			ret = scnprintf(buf, PAGE_SIZE, "0x%02x\n", temp);
 	} else
-		ret = snprintf(buf, PAGE_SIZE, "Register Error!\n");
+		ret = scnprintf(buf, PAGE_SIZE, "Register Error!\n");
 
 	return ret;
 }
@@ -1618,11 +1618,11 @@ static ssize_t bq27541_read_subcmd(struct device *dev,
 		ret = bq27541_read(BQ27541_REG_CNTL, &temp, 0, di);
 
 		if (ret)
-			ret = snprintf(buf, PAGE_SIZE, "Read Error!\n");
+			ret = scnprintf(buf, PAGE_SIZE, "Read Error!\n");
 		else
-			ret = snprintf(buf, PAGE_SIZE, "0x%02x\n", temp);
+			ret = scnprintf(buf, PAGE_SIZE, "0x%02x\n", temp);
 	} else
-		ret = snprintf(buf, PAGE_SIZE, "Register Error!\n");
+		ret = scnprintf(buf, PAGE_SIZE, "Register Error!\n");
 
 	return ret;
 }

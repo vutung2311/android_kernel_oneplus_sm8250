@@ -250,7 +250,7 @@ static ssize_t rmidev_sysfs_attn_state_show(struct device *dev,
 
 	attn_state = gpio_get_value(remote_rmi4_get_irq_gpio());
 
-	return snprintf(buf, PAGE_SIZE, "%d\n", attn_state);
+	return scnprintf(buf, PAGE_SIZE, "%d\n", attn_state);
 }
 
 static int remote_rmi4_get_irq_gpio(void)

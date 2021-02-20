@@ -666,7 +666,7 @@ static ssize_t page_hot_count_read(struct file *file, char __user *buf,
 
 	put_task_struct(task);
 
-	len = snprintf(buffer, sizeof(buffer), "%d\n", page_hot_count);
+	len = scnprintf(buffer, sizeof(buffer), "%d\n", page_hot_count);
 	return simple_read_from_buffer(buf, count, ppos, buffer, len);
 }
 

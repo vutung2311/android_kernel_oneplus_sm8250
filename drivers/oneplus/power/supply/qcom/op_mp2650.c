@@ -67,7 +67,7 @@ static int test_mp2650_write_reg(int reg, int val)
 static ssize_t mp2650_reg_access_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
-	return snprintf(buf, PAGE_SIZE, "0x%02x\n", reg_access_allow);
+	return scnprintf(buf, PAGE_SIZE, "0x%02x\n", reg_access_allow);
 }
 static ssize_t mp2650_reg_access_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t count)
@@ -99,7 +99,7 @@ static ssize_t mp2650_reg_set_show(struct device *dev,
 		return ret;
 	}
 
-	count += snprintf(buf+count, PAGE_SIZE-count, "reg[0x%02x]: 0x%02x\n", mp2650_reg, reg_val);
+	count += scnprintf(buf+count, PAGE_SIZE-count, "reg[0x%02x]: 0x%02x\n", mp2650_reg, reg_val);
 	return count;
 }
 
@@ -125,7 +125,7 @@ static ssize_t mp2650_regs_show(struct device *dev, struct device_attribute *att
 
 	for (i = MP2650_FIRST_REG; i <= MP2650_LAST_REG; i++) {
 		(void)mp2650_read_reg(i, &reg_val);
-		len += snprintf(buf+len, PAGE_SIZE-len, "reg:0x%02x=0x%02x \n", i, reg_val);
+		len += scnprintf(buf+len, PAGE_SIZE-len, "reg:0x%02x=0x%02x \n", i, reg_val);
 	}
 	return len;
 }

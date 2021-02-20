@@ -198,7 +198,7 @@ static ssize_t swarp_exist_read(struct file *p_file,
 {
 	char buffer[7];
 	int len = 0;
-	len = snprintf(buffer, 7, "%d\n", fastchg_di->asic_hw_id);
+	len = scnprintf(buffer, 7, "%d\n", fastchg_di->asic_hw_id);
 	return simple_read_from_buffer(puser_buf, count, p_offset, buffer, len);;
 }
 
@@ -336,7 +336,7 @@ static ssize_t enhance_exist_read(struct file *file,
 
 	if (!di)
 		return ret;
-	ret = snprintf(page, 255, "%d", di->dash_enhance);
+	ret = scnprintf(page, 255, "%d", di->dash_enhance);
 	ret = simple_read_from_buffer(user_buf,
 			count, ppos, page, strlen(page));
 	return ret;
@@ -391,7 +391,7 @@ static ssize_t dash_firmware_exist_read(struct file *file,
 
 	if (!di)
 		return ret;
-	ret = snprintf(page, 255, "%d", di->dash_firmware_ok);
+	ret = scnprintf(page, 255, "%d", di->dash_firmware_ok);
 	ret = simple_read_from_buffer(user_buf,
 			count, ppos, page, strlen(page));
 	return ret;
@@ -2833,12 +2833,12 @@ static void update_fireware_version_func(struct work_struct *work)
 	if (!dashchg_firmware_data || di->dashchg_fw_ver_count == 0)
 		return;
 
-	snprintf(di->fw_id, 255, "0x%x",
+	scnprintf(di->fw_id, 255, "0x%x",
 	dashchg_firmware_data[di->dashchg_fw_ver_count - 4]);
 	if (di->is_swarp_supported)
-		snprintf(di->manu_name, 255, "%s", mcu_id_text[di->asic_hw_id]);
+		scnprintf(di->manu_name, 255, "%s", mcu_id_text[di->asic_hw_id]);
 	else
-		snprintf(di->manu_name, 255, "%s", "ONEPLUS");
+		scnprintf(di->manu_name, 255, "%s", "ONEPLUS");
 	push_component_info(FAST_CHARGE, di->fw_id, di->manu_name);
 }
 void di_watchdog(struct timer_list *t)

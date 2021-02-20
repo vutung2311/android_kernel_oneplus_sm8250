@@ -1010,7 +1010,7 @@ static ssize_t dhall_data_show(struct device *dev,
 	//int down_sum = 0;
 	if (!g_the_chip) {
 		TRI_KEY_ERR("g_the_chip null\n");
-		return snprintf(buf, PAGE_SIZE, "%d\n", 0);
+		return scnprintf(buf, PAGE_SIZE, "%d\n", 0);
 	}
 
 	oneplus_hall_get_data(DHALL_0);
@@ -1049,7 +1049,7 @@ static ssize_t dhall_data_show(struct device *dev,
 	}
 */
 
-	return snprintf(buf, PAGE_SIZE, "%d, %d\n",
+	return scnprintf(buf, PAGE_SIZE, "%d, %d\n",
 		g_the_chip->dhall_data0, g_the_chip->dhall_data1);
 }
 
@@ -1060,14 +1060,14 @@ static ssize_t tri_state_show(struct device *dev,
 	//int position =-1;
 	if (!g_the_chip) {
 		TRI_KEY_ERR("g_the_chip null\n");
-		return snprintf(buf, PAGE_SIZE, "%d\n", 0);
+		return scnprintf(buf, PAGE_SIZE, "%d\n", 0);
 	}
 	oneplus_hall_get_data(DHALL_0);
 	oneplus_hall_get_data(DHALL_1);
 //	judge_interference(g_the_chip);
 	//position = get_position(g_the_chip);
 
-	return snprintf(buf, PAGE_SIZE, "%d\n", g_the_chip->state);
+	return scnprintf(buf, PAGE_SIZE, "%d\n", g_the_chip->state);
 }
 
 static enum hrtimer_restart tri_key_status_timeout(struct hrtimer *timer)
@@ -1146,9 +1146,9 @@ static ssize_t hall_data_calib_show(struct device *dev,
 {
 	if (!g_the_chip) {
 		TRI_KEY_ERR("g_the_chip null\n");
-		return snprintf(buf, PAGE_SIZE, "%d\n%d\n",-1,-1);
+		return scnprintf(buf, PAGE_SIZE, "%d\n%d\n",-1,-1);
 	}
-	return snprintf(buf, PAGE_SIZE, "%d,%d,%d,%d,%d,%d,%d,%d\n",
+	return scnprintf(buf, PAGE_SIZE, "%d,%d,%d,%d,%d,%d,%d,%d\n",
 		g_the_chip->dnHall_UpV, g_the_chip->upHall_UpV,
 		g_the_chip->dnHall_MdV, g_the_chip->upHall_MdV,
 		g_the_chip->dnHall_DnV, g_the_chip->upHall_DnV,
@@ -1216,12 +1216,12 @@ static ssize_t hall_debug_info_store(struct device *dev, struct device_attribute
 }
 static ssize_t hall_debug_info_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
-	return snprintf(buf, PAGE_SIZE, "%d\n", tri_key_debug);
+	return scnprintf(buf, PAGE_SIZE, "%d\n", tri_key_debug);
 }
 
 static ssize_t hall_set_value_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
-	return snprintf(buf, PAGE_SIZE, "%d\n", tol1);
+	return scnprintf(buf, PAGE_SIZE, "%d\n", tol1);
 }
 
 static ssize_t hall_set_value_store(struct device *pdev, struct device_attribute *attr, const char *buf, size_t count)

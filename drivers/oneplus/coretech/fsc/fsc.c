@@ -668,7 +668,7 @@ static int fsc_enable_store(const char *buf, const struct kernel_param *kp)
 
 static int fsc_enable_show(char *buf, const struct kernel_param *kp)
 {
-	return snprintf(buf, PAGE_SIZE, "%u", fsc_enable);
+	return scnprintf(buf, PAGE_SIZE, "%u", fsc_enable);
 }
 
 static struct kernel_param_ops fsc_enable_ops = {
