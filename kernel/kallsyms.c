@@ -175,7 +175,7 @@ static inline void cleanup_symbol_name(char *s)
 		*res = '\0';
 #endif
 	res = strrchr(s, '.');
-	if (res && !strcmp(res, ".cfi"))
+	if (res && !strncmp(res, ".cfi", 4))
 		*res = '\0';
 }
 #else
