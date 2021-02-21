@@ -67,12 +67,12 @@ int touch_i2c_read_block(struct i2c_client* client, u16 addr, unsigned short len
 {
 	int retval;
 	unsigned char retry;
-	static unsigned char *buffer = NULL;
+	static unsigned char buffer[2] __aligned(8);
 	static unsigned int read_buf_size = 0;
 	static unsigned char *read_buf = NULL;
 	struct i2c_msg msg[2];
 
-	buffer = kzalloc(2, GFP_KERNEL | GFP_DMA);
+	memzero_explicit(buffer, sizeof(buffer));
 	if (length > FIX_I2C_LENGTH) {
 		if (read_buf_size < length) {
 			if (read_buf) {
@@ -145,7 +145,6 @@ int touch_i2c_read_block(struct i2c_client* client, u16 addr, unsigned short len
 		retval = -EIO;
 	}
 	memcpy(data, read_buf,length);
-	kfree(buffer);
 	return retval;
 }
 
