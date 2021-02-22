@@ -2847,6 +2847,9 @@ static int buffers_allocated;
 
 void trace_printk_init_buffers(void)
 {
+#ifdef CONFIG_DISABLE_TRACE_PRINTK
+	return;
+#endif
 	if (buffers_allocated)
 		return;
 
