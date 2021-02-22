@@ -116,7 +116,9 @@ FUNC_BUILD_KERNEL()
 		-e CONFIG_SHADOW_CALL_STACK \
 		--set-str CONFIG_UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist \
 abi_gki_aarch64_qcom_internal_whitelist \
-abi_gki_aarch64_whitelist \
+abi_gki_aarch64_instantnoodlep_whitelist \
+abi_gki_aarch64_qcom_whitelist \
+abi_gki_aarch64_cuttlefish_whitelist \
 scripts/lto-used-symbollist.txt" \
 		-e CONFIG_UNUSED_KSYMS_WHITELIST_ONLY
 	fi
