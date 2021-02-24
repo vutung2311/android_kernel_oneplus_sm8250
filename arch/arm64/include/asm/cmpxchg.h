@@ -36,7 +36,9 @@ static inline unsigned long __xchg_case_##name(unsigned long x,		\
 {									\
 	unsigned long ret, tmp;						\
 									\
-	asm volatile(ARM64_LSE_ATOMIC_INSN(				\
+	asm volatile(							\
+	__LSE_PREAMBLE							\
+	ARM64_LSE_ATOMIC_INSN(						\
 	/* LL/SC */							\
 	"	prfm	pstl1strm, %2\n"				\
 	"1:	ld" #acq "xr" #sz "\t%" #w "0, %2\n"			\
