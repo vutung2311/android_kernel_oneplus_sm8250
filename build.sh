@@ -112,7 +112,7 @@ FUNC_BUILD_KERNEL()
 		-e CONFIG_LTO_CLANG \
 		-e CONFIG_CFI_CLANG \
 		-e CONFIG_CFI_PERMISSIVE \
-		-e CONFIG_CFI_CLANG_SHADOW \
+		-d CONFIG_CFI_CLANG_SHADOW \
 		-e CONFIG_SHADOW_CALL_STACK \
 		--set-str CONFIG_UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist \
 abi_gki_aarch64_qcom_internal_whitelist \
