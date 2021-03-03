@@ -516,12 +516,13 @@ static void  pstore_console_init(void)
 {
 	size_t oldsize;
 	size_t size = 0;
-	struct ramoops_context *cxt = psinfo->data;
+	struct ramoops_context *cxt;
 	struct pstore_record record;
 
 	if (psinfo == NULL)
 		return;
 
+	cxt = psinfo->data;
 	size = cxt->console_size;
 
 	pstore_record_init(&record, psinfo);

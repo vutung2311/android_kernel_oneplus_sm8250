@@ -12,8 +12,6 @@
 #include <linux/oem/param_rw.h>
 #include <linux/oem/boot_mode.h>
 
-extern struct pstore_info *psinfo;
-
 #define MAX_ITEM 5
 #define MAX_LENGTH 32
 
@@ -105,37 +103,36 @@ static int is_na_board(void)
 /*device info init to black*/
 static void  pstore_device_info_init(void )
 {
-    size_t oldsize;
-    size_t size =0;
+	size_t oldsize;
+	size_t size =0;
+	struct ramoops_context *cxt;
+	struct pstore_record record;
 
-    struct ramoops_context *cxt = psinfo->data;
-    struct pstore_record record;
+	if (psinfo == NULL)
+		return;
 
-    if (psinfo == NULL)
-        return;
-
-    size = cxt->device_info_size;
+	cxt = psinfo->data;
+	size = cxt->device_info_size;
 
 	pstore_record_init(&record, psinfo);
 	record.type = PSTORE_TYPE_DEVICE_INFO;
-    record.buf = psinfo->buf;
-    record.size = size;
+	record.buf = psinfo->buf;
+	record.size = size;
 
-    oldsize = psinfo->bufsize;
+	oldsize = psinfo->bufsize;
 
 
-    if (size > psinfo->bufsize)
-        size = psinfo->bufsize;
+	if (size > psinfo->bufsize)
+		size = psinfo->bufsize;
 
-    memset(record.buf, ' ', size);
-    psinfo->write(&record);
+	memset(record.buf, ' ', size);
+	psinfo->write(&record);
   
-    psinfo->bufsize = oldsize ;
+	psinfo->bufsize = oldsize;
 }
 
 static void pstore_write_device_info(const char *s, unsigned c)
 {
-
 	const char *e = s + c;
 
 	if (psinfo == NULL)
@@ -195,5 +192,5 @@ static int __init init_device_info(void)
 late_initcall(init_device_info);
 
 void save_dump_reason_to_device_info(char *reason) {
-        write_device_info("dump reason is ", reason);
+	write_device_info("dump reason is ", reason);
 }

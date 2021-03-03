@@ -47,7 +47,6 @@ enum tri_key_position {
 	MID_STATE,
 };
 
-extern unsigned int tristate_extcon_tab[];
 extern unsigned int tri_key_debug;
 
 typedef struct {

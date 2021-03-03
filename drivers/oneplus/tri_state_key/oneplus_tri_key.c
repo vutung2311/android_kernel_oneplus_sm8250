@@ -56,20 +56,21 @@
 		if (LEVEL_DEBUG == tri_key_debug)\
 			printk(KERN_INFO TRI_KEY_TAG " %s: " fmt, __FUNCTION__, ##args);\
 	}while(0)
+
 enum {
 	MODE_UNKNOWN,
 	MODE_MUTE,
 	MODE_DO_NOT_DISTURB,
 	MODE_NORMAL,
 	MODE_MAX_NUM
-	} tri_mode;
+} tri_mode;
 
-
-unsigned int tristate_extcon_tab[] = {
+static const unsigned int tristate_extcon_tab[] = {
 		MODE_MUTE,
 		MODE_DO_NOT_DISTURB,
 		MODE_NORMAL,
-	};
+		EXTCON_NONE,
+};
 
 static struct hrtimer tri_key_timer;
 struct work_struct tri_key_timeout_work;
@@ -1339,9 +1340,12 @@ static int tri_key_platform_probe(struct platform_device *pdev)
 	}
 // extcon registration
 	chip->edev = devm_extcon_dev_allocate(chip->dev, tristate_extcon_tab);
+	if (IS_ERR(chip->edev)) {
+		dev_err(&pdev->dev, "failed to allocate extcon device\n");
+		return -ENOMEM;
+	}
 	chip->edev->name = "tri_state_key";
 	err = devm_extcon_dev_register(chip->dev, chip->edev);
-
 	if (err < 0) {
 		TRI_KEY_ERR("%s register extcon dev failed\n", __func__);
 		goto err_extcon_dev_register;
