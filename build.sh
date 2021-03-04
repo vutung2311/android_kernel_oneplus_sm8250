@@ -38,10 +38,10 @@ BUILD_JOB_NUMBER="$(nproc)"
 # BUILD_JOB_NUMBER=1
 
 RDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-BUILDDIR="${RDIR}/.build"
-mkdir -p $BUILDDIR
+BUILD_DIR="${RDIR}/.build"
+mkdir -p $BUILD_DIR
 
-if [ ! "$(ls -A ${BUILDDIR})" ]; then
+if [ ! "$(ls -A ${BUILD_DIR})" ]; then
 	sudo mount -t tmpfs -o size=10g tmpfs ${RDIR}/.build
 fi
 
@@ -56,7 +56,7 @@ WITH_CFI_CLANG=false
 FUNC_MAKE()
 {
 	cd $RDIR && make -j$BUILD_JOB_NUMBER ARCH=$ARCH SUBARCH=$ARCH \
-			O=$BUILDDIR \
+			O=$BUILD_DIR \
 			KCONFIG_DECORATE_CONFIG=$KERNEL_DECORATE_DEFCONFIG \
 			OEM_TARGET_PRODUCT=$OEM_TARGET_PRODUCT \
 			WLAN_DISABLE_BUILD_TAG=$WLAN_DISABLE_BUILD_TAG \
@@ -105,7 +105,7 @@ FUNC_BUILD_KERNEL()
 
 		echo ""
 		echo "Enable CFI_CLANG"
-		cd $BUILDDIR && ../scripts/config \
+		cd $BUILD_DIR && ../scripts/config \
 		-e CONFIG_LTO \
 		-e CONFIG_THINLTO \
 		-d CONFIG_LTO_NONE \
@@ -135,8 +135,8 @@ scripts/lto-used-symbollist.txt" \
 
 FUNC_BUILD_BOOT_IMG()
 {
-	cp "${BUILDDIR}/arch/${ARCH}/boot/Image" "${RDIR}/boot.img/in/split_img/boot.img-zImage"
-	cat "${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.1.dtb" > "${RDIR}/boot.img/in/split_img/boot.img-dtb"
+	cp "${BUILD_DIR}/arch/${ARCH}/boot/Image" "${RDIR}/boot.img/in/split_img/boot.img-zImage"
+	cat "${BUILD_DIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.1.dtb" > "${RDIR}/boot.img/in/split_img/boot.img-dtb"
 	(cd "${RDIR}/boot.img/in" && $RDIR/aik/repackimg.sh --local --level 9)
 	mv "${RDIR}/boot.img/in/image-new.img" "${RDIR}/boot.img/out/boot.img"
 }
@@ -144,9 +144,9 @@ FUNC_BUILD_BOOT_IMG()
 FUNC_BUILD_RECOVERY_IMG()
 {
 	cd $RDIR && ./fix_recovery_ramdisk_permission.sh
-	cp "${BUILDDIR}/arch/${ARCH}/boot/Image" "${RDIR}/recovery.img/in/split_img/recovery.img-zImage"
-	cp "${BUILDDIR}/arch/${ARCH}/boot/dtbo.img" "${RDIR}/recovery.img/in/split_img/recovery.img-recovery_dtbo"
-	cat "${BUILDDIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.1.dtb" > "${RDIR}/recovery.img/in/split_img/recovery.img-dtb"
+	cp "${BUILD_DIR}/arch/${ARCH}/boot/Image" "${RDIR}/recovery.img/in/split_img/recovery.img-zImage"
+	cp "${BUILD_DIR}/arch/${ARCH}/boot/dtbo.img" "${RDIR}/recovery.img/in/split_img/recovery.img-recovery_dtbo"
+	cat "${BUILD_DIR}/arch/arm64/boot/dts/vendor/qcom/kona-v2.1.dtb" > "${RDIR}/recovery.img/in/split_img/recovery.img-dtb"
 	(cd "${RDIR}/recovery.img/in" && $RDIR/aik/repackimg.sh --local --level 9)
 	mv "${RDIR}/recovery.img/in/image-new.img" "${RDIR}/recovery.img/out/recovery.img"
 }
