@@ -18,8 +18,8 @@
 
 #define DP_INTR_STATUS2				(0x00000024)
 #define DP_INTR_STATUS3				(0x00000028)
-#define dp_read(offset) readl_relaxed((offset))
-#define dp_write(offset, data) writel_relaxed((data), (offset))
+#define dp_read(offset) readl_relaxed_no_log((offset))
+#define dp_write(offset, data) writel_relaxed_no_log((data), (offset))
 #define DP_HDCP_RXCAPS_LENGTH 3
 
 enum dp_hdcp2p2_sink_status {

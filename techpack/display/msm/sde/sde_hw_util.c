@@ -72,12 +72,12 @@ void sde_reg_write(struct sde_hw_blk_reg_map *c,
 		u32 val,
 		const char *name)
 {
-	writel_relaxed(val, c->base_off + c->blk_off + reg_off);
+	writel_relaxed_no_log(val, c->base_off + c->blk_off + reg_off);
 }
 
 int sde_reg_read(struct sde_hw_blk_reg_map *c, u32 reg_off)
 {
-	return readl_relaxed(c->base_off + c->blk_off + reg_off);
+	return readl_relaxed_no_log(c->base_off + c->blk_off + reg_off);
 }
 
 u32 *sde_hw_util_get_log_mask_ptr(void)

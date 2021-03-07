@@ -88,7 +88,7 @@ static inline void sde_wb_write(struct sde_mdp_writeback_ctx *ctx,
 				u32 reg, u32 val)
 {
 	SDEROT_DBG("wb%d:%6.6x:%8.8x\n", ctx->wb_num, ctx->offset + reg, val);
-	writel_relaxed(val, ctx->base + reg);
+	writel_relaxed_no_log(val, ctx->base + reg);
 }
 
 static int sde_mdp_writeback_addr_setup(struct sde_mdp_writeback_ctx *ctx,
@@ -329,7 +329,7 @@ static int sde_mdp_wb_wait4comp(struct sde_mdp_ctl *ctl, void *arg)
 		if (rc == 0) {
 			mask = BIT(ctx->intr_type + ctx->intf_num);
 
-			isr = readl_relaxed(ctl->mdata->mdp_base +
+			isr = readl_relaxed_no_log(ctl->mdata->mdp_base +
 						SDE_MDP_REG_INTR_STATUS);
 			status = mask & isr;
 
@@ -339,7 +339,7 @@ static int sde_mdp_wb_wait4comp(struct sde_mdp_ctl *ctl, void *arg)
 
 			if (status) {
 				SDEROT_WARN("wb done but irq not triggered\n");
-				writel_relaxed(BIT(ctl->wb->num),
+				writel_relaxed_no_log(BIT(ctl->wb->num),
 						ctl->mdata->mdp_base +
 						SDE_MDP_REG_INTR_CLEAR);
 				sde_mdp_writeback_intr_done(ctl);
@@ -361,12 +361,12 @@ static int sde_mdp_wb_wait4comp(struct sde_mdp_ctl *ctl, void *arg)
 		mask = BIT(ctl->wb->num);
 		do {
 			udelay(500);
-			isr = readl_relaxed(ctl->mdata->mdp_base +
+			isr = readl_relaxed_no_log(ctl->mdata->mdp_base +
 					SDE_MDP_REG_INTR_STATUS);
 			status = mask & isr;
 			cnt--;
 		} while (cnt > 0 && !status);
-		writel_relaxed(mask, ctl->mdata->mdp_base +
+		writel_relaxed_no_log(mask, ctl->mdata->mdp_base +
 				SDE_MDP_REG_INTR_CLEAR);
 
 		rc = (status) ? 0 : -ENODEV;

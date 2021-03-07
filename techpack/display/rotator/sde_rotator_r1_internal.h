@@ -129,7 +129,7 @@ static inline void sde_mdp_ctl_write(struct sde_mdp_ctl *ctl,
 				      u32 reg, u32 val)
 {
 	SDEROT_DBG("ctl%d:%6.6x:%8.8x\n", ctl->num, ctl->offset + reg, val);
-	writel_relaxed(val, ctl->base + reg);
+	writel_relaxed_no_log(val, ctl->base + reg);
 }
 
 static inline bool sde_mdp_is_nrt_vbif_client(struct sde_rot_data_type *mdata,

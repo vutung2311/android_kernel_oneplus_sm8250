@@ -147,7 +147,7 @@ static u32 dp_read_hw(struct dp_catalog_private *catalog,
 {
 	u32 data = 0;
 
-	data = readl_relaxed(io_data->io.base + offset);
+	data = readl_relaxed_no_log(io_data->io.base + offset);
 
 	return data;
 }
@@ -155,7 +155,7 @@ static u32 dp_read_hw(struct dp_catalog_private *catalog,
 static void dp_write_hw(struct dp_catalog_private *catalog,
 	struct dp_io_data *io_data, u32 offset, u32 data)
 {
-	writel_relaxed(data, io_data->io.base + offset);
+	writel_relaxed_no_log(data, io_data->io.base + offset);
 }
 
 static u32 dp_read_sub_sw(struct dp_catalog *dp_catalog,
@@ -1878,7 +1878,7 @@ static int dp_catalog_reg_dump(struct dp_catalog *dp_catalog,
 		memset(buf, 0, len);
 
 		for (i = 0; i < len / rowsize; i++) {
-			data = readl_relaxed(addr);
+			data = readl_relaxed_no_log(addr);
 			memcpy(buf + (rowsize * i), &data, sizeof(u32));
 
 			addr += rowsize;

@@ -326,7 +326,7 @@ static void sde_hw_sspp_setup_format(struct sde_hw_pipe *ctx,
 	}
 
 	c = &ctx->hw;
-	core_rev = readl_relaxed(c->base_off + 0x0);
+	core_rev = readl_relaxed_no_log(c->base_off + 0x0);
 	opmode = SDE_REG_READ(c, op_mode_off + idx);
 	opmode &= ~(MDSS_MDP_OP_FLIP_LR | MDSS_MDP_OP_FLIP_UD |
 			MDSS_MDP_OP_BWC_EN | MDSS_MDP_OP_PE_OVERRIDE);

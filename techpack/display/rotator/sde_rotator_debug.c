@@ -156,13 +156,13 @@ static void sde_rot_dump_debug_bus(u32 bus_dump_flag, u32 **dump_mem)
 
 	for (i = 0; i < mdata->rot_dbg_bus_size; i++) {
 		head = mdata->rot_dbg_bus + i;
-		writel_relaxed(SDE_ROT_TEST_MASK(head->block_id, head->test_id),
+		writel_relaxed_no_log(SDE_ROT_TEST_MASK(head->block_id, head->test_id),
 				base + head->wr_addr);
 		wmb(); /* make sure test bits were written */
 
 		offset = head->wr_addr + 0x4;
 
-		status = readl_relaxed(base + offset);
+		status = readl_relaxed_no_log(base + offset);
 
 		if (in_log)
 			pr_err("waddr=0x%x blk=%d tst=%d val=0x%x\n",
@@ -177,7 +177,7 @@ static void sde_rot_dump_debug_bus(u32 bus_dump_flag, u32 **dump_mem)
 		}
 
 		/* Disable debug bus once we are done */
-		writel_relaxed(0, base + head->wr_addr);
+		writel_relaxed_no_log(0, base + head->wr_addr);
 	}
 
 	sde_smmu_ctrl(0);
@@ -214,15 +214,15 @@ static void __vbif_debug_bus(struct sde_rot_vbif_debug_bus *head,
 		return;
 
 	for (i = 0; i < head->block_cnt; i++) {
-		writel_relaxed(1 << (i + head->bit_offset),
+		writel_relaxed_no_log(1 << (i + head->bit_offset),
 				vbif_base + head->block_bus_addr);
 		/* make sure that current bus blcok enable */
 		wmb();
 		for (j = 0; j < head->test_pnt_cnt; j++) {
-			writel_relaxed(j, vbif_base + head->block_bus_addr + 4);
+			writel_relaxed_no_log(j, vbif_base + head->block_bus_addr + 4);
 			/* make sure that test point is enabled */
 			wmb();
-			val = readl_relaxed(vbif_base + MMSS_VBIF_TEST_BUS_OUT);
+			val = readl_relaxed_no_log(vbif_base + MMSS_VBIF_TEST_BUS_OUT);
 			if (dump_addr) {
 				*dump_addr++ = head->block_bus_addr;
 				*dump_addr++ = i;
@@ -292,8 +292,8 @@ static void sde_rot_dump_vbif_debug_bus(u32 bus_dump_flag,
 
 	sde_smmu_ctrl(1);
 
-	value = readl_relaxed(vbif_base + MMSS_VBIF_CLKON);
-	writel_relaxed(value | BIT(1), vbif_base + MMSS_VBIF_CLKON);
+	value = readl_relaxed_no_log(vbif_base + MMSS_VBIF_CLKON);
+	writel_relaxed_no_log(value | BIT(1), vbif_base + MMSS_VBIF_CLKON);
 
 	/* make sure that vbif core is on */
 	wmb();
@@ -301,8 +301,8 @@ static void sde_rot_dump_vbif_debug_bus(u32 bus_dump_flag,
 	for (i = 0; i < bus_size; i++) {
 		head = dbg_bus + i;
 
-		writel_relaxed(0, vbif_base + head->disable_bus_addr);
-		writel_relaxed(BIT(0), vbif_base + MMSS_VBIF_TEST_BUS_OUT_CTRL);
+		writel_relaxed_no_log(0, vbif_base + head->disable_bus_addr);
+		writel_relaxed_no_log(BIT(0), vbif_base + MMSS_VBIF_TEST_BUS_OUT_CTRL);
 		/* make sure that other bus is off */
 		wmb();
 
@@ -372,10 +372,10 @@ void sde_rot_dump_reg(const char *dump_name, u32 reg_dump_flag,
 	for (i = 0; i < len; i++) {
 		u32 x0, x4, x8, xc;
 
-		x0 = readl_relaxed(base + addr+0x0);
-		x4 = readl_relaxed(base + addr+0x4);
-		x8 = readl_relaxed(base + addr+0x8);
-		xc = readl_relaxed(base + addr+0xc);
+		x0 = readl_relaxed_no_log(base + addr+0x0);
+		x4 = readl_relaxed_no_log(base + addr+0x4);
+		x8 = readl_relaxed_no_log(base + addr+0x8);
+		xc = readl_relaxed_no_log(base + addr+0xc);
 
 		if (in_log)
 			pr_info("0x%08X : %08x %08x %08x %08x\n",
@@ -419,7 +419,7 @@ static void sde_rot_dump_reg_all(void)
 				SDEROT_ERR("invalid write len %u\n", head->len);
 				continue;
 			}
-			writel_relaxed(head->value,
+			writel_relaxed_no_log(head->value,
 					mdata->sde_io.base + head->offset);
 			/* Make sure write go through */
 			wmb();
@@ -1145,7 +1145,7 @@ static ssize_t sde_rotator_debug_base_reg_write(struct file *file,
 	}
 	sde_rotator_clk_ctrl(dbg->mgr, true);
 
-	writel_relaxed(data, dbg->base + off);
+	writel_relaxed_no_log(data, dbg->base + off);
 
 	/* Disable Clock after register access */
 	sde_rotator_clk_ctrl(dbg->mgr, false);

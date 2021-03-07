@@ -2978,10 +2978,10 @@ static void _sde_dump_reg(const char *dump_name, u32 reg_dump_flag,
 	for (i = 0; i < len_align; i++) {
 		u32 x0, x4, x8, xc;
 
-		x0 = (addr < end_addr) ? readl_relaxed(addr + 0x0) : 0;
-		x4 = (addr + 0x4 < end_addr) ? readl_relaxed(addr + 0x4) : 0;
-		x8 = (addr + 0x8 < end_addr) ? readl_relaxed(addr + 0x8) : 0;
-		xc = (addr + 0xc < end_addr) ? readl_relaxed(addr + 0xc) : 0;
+		x0 = (addr < end_addr) ? readl_relaxed_no_log(addr + 0x0) : 0;
+		x4 = (addr + 0x4 < end_addr) ? readl_relaxed_no_log(addr + 0x4) : 0;
+		x8 = (addr + 0x8 < end_addr) ? readl_relaxed_no_log(addr + 0x8) : 0;
+		xc = (addr + 0xc < end_addr) ? readl_relaxed_no_log(addr + 0xc) : 0;
 
 		if (in_log)
 			dev_info(sde_dbg_base.dev,
@@ -3250,10 +3250,10 @@ static void _sde_dbg_dump_sde_dbg_bus(struct sde_dbg_sde_debug_bus *bus)
 	for (i = 0; i < bus->cmn.entries_size; i++) {
 		head = bus->entries + i;
 		if (head->test_id > 0x7)
-			writel_relaxed(TEST_EXT_MASK(head->block_id,
+			writel_relaxed_no_log(TEST_EXT_MASK(head->block_id,
 				head->test_id), mem_base + head->wr_addr);
 		else
-			writel_relaxed(TEST_MASK(head->block_id, head->test_id),
+			writel_relaxed_no_log(TEST_MASK(head->block_id, head->test_id),
 				mem_base + head->wr_addr);
 		wmb(); /* make sure test bits were written */
 
@@ -3261,12 +3261,12 @@ static void _sde_dbg_dump_sde_dbg_bus(struct sde_dbg_sde_debug_bus *bus)
 			offset = DBGBUS_DSPP_STATUS;
 			/* keep DSPP test point enabled */
 			if (head->wr_addr != DBGBUS_DSPP)
-				writel_relaxed(0x7001, mem_base + DBGBUS_DSPP);
+				writel_relaxed_no_log(0x7001, mem_base + DBGBUS_DSPP);
 		} else {
 			offset = head->wr_addr + 0x4;
 		}
 
-		status = readl_relaxed(mem_base + offset);
+		status = readl_relaxed_no_log(mem_base + offset);
 
 		if (in_log)
 			dev_info(sde_dbg_base.dev,
@@ -3285,10 +3285,10 @@ static void _sde_dbg_dump_sde_dbg_bus(struct sde_dbg_sde_debug_bus *bus)
 			head->analyzer(mem_base, head, status);
 
 		/* Disable debug bus once we are done */
-		writel_relaxed(0, mem_base + head->wr_addr);
+		writel_relaxed_no_log(0, mem_base + head->wr_addr);
 		if (bus->cmn.flags & DBGBUS_FLAGS_DSPP &&
 						head->wr_addr != DBGBUS_DSPP)
-			writel_relaxed(0x0, mem_base + DBGBUS_DSPP);
+			writel_relaxed_no_log(0x0, mem_base + DBGBUS_DSPP);
 	}
 	pm_runtime_put_sync(sde_dbg_base.dev);
 
@@ -3307,15 +3307,15 @@ static void _sde_dbg_dump_vbif_debug_bus_entry(
 		return;
 
 	for (i = 0; i < head->block_cnt; i++) {
-		writel_relaxed(1 << (i + head->bit_offset),
+		writel_relaxed_no_log(1 << (i + head->bit_offset),
 				mem_base + head->block_bus_addr);
 		/* make sure that current bus blcok enable */
 		wmb();
 		for (j = head->test_pnt_start; j < head->test_pnt_cnt; j++) {
-			writel_relaxed(j, mem_base + head->block_bus_addr + 4);
+			writel_relaxed_no_log(j, mem_base + head->block_bus_addr + 4);
 			/* make sure that test point is enabled */
 			wmb();
-			val = readl_relaxed(mem_base + MMSS_VBIF_TEST_BUS_OUT);
+			val = readl_relaxed_no_log(mem_base + MMSS_VBIF_TEST_BUS_OUT);
 			if (dump_addr) {
 				*dump_addr++ = head->block_bus_addr;
 				*dump_addr++ = i;
@@ -3408,8 +3408,8 @@ static void _sde_dbg_dump_vbif_dbg_bus(struct sde_dbg_vbif_debug_bus *bus)
 		return;
 	}
 
-	value = readl_relaxed(mem_base + MMSS_VBIF_CLKON);
-	writel_relaxed(value | BIT(1), mem_base + MMSS_VBIF_CLKON);
+	value = readl_relaxed_no_log(mem_base + MMSS_VBIF_CLKON);
+	writel_relaxed_no_log(value | BIT(1), mem_base + MMSS_VBIF_CLKON);
 
 	/* make sure that vbif core is on */
 	wmb();
@@ -3419,9 +3419,9 @@ static void _sde_dbg_dump_vbif_dbg_bus(struct sde_dbg_vbif_debug_bus *bus)
 	 * If the XIN client is not in HALT state, or an error is detected,
 	 * then retrieve the VBIF error info for it.
 	 */
-	reg = readl_relaxed(mem_base + MMSS_VBIF_XIN_HALT_CTRL1);
-	reg1 = readl_relaxed(mem_base + MMSS_VBIF_PND_ERR);
-	reg2 = readl_relaxed(mem_base + MMSS_VBIF_SRC_ERR);
+	reg = readl_relaxed_no_log(mem_base + MMSS_VBIF_XIN_HALT_CTRL1);
+	reg1 = readl_relaxed_no_log(mem_base + MMSS_VBIF_PND_ERR);
+	reg2 = readl_relaxed_no_log(mem_base + MMSS_VBIF_SRC_ERR);
 	dev_err(sde_dbg_base.dev,
 			"XIN HALT:0x%lX, PND ERR:0x%lX, SRC ERR:0x%lX\n",
 			reg, reg1, reg2);
@@ -3429,12 +3429,12 @@ static void _sde_dbg_dump_vbif_dbg_bus(struct sde_dbg_vbif_debug_bus *bus)
 	reg &= ~(reg1 | reg2);
 	for (i = 0; i < MMSS_VBIF_CLIENT_NUM; i++) {
 		if (!test_bit(0, &reg)) {
-			writel_relaxed(i, mem_base + MMSS_VBIF_ERR_INFO);
+			writel_relaxed_no_log(i, mem_base + MMSS_VBIF_ERR_INFO);
 			/* make sure reg write goes through */
 			wmb();
 
-			d0 = readl_relaxed(mem_base + MMSS_VBIF_ERR_INFO);
-			d1 = readl_relaxed(mem_base + MMSS_VBIF_ERR_INFO_1);
+			d0 = readl_relaxed_no_log(mem_base + MMSS_VBIF_ERR_INFO);
+			d1 = readl_relaxed_no_log(mem_base + MMSS_VBIF_ERR_INFO_1);
 
 			dev_err(sde_dbg_base.dev,
 					"Client:%d, errinfo=0x%X, errinfo1=0x%X\n",
@@ -3446,8 +3446,8 @@ static void _sde_dbg_dump_vbif_dbg_bus(struct sde_dbg_vbif_debug_bus *bus)
 	for (i = 0; i < bus_size; i++) {
 		head = dbg_bus + i;
 
-		writel_relaxed(0, mem_base + head->disable_bus_addr);
-		writel_relaxed(BIT(0), mem_base + MMSS_VBIF_TEST_BUS_OUT_CTRL);
+		writel_relaxed_no_log(0, mem_base + head->disable_bus_addr);
+		writel_relaxed_no_log(BIT(0), mem_base + MMSS_VBIF_TEST_BUS_OUT_CTRL);
 		/* make sure that other bus is off */
 		wmb();
 
@@ -4399,7 +4399,7 @@ static ssize_t sde_dbg_reg_base_reg_write(struct file *file,
 		return rc;
 	}
 
-	writel_relaxed(data, dbg->base + off);
+	writel_relaxed_no_log(data, dbg->base + off);
 
 	pm_runtime_put_sync(sde_dbg_base.dev);
 

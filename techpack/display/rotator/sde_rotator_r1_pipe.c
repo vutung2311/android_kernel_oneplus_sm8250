@@ -41,7 +41,7 @@ static inline void sde_mdp_pipe_write(struct sde_mdp_pipe *pipe,
 				       u32 reg, u32 val)
 {
 	SDEROT_DBG("pipe%d:%6.6x:%8.8x\n", pipe->num, pipe->offset + reg, val);
-	writel_relaxed(val, pipe->base + reg);
+	writel_relaxed_no_log(val, pipe->base + reg);
 }
 
 static int sde_mdp_pipe_qos_lut(struct sde_mdp_pipe *pipe)
@@ -75,7 +75,7 @@ static void sde_mdp_pipe_nrt_vbif_setup(struct sde_rot_data_type *mdata,
 	if (pipe->type != SDE_MDP_PIPE_TYPE_DMA)
 		return;
 
-	nrt_vbif_client_sel = readl_relaxed(mdata->mdp_base +
+	nrt_vbif_client_sel = readl_relaxed_no_log(mdata->mdp_base +
 				MMSS_MDP_RT_NRT_VBIF_CLIENT_SEL);
 	if (sde_mdp_is_nrt_vbif_client(mdata, pipe))
 		nrt_vbif_client_sel |= BIT(pipe->num - SDE_MDP_SSPP_DMA0);
@@ -83,7 +83,7 @@ static void sde_mdp_pipe_nrt_vbif_setup(struct sde_rot_data_type *mdata,
 		nrt_vbif_client_sel &= ~BIT(pipe->num - SDE_MDP_SSPP_DMA0);
 	SDEROT_DBG("mdp:%6.6x:%8.8x\n", MMSS_MDP_RT_NRT_VBIF_CLIENT_SEL,
 			nrt_vbif_client_sel);
-	writel_relaxed(nrt_vbif_client_sel,
+	writel_relaxed_no_log(nrt_vbif_client_sel,
 			mdata->mdp_base + MMSS_MDP_RT_NRT_VBIF_CLIENT_SEL);
 }
 

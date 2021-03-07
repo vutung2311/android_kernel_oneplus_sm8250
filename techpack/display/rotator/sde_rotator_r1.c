@@ -625,7 +625,7 @@ static irqreturn_t sde_irq_handler(int irq, void *ptr)
 	irqreturn_t ret = IRQ_NONE;
 	u32 isr;
 
-	isr = readl_relaxed(mdata->mdp_base + SDE_MDP_REG_INTR_STATUS);
+	isr = readl_relaxed_no_log(mdata->mdp_base + SDE_MDP_REG_INTR_STATUS);
 
 	SDEROT_DBG("intr_status = %8.8x\n", isr);
 
@@ -633,7 +633,7 @@ static irqreturn_t sde_irq_handler(int irq, void *ptr)
 		struct intr_callback *cb = &sde_intr_cb[SDE_ROTATOR_INTR_WB_0];
 
 		if (cb->func) {
-			writel_relaxed(SDE_MDP_INTR_WB_0_DONE,
+			writel_relaxed_no_log(SDE_MDP_INTR_WB_0_DONE,
 				mdata->mdp_base + SDE_MDP_REG_INTR_CLEAR);
 			cb->func(cb->arg);
 			ret = IRQ_HANDLED;
@@ -644,7 +644,7 @@ static irqreturn_t sde_irq_handler(int irq, void *ptr)
 		struct intr_callback *cb = &sde_intr_cb[SDE_ROTATOR_INTR_WB_1];
 
 		if (cb->func) {
-			writel_relaxed(SDE_MDP_INTR_WB_1_DONE,
+			writel_relaxed_no_log(SDE_MDP_INTR_WB_1_DONE,
 				mdata->mdp_base + SDE_MDP_REG_INTR_CLEAR);
 			cb->func(cb->arg);
 			ret = IRQ_HANDLED;

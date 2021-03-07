@@ -3091,7 +3091,7 @@ static const struct msm_kms_funcs kms_funcs = {
 /* the caller api needs to turn on clock before calling it */
 static inline void _sde_kms_core_hw_rev_init(struct sde_kms *sde_kms)
 {
-	sde_kms->core_rev = readl_relaxed(sde_kms->mmio + 0x0);
+	sde_kms->core_rev = readl_relaxed_no_log(sde_kms->mmio + 0x0);
 }
 
 static int _sde_kms_mmu_destroy(struct sde_kms *sde_kms)

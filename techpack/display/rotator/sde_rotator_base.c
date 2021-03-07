@@ -120,7 +120,7 @@ static bool force_on_xin_clk(u32 bit_off, u32 clk_ctl_reg_off, bool enable)
 	bool clk_forced_on = false;
 
 	force_on_mask = BIT(bit_off);
-	val = readl_relaxed(mdata->mdp_base + clk_ctl_reg_off);
+	val = readl_relaxed_no_log(mdata->mdp_base + clk_ctl_reg_off);
 
 	clk_forced_on = !(force_on_mask & val);
 
@@ -129,7 +129,7 @@ static bool force_on_xin_clk(u32 bit_off, u32 clk_ctl_reg_off, bool enable)
 	else
 		val &= ~force_on_mask;
 
-	writel_relaxed(val, mdata->mdp_base + clk_ctl_reg_off);
+	writel_relaxed_no_log(val, mdata->mdp_base + clk_ctl_reg_off);
 
 	return clk_forced_on;
 }
@@ -324,7 +324,7 @@ void sde_mdp_set_ot_limit(struct sde_mdp_set_ot_params *params)
 		goto exit;
 
 	if (params->rotsts_base && params->rotsts_busy_mask) {
-		sts = readl_relaxed(params->rotsts_base);
+		sts = readl_relaxed_no_log(params->rotsts_base);
 		if (sts & params->rotsts_busy_mask) {
 			SDEROT_ERR(
 				"Rotator still busy, should not modify VBIF\n");

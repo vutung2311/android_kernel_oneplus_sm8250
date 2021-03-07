@@ -22,15 +22,15 @@
 #endif
 
 #define MDSS_PLL_REG_W(base, offset, data)	\
-				writel_relaxed((data), (base) + (offset))
-#define MDSS_PLL_REG_R(base, offset)	readl_relaxed((base) + (offset))
+				writel_relaxed_no_log((data), (base) + (offset))
+#define MDSS_PLL_REG_R(base, offset)	readl_relaxed_no_log((base) + (offset))
 
 #define PLL_CALC_DATA(addr0, addr1, data0, data1)      \
 	(((data1) << 24) | ((((addr1) / 4) & 0xFF) << 16) | \
 	 ((data0) << 8) | (((addr0) / 4) & 0xFF))
 
 #define MDSS_DYN_PLL_REG_W(base, offset, addr0, addr1, data0, data1)   \
-		writel_relaxed(PLL_CALC_DATA(addr0, addr1, data0, data1), \
+		writel_relaxed_no_log(PLL_CALC_DATA(addr0, addr1, data0, data1), \
 			(base) + (offset))
 
 #define upper_8_bit(x) ((((x) >> 2) & 0x100) >> 8)
@@ -215,7 +215,7 @@ static inline bool is_gdsc_disabled(struct mdss_pll_resources *pll_res)
 		WARN(1, "gdsc_base register is not defined\n");
 		return true;
 	}
-	return readl_relaxed(pll_res->gdsc_base) & BIT(31) ? false : true;
+	return readl_relaxed_no_log(pll_res->gdsc_base) & BIT(31) ? false : true;
 }
 
 static inline int mdss_pll_div_prepare(struct clk_hw *hw)

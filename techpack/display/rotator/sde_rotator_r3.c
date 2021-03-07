@@ -115,11 +115,11 @@
 	do { \
 		SDEROT_DBG("SDEREG.D:[%s:0x%X] <= 0x%X\n", #off, (off)\
 				, (u32)(data));\
-		writel_relaxed(data, (base + (off))); \
+		writel_relaxed_no_log(data, (base + (off))); \
 	} while (0)
 
 #define SDE_ROTREG_READ(base, off) \
-	readl_relaxed(base + (off))
+	readl_relaxed_no_log(base + (off))
 
 #define SDE_ROTTOP_IN_OFFLINE_MODE(_rottop_op_mode_) \
 	(((_rottop_op_mode_) & ROTTOP_OP_MODE_ROT_OUT_MASK) == 0)
@@ -2061,7 +2061,7 @@ static u32 sde_hw_rotator_start_no_regdma(struct sde_hw_rotator_context *ctx,
 					cmd1);
 			addr =  rot->mdss_base +
 				(cmd0 & REGDMA_ADDR_OFFSET_MASK);
-			writel_relaxed(cmd1, addr);
+			writel_relaxed_no_log(cmd1, addr);
 			break;
 		case REGDMA_OP_REGMODIFY:
 			SDE_REGDMA_READ(mem_rdptr, cmd0);
@@ -2073,7 +2073,7 @@ static u32 sde_hw_rotator_start_no_regdma(struct sde_hw_rotator_context *ctx,
 			addr =  rot->mdss_base +
 				(cmd0 & REGDMA_ADDR_OFFSET_MASK);
 			mask = cmd1;
-			writel_relaxed((readl_relaxed(addr) & mask) | cmd2,
+			writel_relaxed_no_log((readl_relaxed_no_log(addr) & mask) | cmd2,
 					addr);
 			break;
 		case REGDMA_OP_BLKWRITE_SINGLE:
@@ -2088,7 +2088,7 @@ static u32 sde_hw_rotator_start_no_regdma(struct sde_hw_rotator_context *ctx,
 			while (blksize--) {
 				SDE_REGDMA_READ(mem_rdptr, cmd0);
 				SDEROT_DBG("DATA %8.8x\n", cmd0);
-				writel_relaxed(cmd0, addr);
+				writel_relaxed_no_log(cmd0, addr);
 			}
 			break;
 		case REGDMA_OP_BLKWRITE_INC:
@@ -2103,7 +2103,7 @@ static u32 sde_hw_rotator_start_no_regdma(struct sde_hw_rotator_context *ctx,
 			while (blksize--) {
 				SDE_REGDMA_READ(mem_rdptr, cmd0);
 				SDEROT_DBG("DATA %8.8x\n", cmd0);
-				writel_relaxed(cmd0, addr);
+				writel_relaxed_no_log(cmd0, addr);
 				addr += 4;
 			}
 			break;
