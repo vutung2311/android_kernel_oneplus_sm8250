@@ -169,7 +169,11 @@ static struct qmi_elem_info ssctl_shutdown_resp_ei[] = {
 		.offset		= offsetof(struct ssctl_shutdown_resp, resp),
 		.ei_array	= qmi_response_type_v01_ei,
 	},
-	{}
+	{
+		.data_type	= QMI_EOTI,
+		.array_type	= NO_ARRAY,
+		.tlv_type	= QMI_COMMON_TLV_TYPE,
+	},
 };
 
 struct ssctl_subsys_event_req {
@@ -231,7 +235,11 @@ static struct qmi_elem_info ssctl_subsys_event_req_ei[] = {
 					   evt_driven),
 		.ei_array	= NULL,
 	},
-	{}
+	{
+		.data_type	= QMI_EOTI,
+		.array_type	= NO_ARRAY,
+		.tlv_type	= QMI_COMMON_TLV_TYPE,
+	},
 };
 
 struct ssctl_subsys_event_resp {
@@ -249,7 +257,11 @@ static struct qmi_elem_info ssctl_subsys_event_resp_ei[] = {
 					   resp),
 		.ei_array	= qmi_response_type_v01_ei,
 	},
-	{}
+	{
+		.data_type	= QMI_EOTI,
+		.array_type	= NO_ARRAY,
+		.tlv_type	= QMI_COMMON_TLV_TYPE,
+	},
 };
 
 /**

@@ -61,7 +61,11 @@ static struct qmi_elem_info test_name_type_v01_ei[] = {
 		.offset		= offsetof(struct test_name_type_v01,
 					   name),
 	},
-	{}
+	{
+		.data_type      = QMI_EOTI,
+		.array_type       = NO_ARRAY,
+		.tlv_type       = QMI_COMMON_TLV_TYPE,
+	},
 };
 
 struct test_ping_req_msg_v01 {
@@ -100,7 +104,11 @@ static struct qmi_elem_info test_ping_req_msg_v01_ei[] = {
 					   client_name),
 		.ei_array	= test_name_type_v01_ei,
 	},
-	{}
+	{
+		.data_type      = QMI_EOTI,
+		.array_type       = NO_ARRAY,
+		.tlv_type       = QMI_COMMON_TLV_TYPE,
+	},
 };
 
 struct test_ping_resp_msg_v01 {
@@ -161,7 +169,11 @@ static struct qmi_elem_info test_ping_resp_msg_v01_ei[] = {
 					   service_name),
 		.ei_array	= test_name_type_v01_ei,
 	},
-	{}
+	{
+		.data_type      = QMI_EOTI,
+		.array_type       = NO_ARRAY,
+		.tlv_type       = QMI_COMMON_TLV_TYPE,
+	},
 };
 
 struct test_data_req_msg_v01 {
@@ -210,7 +222,11 @@ static struct qmi_elem_info test_data_req_msg_v01_ei[] = {
 					   client_name),
 		.ei_array	= test_name_type_v01_ei,
 	},
-	{}
+	{
+		.data_type      = QMI_EOTI,
+		.array_type       = NO_ARRAY,
+		.tlv_type       = QMI_COMMON_TLV_TYPE,
+	},
 };
 
 struct test_data_resp_msg_v01 {
@@ -281,7 +297,11 @@ static struct qmi_elem_info test_data_resp_msg_v01_ei[] = {
 					   service_name),
 		.ei_array	= test_name_type_v01_ei,
 	},
-	{}
+	{
+		.data_type      = QMI_EOTI,
+		.array_type       = NO_ARRAY,
+		.tlv_type       = QMI_COMMON_TLV_TYPE,
+	},
 };
 
 /*

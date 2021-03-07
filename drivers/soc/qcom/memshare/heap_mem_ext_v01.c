@@ -26,7 +26,7 @@ struct qmi_elem_info dhms_mem_alloc_addr_info_type_v01_ei[] = {
 					dhms_mem_alloc_addr_info_type_v01,
 					num_bytes),
 	},
-		{
+	{
 		.data_type      = QMI_EOTI,
 		.array_type     = NO_ARRAY,
 		.tlv_type       = QMI_COMMON_TLV_TYPE,
