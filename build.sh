@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 timestamp=`date +%s`
 find -name "build.log.*" | sort -r | tail -n +3 | xargs rm
 mv build.log build.log.$timestamp
@@ -42,7 +44,7 @@ BUILD_DIR="${RDIR}/.build"
 mkdir -p $BUILD_DIR
 
 if [ ! "$(ls -A ${BUILD_DIR})" ]; then
-	sudo mount -t tmpfs -o size=10g tmpfs ${RDIR}/.build
+	sudo mount -t tmpfs -o size=10g tmpfs $BUILD_DIR
 fi
 
 KERNEL_DEFCONFIG=vendor/instantnoodlep-perf_defconfig
@@ -91,9 +93,7 @@ FUNC_BUILD_KERNEL()
 	echo ""
 	echo "build common config="${KERNEL_DEFCONFIG}""
 
-	if [[ $# -eq 0 ]]; then
-		FUNC_MAKE $KERNEL_DEFCONFIG
-	fi
+	FUNC_MAKE $KERNEL_DEFCONFIG
 
 	if [[ "$WITH_CFI_CLANG" = "true" ]] ; then
 		CC=$CLANG_CC
@@ -101,26 +101,23 @@ FUNC_BUILD_KERNEL()
 		AR=$CLANG_AR
 		NM=$CLANG_NM
 
-		FUNC_MAKE $KERNEL_DEFCONFIG
-
 		echo ""
 		echo "Enable CFI_CLANG"
-		cd $BUILD_DIR && ../scripts/config \
-		-e CONFIG_LTO \
-		-e CONFIG_THINLTO \
-		-d CONFIG_LTO_NONE \
-		-e CONFIG_LTO_CLANG \
-		-e CONFIG_CFI_CLANG \
-		-e CONFIG_CFI_PERMISSIVE \
-		-d CONFIG_CFI_CLANG_SHADOW \
-		-e CONFIG_SHADOW_CALL_STACK \
-		--set-str CONFIG_UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist \
-abi_gki_aarch64_qcom_internal_whitelist \
-abi_gki_aarch64_instantnoodlep_whitelist \
-abi_gki_aarch64_qcom_whitelist \
-abi_gki_aarch64_cuttlefish_whitelist \
-scripts/lto-used-symbollist.txt" \
-		-e CONFIG_UNUSED_KSYMS_WHITELIST_ONLY
+
+		$RDIR/scripts/config --file $BUILD_DIR/.config \
+		-d LTO_NONE \
+		-e LTO \
+		-e THINLTO \
+		-e LTO_CLANG \
+		-e CFI_CLANG \
+		-e CFI_PERMISSIVE \
+		-d CFI_CLANG_SHADOW \
+		-d SHADOW_CALL_STACK \
+		-d SHADOW_CALL_STACK_VMAP \
+		-e UNUSED_KSYMS_WHITELIST_ONLY \
+		--set-str UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist abi_gki_aarch64_qcom_internal_whitelist abi_gki_aarch64_instantnoodlep_whitelist abi_gki_aarch64_qcom_whitelist abi_gki_aarch64_cuttlefish_whitelist scripts/lto-used-symbollist.txt"
+
+		FUNC_MAKE oldconfig
 	fi
 	echo ""
 
