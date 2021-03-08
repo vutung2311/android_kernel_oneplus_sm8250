@@ -57,4 +57,3 @@ ECHO = echo "	"
 
 # Generated files need to be cleaned explicitly.
 clean-files	:= dtc/dtc-lexer.lex.c dtc/dtc-parser.tab.c dtc/dtc-parser.h
-no-clean-files := dtc/
