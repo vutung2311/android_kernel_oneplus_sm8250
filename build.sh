@@ -112,7 +112,7 @@ FUNC_BUILD_KERNEL()
 		-e CFI_CLANG \
 		-e CFI_PERMISSIVE \
 		-d CFI_CLANG_SHADOW \
-		-d SHADOW_CALL_STACK \
+		-e SHADOW_CALL_STACK \
 		-d SHADOW_CALL_STACK_VMAP \
 		-e UNUSED_KSYMS_WHITELIST_ONLY \
 		--set-str UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist abi_gki_aarch64_qcom_internal_whitelist abi_gki_aarch64_instantnoodlep_whitelist abi_gki_aarch64_qcom_whitelist abi_gki_aarch64_cuttlefish_whitelist scripts/lto-used-symbollist.txt"
