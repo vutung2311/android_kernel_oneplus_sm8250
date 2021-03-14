@@ -438,8 +438,8 @@ static ssize_t swapin_anon(struct task_struct *task, int prev_adj)
 	struct vm_area_struct *vma;
 	struct mm_walk walk = {};
 	int task_anon = 0, task_swap = 0, err = 0;
-	//u64 time_ns = 0;
 #if DEBUG_TIME_INFO
+	u64 time_ns = 0;
 	struct timespec ts1, ts2;
 	getnstimeofday(&ts1);
 #endif
@@ -693,8 +693,8 @@ static ssize_t reclaim_anon(struct task_struct *task, int prev_adj)
 	int task_anon = 0, task_swap = 0;
 	int a_task_anon = 0, a_task_swap = 0;
 
-	//u64 time_ns = 0;
 #if DEBUG_TIME_INFO
+	u64 time_ns = 0;
 	struct timespec ts1, ts2;
 	getnstimeofday(&ts1);
 #endif
@@ -773,12 +773,13 @@ out:
 	getnstimeofday(&ts2);
 	ts2 = timespec_sub(ts2, ts1);
 	time_ns = timespec_to_ns(&ts2);
-#endif
+
 	/* it's possible that rp data isn't initialized because mm don't exist */
-	//trace_printk("%s (pid %d)(size %d-%d to %d-%d) (adj %d -> %d) reclaimed %d scan %d consumed %llu ms %llu us\n"
-	//		, task->comm, task->pid, task_anon, task_swap, a_task_anon, a_task_swap
-	//		, prev_adj, task->signal->oom_score_adj, rp.nr_reclaimed, rp.nr_scanned
-	//		, (time_ns/1000000), (time_ns/1000)%1000);
+	trace_printk("%s (pid %d)(size %d-%d to %d-%d) (adj %d -> %d) reclaimed %d scan %d consumed %llu ms %llu us\n"
+			, task->comm, task->pid, task_anon, task_swap, a_task_anon, a_task_swap
+			, prev_adj, task->signal->oom_score_adj, rp.nr_reclaimed, rp.nr_scanned
+			, (time_ns/1000000), (time_ns/1000)%1000);
+#endif
 
 	/* TODO : return proper value */
 	return rp.nr_reclaimed;
@@ -1099,10 +1100,8 @@ retry:
 	if (err) {
 		err = 0;
 		//schedule();
-#if MEMEX_DEBUG
 		/* TODO: it's possible to loop forever here
 		 * if we're swapin camera which is foreground actively used */
-#endif
 		goto retry;
 	}
 out:
@@ -1121,8 +1120,8 @@ static ssize_t memex_do_reclaim_anon(struct task_struct *task, int prev_adj)
 	int task_anon = 0, task_swap = 0;
 	int a_task_anon = 0, a_task_swap = 0;
 
-	//u64 time_ns = 0;
 #if DEBUG_TIME_INFO
+	u64 time_ns = 0;
 	struct timespec ts1, ts2;
 	getnstimeofday(&ts1);
 #endif
