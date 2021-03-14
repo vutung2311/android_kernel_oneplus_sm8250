@@ -1591,15 +1591,16 @@ unsigned long coretech_reclaim_pagelist(struct list_head *page_list,
 		.may_unmap = 1,
 		.may_swap = 1,
 		.target_vma = vma,
+		.swp_bdv_type = 0,
 	};
 
 	unsigned long nr_reclaimed;
-	struct page *page;
+	struct page *page, *next;
 
 	if (!sc)
 		sc = &sc_t;
 
-	list_for_each_entry(page, page_list, lru) {
+	list_for_each_entry_safe(page, next, page_list, lru) {
 		ClearPageActive(page);
 	}
 
@@ -1607,7 +1608,8 @@ unsigned long coretech_reclaim_pagelist(struct list_head *page_list,
 		(struct scan_control *)sc,
 		TTU_IGNORE_ACCESS, NULL, true);
 
-	while (!list_empty(page_list)) {
+	smp_mb();
+	while (!list_empty_careful(page_list)) {
 		page = lru_to_page(page_list);
 		list_del(&page->lru);
 		dec_node_page_state(page, NR_ISOLATED_ANON +
