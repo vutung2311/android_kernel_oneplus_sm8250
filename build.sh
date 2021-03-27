@@ -3,7 +3,7 @@
 set -e
 
 timestamp=`date +%s`
-find -name "build.log.*" | sort -r | tail -n +3 | xargs rm
+find -name "build.log.*" | sort -r | tail -n +3 | xargs rm -f
 mv build.log build.log.$timestamp
 
 export ARCH=arm64
