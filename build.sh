@@ -149,7 +149,6 @@ FUNC_BUILD_RECOVERY_IMG()
 }
 
 # MAIN FUNCTION
-rm -rf ./build.log
 (
 	START_TIME=`date +%s`
 
