@@ -1,6 +1,7 @@
 !.gitkeep
 ramdisk-new.cpio.gz
 image-new.img
+unpadded-new.img
 split_img/recovery.img-zImage
 split_img/recovery.img-dtb
 split_img/recovery.img-recovery_dtbo

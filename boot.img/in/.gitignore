@@ -1,5 +1,6 @@
 !.gitkeep
 image-new.img
 unsigned-new.img
+unpadded-new.img
 split_img/boot.img-zImage
 split_img/boot.img-dtb
