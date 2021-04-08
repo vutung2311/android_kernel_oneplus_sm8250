@@ -416,7 +416,7 @@ int psci_cpu_init_idle(unsigned int cpu)
 static int psci_suspend_finisher(unsigned long state_id)
 {
 	return psci_ops.cpu_suspend(state_id,
-				    __pa_symbol(cpu_resume));
+				    __pa_function(cpu_resume));
 }
 int psci_cpu_suspend_enter(unsigned long state_id)
 {
@@ -451,7 +451,7 @@ CPUIDLE_METHOD_OF_DECLARE(psci, "psci", &psci_cpuidle_ops);
 static int psci_system_suspend(unsigned long unused)
 {
 	return invoke_psci_fn(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND),
-			      __pa_symbol(cpu_resume), 0, 0);
+			      __pa_function(cpu_resume), 0, 0);
 }
 
 static int psci_system_suspend_enter(suspend_state_t state)
