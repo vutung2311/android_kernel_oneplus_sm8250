@@ -158,28 +158,25 @@ static unsigned long kallsyms_sym_address(int idx)
 	return kallsyms_relative_base - 1 - kallsyms_offsets[idx];
 }
 
-#ifdef CONFIG_CFI_CLANG
+#if defined(CONFIG_CFI_CLANG) && defined(CONFIG_THINLTO)
 /*
- * LLVM appends .cfi to function names when CONFIG_CFI_CLANG is enabled,
- * which causes confusion and potentially breaks user space tools, so we
- * will strip the postfix from expanded symbol names.
+ * LLVM appends a hash to static function names when ThinLTO and CFI are
+ * both enabled, i.e. foo() becomes foo$707af9a22804d33c81801f27dcfe489b.
+ * This causes confusion and potentially breaks user space tools, so we
+ * strip the suffix from expanded symbol names.
  */
-static inline void cleanup_symbol_name(char *s)
+static inline bool cleanup_symbol_name(char *s)
 {
 	char *res;
 
-#ifdef CONFIG_THINLTO
-	/* Filter out hashes from static functions */
 	res = strrchr(s, '$');
 	if (res)
 		*res = '\0';
-#endif
-	res = strrchr(s, '.');
-	if (res && !strcmp(res, ".cfi"))
-		*res = '\0';
+
+	return res != NULL;
 }
 #else
-static inline void cleanup_symbol_name(char *s) {}
+static inline bool cleanup_symbol_name(char *s) { return false; }
 #endif
 
 /* Lookup the address for this symbol. Returns 0 if not found. */
@@ -195,8 +192,7 @@ unsigned long kallsyms_lookup_name(const char *name)
 		if (strcmp(namebuf, name) == 0)
 			return kallsyms_sym_address(i);
 
-		cleanup_symbol_name(namebuf);
-		if (strcmp(namebuf, name) == 0)
+		if (cleanup_symbol_name(namebuf) && strcmp(namebuf, name) == 0)
 			return kallsyms_sym_address(i);
 	}
 	return module_kallsyms_lookup_name(name);
