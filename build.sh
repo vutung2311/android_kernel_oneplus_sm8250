@@ -131,6 +131,13 @@ FUNC_BUILD_KERNEL()
 	echo ""
 }
 
+FUNC_BUILD_DTBO_IMG()
+{
+	cp "${BUILD_DIR}/arch/${ARCH}/boot/dtbo.img" "${RDIR}/dtbo.img/out/dtbo.img"
+	orig_size=$(wc -c < ${RDIR}/dtbo.img/in/dtbo.img)
+	truncate -s $orig_size "${RDIR}/dtbo.img/out/dtbo.img"
+}
+
 FUNC_BUILD_BOOT_IMG()
 {
 	cp "${BUILD_DIR}/arch/${ARCH}/boot/Image" "${RDIR}/boot.img/in/split_img/boot.img-zImage"
@@ -166,6 +173,7 @@ FUNC_BUILD_RECOVERY_IMG()
 	done
 
 	FUNC_BUILD_KERNEL "$@"
+	FUNC_BUILD_DTBO_IMG
 	FUNC_BUILD_BOOT_IMG
 	FUNC_BUILD_RECOVERY_IMG
 
