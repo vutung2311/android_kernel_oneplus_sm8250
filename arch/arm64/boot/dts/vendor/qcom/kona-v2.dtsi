@@ -5,21 +5,35 @@
 	compatible = "qcom,kona";
 	qcom,msm-id = <356 0x20000>;
 };
+&CPU0 {
+	dynamic-power-coefficient = <190>;
+};
 
+&CPU1 {
+	dynamic-power-coefficient = <190>;
+};
+
+&CPU2 {
+	dynamic-power-coefficient = <190>;
+};
+
+&CPU3 {
+	dynamic-power-coefficient = <190>;
+};
 &CPU4 {
-	dynamic-power-coefficient = <533>;
+	dynamic-power-coefficient = <356>;
 };
 
 &CPU5 {
-	dynamic-power-coefficient = <533>;
+	dynamic-power-coefficient = <356>;
 };
 
 &CPU6 {
-	dynamic-power-coefficient = <533>;
+	dynamic-power-coefficient = <356>;
 };
 
 &CPU7 {
-	dynamic-power-coefficient = <642>;
+	dynamic-power-coefficient = <431>;
 };
 
 &clock_camcc {
