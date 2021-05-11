@@ -636,8 +636,8 @@ cont:
 
 	memplus_add_to_swap += isolated;
 
-	if (reclaim_type == TYPE_NORMAL && !enough_swap_size(isolated, TYPE_NORMAL))
-		reclaim_type = TYPE_FREQUENT;
+	if (reclaim_type == TYPE_FREQUENT && !enough_swap_size(isolated, TYPE_FREQUENT))
+		reclaim_type = TYPE_NORMAL;
 
 	if (reclaim_type == TYPE_NORMAL)
 		reclaimed = swapout_to_disk(&page_list, vma);
