@@ -117,7 +117,6 @@ extern void radix_tree_init(void);
 bool early_boot_irqs_disabled __read_mostly;
 
 enum system_states system_state __read_mostly;
-EXPORT_SYMBOL(system_state);
 
 /*
  * Boot command-line arguments
