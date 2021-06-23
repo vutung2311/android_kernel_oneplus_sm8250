@@ -54,6 +54,7 @@ WLAN_DISABLE_BUILD_TAG=y
 
 COMPILE_KERNEL=true
 WITH_CFI_CLANG=false
+WITH_KASAN=false
 
 FUNC_MAKE()
 {
@@ -106,21 +107,37 @@ FUNC_BUILD_KERNEL()
 
 		$RDIR/scripts/config --file $BUILD_DIR/.config \
 		-d LTO_NONE \
-		-e LTO \
-		-e THINLTO \
 		-e LTO_CLANG \
+		-e THINLTO \
 		-e CFI_CLANG \
 		-e CFI_PERMISSIVE \
 		-d CFI_CLANG_SHADOW \
-		-e SHADOW_CALL_STACK \
 		-d SHADOW_CALL_STACK_VMAP \
+		-e SHADOW_CALL_STACK \
 		-e TRIM_UNUSED_KSYMS \
 		-e UNUSED_KSYMS_WHITELIST_ONLY \
 		--set-str UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist abi_gki_aarch64_qcom_internal_whitelist abi_gki_aarch64_instantnoodlep_whitelist abi_gki_aarch64_cuttlefish_whitelist scripts/lto-used-symbollist.txt"
-
-		FUNC_MAKE oldconfig
 	fi
-	echo ""
+
+	if [[ "$WITH_KASAN" = "true" ]] ; then
+		echo ""
+		echo "Enable KASAN"
+
+		$RDIR/scripts/config --file $BUILD_DIR/.config \
+		-e DEBUG_DMA_BUF_REF \
+		--set-val STACK_HASH_ORDER_SHIFT 20 \
+		-e SLUB_DEBUG_PANIC_ON \
+		-e SLUB_DEBUG_ON \
+		-e KASAN \
+		-e KASAN_OUTLINE \
+		-d KASAN_INLINE \
+		-d KASAN_SW_TAGS \
+		-e KASAN_GENERIC \
+		-e KASAN_STACK \
+		-d TEST_KASAN
+	fi
+
+	FUNC_MAKE oldconfig
 
 	FUNC_MAKE
 
@@ -165,6 +182,9 @@ FUNC_BUILD_RECOVERY_IMG()
 		case $var in
 			"--with-cfi-clang")
 				WITH_CFI_CLANG=true
+			;;
+			"--with-kasan")
+				WITH_KASAN=true
 			;;
 			"--packaging-only")
 				COMPILE_KERNEL=false
