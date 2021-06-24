@@ -4968,24 +4968,24 @@ int ufs_fill_info(struct ufs_hba *hba)
 	/* Copy UFS info from host controller structure (ex:vendor name, firmware revision) */
 	if (!hba->sdev_ufs_device->vendor) {
 		dev_err(hba->dev, "%s: UFS vendor info is NULL\n", __func__);
-		strlcpy(ufs_vendor, "UNKNOWN", 7);
+		strscpy(ufs_vendor, "UNKNOWN", 7);
 	} else {
-		strlcpy(ufs_vendor, hba->sdev_ufs_device->vendor,
+		strscpy(ufs_vendor, hba->sdev_ufs_device->vendor,
 			sizeof(ufs_vendor)-1);
 	}
 
 	if (!hba->sdev_ufs_device->rev) {
 		dev_err(hba->dev, "%s: UFS firmware info is NULL\n", __func__);
-		strlcpy(ufs_rev, "NONE", 4);
+		strscpy(ufs_rev, "NONE", 4);
 	} else {
-		strlcpy(ufs_rev, hba->sdev_ufs_device->rev, sizeof(ufs_rev)-1);
+		strscpy(ufs_rev, hba->sdev_ufs_device->rev, sizeof(ufs_rev)-1);
 	}
 
 	if (!hba->sdev_ufs_device->model) {
 		dev_err(hba->dev, "%s: UFS product id info is NULL\n", __func__);
-		strlcpy(ufs_product_id, "UNKNOWN", 7);
+		strscpy(ufs_product_id, "UNKNOWN", 7);
 	} else {
-		strlcpy(ufs_product_id, hba->sdev_ufs_device->model, 11);
+		strscpy(ufs_product_id, hba->sdev_ufs_device->model, 11);
 #if defined(UFS3V1)
 		if (hba->ufsf.hpb_lup[0])
 			strlcat(ufs_product_id, "_H", sizeof(ufs_product_id));
