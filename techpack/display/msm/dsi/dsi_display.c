@@ -1535,10 +1535,10 @@ static int dsi_display_status_reg_read(struct dsi_display *display)
 	struct dsi_cmd_desc *cmds;
 	unsigned char *payload;
 	#endif
-	unsigned char register1[10] = {0};
-	unsigned char register2[10] = {0};
-	unsigned char register3[10] = {0};
-	unsigned char register4[10] = {0};
+	unsigned char register1[16] = {0};
+	unsigned char register2[16] = {0};
+	unsigned char register3[16] = {0};
+	unsigned char register4[16] = {0};
 
 	DSI_DEBUG(" ++\n");
 
@@ -9523,13 +9523,13 @@ int dsi_display_read_serial_number(struct dsi_display *dsi_display,
 {
 	int rc = 0;
 	int count = 0;
-	unsigned char panel_ic_v = 0;
-	unsigned char register_d6[10] = {0};
+	unsigned char panel_ic_v[16] = {0};
+	unsigned char register_d6[16] = {0};
 	int ddic_x = 0;
 	int ddic_y = 0;
-	unsigned char code_info = 0;
-	unsigned char stage_info = 0;
-	unsigned char prodution_info = 0;
+	unsigned char code_info[16] = {0};
+	unsigned char stage_info[16] = {0};
+	unsigned char prodution_info[16] = {0};
 
 	struct dsi_display_mode *mode;
 
@@ -9557,8 +9557,8 @@ int dsi_display_read_serial_number(struct dsi_display *dsi_display,
 	}
 
 	if(strcmp(panel->name, "samsung ana6706 dsc cmd mode panel") == 0) {
-		dsi_display_register_read(dsi_display, 0xFA, &panel_ic_v, 1);
-		panel->panel_ic_v = panel_ic_v & 0x0f;
+		dsi_display_register_read(dsi_display, 0xFA, panel_ic_v, 1);
+		panel->panel_ic_v = panel_ic_v[0] & 0x0f;
 	}
 
 	if ((strcmp(panel->name, "samsung ana6705 fhd cmd mode dsc dsi panel") == 0)
@@ -9579,16 +9579,16 @@ int dsi_display_read_serial_number(struct dsi_display *dsi_display,
 
 	dsi_display_register_read(dsi_display, 0xA1, buf, len);
 
-	dsi_display_register_read(dsi_display, 0xDA, &code_info, 1);
-	panel->panel_code_info = code_info;
+	dsi_display_register_read(dsi_display, 0xDA, code_info, 1);
+	panel->panel_code_info = code_info[0];
 	DSI_ERR("Code info is 0x%X\n", panel->panel_code_info);
 
-	dsi_display_register_read(dsi_display, 0xDB, &stage_info, 1);
-	panel->panel_stage_info = stage_info;
+	dsi_display_register_read(dsi_display, 0xDB, stage_info, 1);
+	panel->panel_stage_info = stage_info[0];
 	DSI_ERR("Stage info is 0x%X\n", panel->panel_stage_info);
 
-	dsi_display_register_read(dsi_display, 0xDC, &prodution_info, 1);
-	panel->panel_production_info = prodution_info;
+	dsi_display_register_read(dsi_display, 0xDC, prodution_info, 1);
+	panel->panel_production_info = prodution_info[0];
 	DSI_ERR("Production info is 0x%X\n", panel->panel_production_info);
 
 	count = mode->priv_info->cmd_sets[DSI_CMD_SET_LEVEL2_KEY_DISABLE].count;
