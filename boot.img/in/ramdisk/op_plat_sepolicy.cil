@@ -261,6 +261,7 @@
 (genfscon proc /uptime (u object_r proc_uptime ((s0) (s0))))
 (genfscon proc /vmstat (u object_r proc_vmstat ((s0) (s0))))
 (genfscon proc /iomem (u object_r proc_iomem ((s0) (s0))))
+(genfscon proc /locks (u object_r proc_locks ((s0) (s0))))
 (genfscon proc /swaps (u object_r proc_swaps ((s0) (s0))))
 (genfscon proc /keys (u object_r proc_keys ((s0) (s0))))
 (genfscon proc /kmsg (u object_r proc_kmsg ((s0) (s0))))
@@ -667,7 +668,7 @@
 (typeattribute domain)
 (typeattributeset domain (adbd aidl_lazy_test_server apexd app_zygote audioserver blkid blkid_untrusted bluetooth bootanim bootstat bufferhubd cameraserver charger crash_dump credstore dhcp dnsmasq drmserver dumpstate e2fs ephemeral_app fastbootd fingerprintd flags_health_check fsck fsck_untrusted gatekeeperd gmscore_app gpuservice healthd heapprofd hwservicemanager idmap incident incident_helper incidentd init inputflinger installd iorap_inode2filename iorap_prefetcherd iorapd isolated_app kernel keystore llkd lmkd logd logpersist mdnsd mediadrmserver mediaextractor mediametrics mediaprovider mediaserver mediaswcodec mediatranscoding modprobe mtp netd netutils_wrapper network_stack nfc perfetto performanced platform_app postinstall ppp priv_app profman racoon radio recovery recovery_persist recovery_refresh rs rss_hwm_reset runas runas_app sdcardd secure_element servicemanager sgdisk shared_relro shell simpleperf simpleperf_app_runner slideshow statsd su surfaceflinger system_app system_server tee tombstoned toolbox traced traced_perf traced_probes traceur_app tzdatacheck ueventd uncrypt untrusted_app untrusted_app_29 untrusted_app_27 untrusted_app_25 update_engine update_verifier usbd vdc vendor_init vendor_misc_writer vendor_shell virtual_touchpad vndservicemanager vold vold_prepare_subdirs vr_hwc watchdogd webview_zygote wificond wpantund zygote apex_test_prepostinstall art_apex_boot_integrity art_apex_postinstall art_apex_preinstall atrace auditctl automotive_display_service blank_screen boringssl_self_test vendor_boringssl_self_test bpfloader clatd cppreopts derive_sdk dex2oat dexoptanalyzer fsverity_init fwk_bufferhub gsid hal_allocator_default hidl_lazy_test_server iw linkerconfig lpdumpd mediaprovider_app migrate_legacy_obb_data notify_traceur otapreopt_chroot otapreopt_slot permissioncontroller_app postinstall_dexopt preloads_copy preopt2cachename snapshotctl stats storaged system_server_startup system_suspend viewcompiler vzwomatrigger_app wait_for_keymaster ))
 (typeattribute fs_type)
-(typeattributeset fs_type (device labeledfs pipefs sockfs rootfs proc binderfs binderfs_logs binderfs_logs_proc proc_security proc_drop_caches proc_overcommit_memory proc_min_free_order_shift proc_kpageflags usermodehelper sysfs_usermodehelper proc_qtaguid_ctrl proc_qtaguid_stat proc_bluetooth_writable proc_abi proc_asound proc_buddyinfo proc_cmdline proc_cpuinfo proc_dirty proc_diskstats proc_extra_free_kbytes proc_filesystems proc_fs_verity proc_hostname proc_hung_task proc_interrupts proc_iomem proc_keys proc_kmsg proc_loadavg proc_lowmemorykiller proc_max_map_count proc_meminfo proc_misc proc_modules proc_mounts proc_net proc_net_tcp_udp proc_page_cluster proc_pagetypeinfo proc_panic proc_perf proc_pid_max proc_pipe_conf proc_pressure_cpu proc_pressure_io proc_pressure_mem proc_random proc_sched proc_slabinfo proc_stat proc_swaps proc_sysrq proc_timer proc_tty_drivers proc_uid_cputime_showstat proc_uid_cputime_removeuid proc_uid_io_stats proc_uid_procstat_set proc_uid_time_in_state proc_uid_concurrent_active_time proc_uid_concurrent_policy_time proc_uid_cpupower proc_uptime proc_version proc_vmallocinfo proc_vmstat proc_zoneinfo selinuxfs fusectlfs cgroup cgroup_bpf sysfs sysfs_android_usb sysfs_uio sysfs_batteryinfo sysfs_bluetooth_writable sysfs_devices_block sysfs_dm sysfs_dm_verity sysfs_dt_firmware_android sysfs_extcon sysfs_ion sysfs_ipv4 sysfs_kernel_notes sysfs_leds sysfs_loop sysfs_hwrandom sysfs_nfc_power_writable sysfs_wake_lock sysfs_net sysfs_power sysfs_rtc sysfs_suspend_stats sysfs_switch sysfs_transparent_hugepage sysfs_usb sysfs_wakeup sysfs_wakeup_reasons sysfs_fs_ext4_features sysfs_fs_f2fs fs_bpf configfs sysfs_devices_system_cpu sysfs_lowmemorykiller sysfs_wlan_fwpath sysfs_vibrator sysfs_thermal sysfs_zram sysfs_zram_uevent inotify devpts tmpfs shm mqueue fuse sdcardfs vfat exfat debugfs debugfs_kprobes debugfs_mmc debugfs_trace_marker debugfs_tracing debugfs_tracing_debug debugfs_tracing_instances debugfs_wakeup_sources debugfs_wifi_tracing securityfs pstorefs functionfs oemfs usbfs binfmt_miscfs app_fusefs apex_test_prepostinstall_devpts apexd_devpts config_gz debugfs_kcov priv_app_devpts untrusted_app_all_devpts ))
+(typeattributeset fs_type (device labeledfs pipefs sockfs rootfs proc binderfs binderfs_logs binderfs_logs_proc proc_security proc_drop_caches proc_overcommit_memory proc_min_free_order_shift proc_kpageflags usermodehelper sysfs_usermodehelper proc_qtaguid_ctrl proc_qtaguid_stat proc_bluetooth_writable proc_abi proc_asound proc_buddyinfo proc_cmdline proc_cpuinfo proc_dirty proc_diskstats proc_extra_free_kbytes proc_filesystems proc_fs_verity proc_hostname proc_hung_task proc_interrupts proc_iomem proc_keys proc_kmsg proc_loadavg proc_locks proc_lowmemorykiller proc_max_map_count proc_meminfo proc_misc proc_modules proc_mounts proc_net proc_net_tcp_udp proc_page_cluster proc_pagetypeinfo proc_panic proc_perf proc_pid_max proc_pipe_conf proc_pressure_cpu proc_pressure_io proc_pressure_mem proc_random proc_sched proc_slabinfo proc_stat proc_swaps proc_sysrq proc_timer proc_tty_drivers proc_uid_cputime_showstat proc_uid_cputime_removeuid proc_uid_io_stats proc_uid_procstat_set proc_uid_time_in_state proc_uid_concurrent_active_time proc_uid_concurrent_policy_time proc_uid_cpupower proc_uptime proc_version proc_vmallocinfo proc_vmstat proc_zoneinfo selinuxfs fusectlfs cgroup cgroup_bpf sysfs sysfs_android_usb sysfs_uio sysfs_batteryinfo sysfs_bluetooth_writable sysfs_devices_block sysfs_dm sysfs_dm_verity sysfs_dt_firmware_android sysfs_extcon sysfs_ion sysfs_ipv4 sysfs_kernel_notes sysfs_leds sysfs_loop sysfs_hwrandom sysfs_nfc_power_writable sysfs_wake_lock sysfs_net sysfs_power sysfs_rtc sysfs_suspend_stats sysfs_switch sysfs_transparent_hugepage sysfs_usb sysfs_wakeup sysfs_wakeup_reasons sysfs_fs_ext4_features sysfs_fs_f2fs fs_bpf configfs sysfs_devices_system_cpu sysfs_lowmemorykiller sysfs_wlan_fwpath sysfs_vibrator sysfs_thermal sysfs_zram sysfs_zram_uevent inotify devpts tmpfs shm mqueue fuse sdcardfs vfat exfat debugfs debugfs_kprobes debugfs_mmc debugfs_trace_marker debugfs_tracing debugfs_tracing_debug debugfs_tracing_instances debugfs_wakeup_sources debugfs_wifi_tracing securityfs pstorefs functionfs oemfs usbfs binfmt_miscfs app_fusefs apex_test_prepostinstall_devpts apexd_devpts config_gz debugfs_kcov priv_app_devpts untrusted_app_all_devpts ))
 (typeattribute contextmount_type)
 (typeattributeset contextmount_type (oemfs app_fusefs ))
 (typeattribute file_type)
@@ -686,7 +687,7 @@
 (typeattributeset vendor_file_type (vendor_cgroup_desc_file vendor_task_profiles_file vendor_hal_file vendor_file vendor_app_file vendor_configs_file same_process_hal_file vndk_sp_file vendor_framework_file vendor_overlay_file vendor_public_lib_file vendor_keylayout_file vendor_keychars_file vendor_idc_file vendor_apex_file vendor_service_contexts_file nonplat_service_contexts_file vendor_misc_writer_exec vendor_shell_exec vendor_toolbox_exec vendor_boringssl_self_test_exec ))
 (typeattribute proc_type)
 (expandtypeattribute (proc_type) false)
-(typeattributeset proc_type (proc proc_security proc_drop_caches proc_overcommit_memory proc_min_free_order_shift proc_kpageflags usermodehelper proc_qtaguid_ctrl proc_qtaguid_stat proc_bluetooth_writable proc_abi proc_asound proc_buddyinfo proc_cmdline proc_cpuinfo proc_dirty proc_diskstats proc_extra_free_kbytes proc_filesystems proc_fs_verity proc_hostname proc_hung_task proc_interrupts proc_iomem proc_keys proc_kmsg proc_loadavg proc_lowmemorykiller proc_max_map_count proc_meminfo proc_misc proc_modules proc_mounts proc_net proc_net_tcp_udp proc_page_cluster proc_pagetypeinfo proc_panic proc_perf proc_pid_max proc_pipe_conf proc_pressure_cpu proc_pressure_io proc_pressure_mem proc_random proc_sched proc_slabinfo proc_stat proc_swaps proc_sysrq proc_timer proc_tty_drivers proc_uid_cputime_showstat proc_uid_cputime_removeuid proc_uid_io_stats proc_uid_procstat_set proc_uid_time_in_state proc_uid_concurrent_active_time proc_uid_concurrent_policy_time proc_uid_cpupower proc_uptime proc_version proc_vmallocinfo proc_vmstat proc_zoneinfo config_gz ))
+(typeattributeset proc_type (proc proc_security proc_drop_caches proc_overcommit_memory proc_min_free_order_shift proc_kpageflags usermodehelper proc_qtaguid_ctrl proc_qtaguid_stat proc_bluetooth_writable proc_abi proc_asound proc_buddyinfo proc_cmdline proc_cpuinfo proc_dirty proc_diskstats proc_extra_free_kbytes proc_filesystems proc_fs_verity proc_hostname proc_hung_task proc_interrupts proc_iomem proc_keys proc_kmsg proc_loadavg proc_locks proc_lowmemorykiller proc_max_map_count proc_meminfo proc_misc proc_modules proc_mounts proc_net proc_net_tcp_udp proc_page_cluster proc_pagetypeinfo proc_panic proc_perf proc_pid_max proc_pipe_conf proc_pressure_cpu proc_pressure_io proc_pressure_mem proc_random proc_sched proc_slabinfo proc_stat proc_swaps proc_sysrq proc_timer proc_tty_drivers proc_uid_cputime_showstat proc_uid_cputime_removeuid proc_uid_io_stats proc_uid_procstat_set proc_uid_time_in_state proc_uid_concurrent_active_time proc_uid_concurrent_policy_time proc_uid_cpupower proc_uptime proc_version proc_vmallocinfo proc_vmstat proc_zoneinfo config_gz ))
 (typeattribute proc_net_type)
 (expandtypeattribute (proc_net_type) true)
 (typeattributeset proc_net_type (proc_net ))
@@ -703,20 +704,20 @@
 (typeattribute port_type)
 (typeattributeset port_type (port ))
 (typeattribute property_type)
-(typeattributeset property_type (apexd_prop bootloader_boot_reason_prop device_config_activity_manager_native_boot_prop device_config_boot_count_prop device_config_input_native_boot_prop device_config_media_native_prop device_config_netd_native_prop device_config_reset_performed_prop device_config_runtime_native_boot_prop device_config_runtime_native_prop device_config_storage_native_boot_prop device_config_sys_traced_prop device_config_window_manager_native_boot_prop device_config_configuration_prop firstboot_prop fastbootd_protocol_prop gsid_prop init_perf_lsm_hooks_prop init_svc_debug_prop last_boot_reason_prop netd_stable_secret_prop pm_prop userspace_reboot_log_prop userspace_reboot_test_prop system_adbd_prop adbd_prop traced_perf_enabled_prop boottime_prop bpf_progs_loaded_prop charger_prop cold_boot_done_prop ctl_adbd_prop ctl_apexd_prop ctl_bootanim_prop ctl_bugreport_prop ctl_console_prop ctl_dumpstate_prop ctl_fuse_prop ctl_gsid_prop ctl_interface_restart_prop ctl_interface_stop_prop ctl_mdnsd_prop ctl_restart_prop ctl_rildaemon_prop ctl_sigstop_prop dynamic_system_prop heapprofd_enabled_prop llkd_prop lpdumpd_prop mmc_prop mock_ota_prop net_dns_prop overlay_prop persistent_properties_ready_prop safemode_prop system_lmk_prop system_trace_prop test_boot_reason_prop time_prop traced_enabled_prop traced_lazy_prop binder_cache_bluetooth_server_prop binder_cache_system_server_prop binder_cache_telephony_server_prop boottime_public_prop bq_config_prop module_sdkextensions_prop nnapi_ext_deny_product_prop restorecon_prop socket_hook_prop surfaceflinger_display_prop system_boot_reason_prop system_jvmti_agent_prop userspace_reboot_exported_prop config_prop cppreopt_prop dalvik_prop debuggerd_prop default_prop device_logging_prop dhcp_prop dumpstate_prop exported2_default_prop exported3_system_prop exported_dumpstate_prop exported_fingerprint_prop exported_secure_prop exported_vold_prop ffs_prop fingerprint_prop heapprofd_prop net_radio_prop pan_result_prop persist_debug_prop shell_prop system_radio_prop test_harness_prop theme_prop use_memfd_prop vold_prop apk_verity_prop cpu_variant_prop exported_audio_prop exported_camera_prop exported_config_prop exported_default_prop exported3_default_prop graphics_config_prop incremental_prop media_variant_prop storage_config_prop userspace_reboot_config_prop vehicle_hal_prop vendor_security_patch_level_prop vendor_socket_hook_prop vndk_prop virtual_ab_prop audio_prop bluetooth_a2dp_offload_prop bluetooth_audio_hal_prop bluetooth_prop ctl_default_prop ctl_interface_start_prop ctl_start_prop ctl_stop_prop debug_prop dumpstate_options_prop exported_system_prop exported2_config_prop exported2_radio_prop exported2_system_prop exported2_vold_prop exported3_radio_prop exported_bluetooth_prop exported_dalvik_prop exported_ffs_prop exported_overlay_prop exported_pm_prop exported_radio_prop exported_system_radio_prop exported_wifi_prop sota_prop hwservicemanager_prop lmkd_prop logd_prop logpersistd_logging_prop log_prop log_tag_prop lowpan_prop nfc_prop ota_prop powerctl_prop radio_prop serialno_prop system_prop wifi_log_prop wifi_prop rebootescrow_hal_prop vendor_default_prop ))
+(typeattributeset property_type (apexd_prop bootloader_boot_reason_prop device_config_activity_manager_native_boot_prop device_config_boot_count_prop device_config_input_native_boot_prop device_config_media_native_prop device_config_netd_native_prop device_config_reset_performed_prop device_config_runtime_native_boot_prop device_config_runtime_native_prop device_config_storage_native_boot_prop device_config_sys_traced_prop device_config_window_manager_native_boot_prop device_config_configuration_prop firstboot_prop fastbootd_protocol_prop gsid_prop init_perf_lsm_hooks_prop init_svc_debug_prop last_boot_reason_prop netd_stable_secret_prop pm_prop userspace_reboot_log_prop userspace_reboot_test_prop system_adbd_prop adbd_prop traced_perf_enabled_prop boottime_prop bpf_progs_loaded_prop charger_prop cold_boot_done_prop ctl_adbd_prop ctl_apexd_prop ctl_bootanim_prop ctl_bugreport_prop ctl_console_prop ctl_dumpstate_prop ctl_fuse_prop ctl_gsid_prop ctl_interface_restart_prop ctl_interface_stop_prop ctl_mdnsd_prop ctl_restart_prop ctl_rildaemon_prop ctl_sigstop_prop dynamic_system_prop heapprofd_enabled_prop llkd_prop lpdumpd_prop mmc_prop mock_ota_prop net_dns_prop overlay_prop persistent_properties_ready_prop safemode_prop system_lmk_prop system_trace_prop test_boot_reason_prop time_prop traced_enabled_prop traced_lazy_prop binder_cache_bluetooth_server_prop binder_cache_system_server_prop binder_cache_telephony_server_prop boottime_public_prop bq_config_prop module_sdkextensions_prop nnapi_ext_deny_product_prop restorecon_prop socket_hook_prop surfaceflinger_display_prop system_boot_reason_prop system_jvmti_agent_prop userspace_reboot_exported_prop config_prop cppreopt_prop dalvik_prop debuggerd_prop default_prop device_logging_prop dhcp_prop dumpstate_prop exported2_default_prop exported3_system_prop exported_dumpstate_prop exported_fingerprint_prop exported_secure_prop exported_vold_prop ffs_prop fingerprint_prop heapprofd_prop net_radio_prop pan_result_prop persist_debug_prop shell_prop system_radio_prop test_harness_prop theme_prop use_memfd_prop vold_prop apk_verity_prop cpu_variant_prop exported_audio_prop exported_camera_prop exported_config_prop exported_default_prop exported3_default_prop graphics_config_prop incremental_prop media_variant_prop storage_config_prop userspace_reboot_config_prop vehicle_hal_prop vendor_security_patch_level_prop vendor_socket_hook_prop vndk_prop virtual_ab_prop adbd_config_prop audio_prop bluetooth_a2dp_offload_prop bluetooth_audio_hal_prop bluetooth_prop ctl_default_prop ctl_interface_start_prop ctl_start_prop ctl_stop_prop debug_prop dumpstate_options_prop exported_system_prop exported2_config_prop exported2_radio_prop exported2_system_prop exported2_vold_prop exported3_radio_prop exported_bluetooth_prop exported_dalvik_prop exported_ffs_prop exported_overlay_prop exported_pm_prop exported_radio_prop exported_system_radio_prop exported_wifi_prop sota_prop hwservicemanager_prop lmkd_prop logd_prop logpersistd_logging_prop log_prop log_tag_prop lowpan_prop nfc_prop ota_prop powerctl_prop radio_prop serialno_prop system_prop wifi_log_prop wifi_prop rebootescrow_hal_prop vendor_default_prop ))
 (typeattribute core_property_type)
 (typeattributeset core_property_type (restorecon_prop config_prop cppreopt_prop dalvik_prop debuggerd_prop default_prop dhcp_prop dumpstate_prop ffs_prop fingerprint_prop net_radio_prop pan_result_prop persist_debug_prop shell_prop system_radio_prop vold_prop audio_prop debug_prop logd_prop nfc_prop ota_prop powerctl_prop radio_prop system_prop ))
 (typeattribute log_property_type)
 (typeattributeset log_property_type (log_prop log_tag_prop wifi_log_prop ))
 (typeattribute extended_core_property_type)
 (typeattribute system_property_type)
-(typeattributeset system_property_type (apexd_prop bootloader_boot_reason_prop device_config_activity_manager_native_boot_prop device_config_boot_count_prop device_config_input_native_boot_prop device_config_media_native_prop device_config_netd_native_prop device_config_reset_performed_prop device_config_runtime_native_boot_prop device_config_runtime_native_prop device_config_storage_native_boot_prop device_config_sys_traced_prop device_config_window_manager_native_boot_prop device_config_configuration_prop firstboot_prop fastbootd_protocol_prop gsid_prop init_perf_lsm_hooks_prop init_svc_debug_prop last_boot_reason_prop netd_stable_secret_prop pm_prop userspace_reboot_log_prop userspace_reboot_test_prop system_adbd_prop adbd_prop traced_perf_enabled_prop boottime_prop bpf_progs_loaded_prop charger_prop cold_boot_done_prop ctl_adbd_prop ctl_apexd_prop ctl_bootanim_prop ctl_bugreport_prop ctl_console_prop ctl_dumpstate_prop ctl_fuse_prop ctl_gsid_prop ctl_interface_restart_prop ctl_interface_stop_prop ctl_mdnsd_prop ctl_restart_prop ctl_rildaemon_prop ctl_sigstop_prop dynamic_system_prop heapprofd_enabled_prop llkd_prop lpdumpd_prop mmc_prop mock_ota_prop net_dns_prop overlay_prop persistent_properties_ready_prop safemode_prop system_lmk_prop system_trace_prop test_boot_reason_prop time_prop traced_enabled_prop traced_lazy_prop binder_cache_bluetooth_server_prop binder_cache_system_server_prop binder_cache_telephony_server_prop boottime_public_prop bq_config_prop module_sdkextensions_prop nnapi_ext_deny_product_prop restorecon_prop socket_hook_prop surfaceflinger_display_prop system_boot_reason_prop system_jvmti_agent_prop userspace_reboot_exported_prop config_prop cppreopt_prop dalvik_prop debuggerd_prop default_prop device_logging_prop dhcp_prop dumpstate_prop exported2_default_prop exported3_system_prop exported_dumpstate_prop exported_fingerprint_prop exported_secure_prop exported_vold_prop ffs_prop fingerprint_prop heapprofd_prop net_radio_prop pan_result_prop persist_debug_prop shell_prop system_radio_prop test_harness_prop theme_prop use_memfd_prop vold_prop apk_verity_prop cpu_variant_prop exported_audio_prop exported_camera_prop exported_config_prop exported_default_prop exported3_default_prop graphics_config_prop incremental_prop media_variant_prop storage_config_prop userspace_reboot_config_prop vehicle_hal_prop vendor_security_patch_level_prop vendor_socket_hook_prop vndk_prop virtual_ab_prop audio_prop bluetooth_a2dp_offload_prop bluetooth_audio_hal_prop bluetooth_prop ctl_default_prop ctl_interface_start_prop ctl_start_prop ctl_stop_prop debug_prop dumpstate_options_prop exported_system_prop exported2_config_prop exported2_radio_prop exported2_system_prop exported2_vold_prop exported3_radio_prop exported_bluetooth_prop exported_dalvik_prop exported_ffs_prop exported_overlay_prop exported_pm_prop exported_radio_prop exported_system_radio_prop exported_wifi_prop sota_prop hwservicemanager_prop lmkd_prop logd_prop logpersistd_logging_prop log_prop log_tag_prop lowpan_prop nfc_prop ota_prop powerctl_prop radio_prop serialno_prop system_prop wifi_log_prop wifi_prop ))
+(typeattributeset system_property_type (apexd_prop bootloader_boot_reason_prop device_config_activity_manager_native_boot_prop device_config_boot_count_prop device_config_input_native_boot_prop device_config_media_native_prop device_config_netd_native_prop device_config_reset_performed_prop device_config_runtime_native_boot_prop device_config_runtime_native_prop device_config_storage_native_boot_prop device_config_sys_traced_prop device_config_window_manager_native_boot_prop device_config_configuration_prop firstboot_prop fastbootd_protocol_prop gsid_prop init_perf_lsm_hooks_prop init_svc_debug_prop last_boot_reason_prop netd_stable_secret_prop pm_prop userspace_reboot_log_prop userspace_reboot_test_prop system_adbd_prop adbd_prop traced_perf_enabled_prop boottime_prop bpf_progs_loaded_prop charger_prop cold_boot_done_prop ctl_adbd_prop ctl_apexd_prop ctl_bootanim_prop ctl_bugreport_prop ctl_console_prop ctl_dumpstate_prop ctl_fuse_prop ctl_gsid_prop ctl_interface_restart_prop ctl_interface_stop_prop ctl_mdnsd_prop ctl_restart_prop ctl_rildaemon_prop ctl_sigstop_prop dynamic_system_prop heapprofd_enabled_prop llkd_prop lpdumpd_prop mmc_prop mock_ota_prop net_dns_prop overlay_prop persistent_properties_ready_prop safemode_prop system_lmk_prop system_trace_prop test_boot_reason_prop time_prop traced_enabled_prop traced_lazy_prop binder_cache_bluetooth_server_prop binder_cache_system_server_prop binder_cache_telephony_server_prop boottime_public_prop bq_config_prop module_sdkextensions_prop nnapi_ext_deny_product_prop restorecon_prop socket_hook_prop surfaceflinger_display_prop system_boot_reason_prop system_jvmti_agent_prop userspace_reboot_exported_prop config_prop cppreopt_prop dalvik_prop debuggerd_prop default_prop device_logging_prop dhcp_prop dumpstate_prop exported2_default_prop exported3_system_prop exported_dumpstate_prop exported_fingerprint_prop exported_secure_prop exported_vold_prop ffs_prop fingerprint_prop heapprofd_prop net_radio_prop pan_result_prop persist_debug_prop shell_prop system_radio_prop test_harness_prop theme_prop use_memfd_prop vold_prop apk_verity_prop cpu_variant_prop exported_audio_prop exported_camera_prop exported_config_prop exported_default_prop exported3_default_prop graphics_config_prop incremental_prop media_variant_prop storage_config_prop userspace_reboot_config_prop vehicle_hal_prop vendor_security_patch_level_prop vendor_socket_hook_prop vndk_prop virtual_ab_prop adbd_config_prop audio_prop bluetooth_a2dp_offload_prop bluetooth_audio_hal_prop bluetooth_prop ctl_default_prop ctl_interface_start_prop ctl_start_prop ctl_stop_prop debug_prop dumpstate_options_prop exported_system_prop exported2_config_prop exported2_radio_prop exported2_system_prop exported2_vold_prop exported3_radio_prop exported_bluetooth_prop exported_dalvik_prop exported_ffs_prop exported_overlay_prop exported_pm_prop exported_radio_prop exported_system_radio_prop exported_wifi_prop sota_prop hwservicemanager_prop lmkd_prop logd_prop logpersistd_logging_prop log_prop log_tag_prop lowpan_prop nfc_prop ota_prop powerctl_prop radio_prop serialno_prop system_prop wifi_log_prop wifi_prop ))
 (typeattribute system_internal_property_type)
 (typeattributeset system_internal_property_type (apexd_prop bootloader_boot_reason_prop device_config_activity_manager_native_boot_prop device_config_boot_count_prop device_config_input_native_boot_prop device_config_media_native_prop device_config_netd_native_prop device_config_reset_performed_prop device_config_runtime_native_boot_prop device_config_runtime_native_prop device_config_storage_native_boot_prop device_config_sys_traced_prop device_config_window_manager_native_boot_prop device_config_configuration_prop firstboot_prop fastbootd_protocol_prop gsid_prop init_perf_lsm_hooks_prop init_svc_debug_prop last_boot_reason_prop netd_stable_secret_prop pm_prop userspace_reboot_log_prop userspace_reboot_test_prop system_adbd_prop adbd_prop traced_perf_enabled_prop boottime_prop bpf_progs_loaded_prop charger_prop cold_boot_done_prop ctl_adbd_prop ctl_apexd_prop ctl_bootanim_prop ctl_bugreport_prop ctl_console_prop ctl_dumpstate_prop ctl_fuse_prop ctl_gsid_prop ctl_interface_restart_prop ctl_interface_stop_prop ctl_mdnsd_prop ctl_restart_prop ctl_rildaemon_prop ctl_sigstop_prop dynamic_system_prop heapprofd_enabled_prop llkd_prop lpdumpd_prop mmc_prop mock_ota_prop net_dns_prop overlay_prop persistent_properties_ready_prop safemode_prop system_lmk_prop system_trace_prop test_boot_reason_prop time_prop traced_enabled_prop traced_lazy_prop ))
 (typeattribute system_restricted_property_type)
 (typeattributeset system_restricted_property_type (binder_cache_bluetooth_server_prop binder_cache_system_server_prop binder_cache_telephony_server_prop boottime_public_prop bq_config_prop module_sdkextensions_prop nnapi_ext_deny_product_prop restorecon_prop socket_hook_prop surfaceflinger_display_prop system_boot_reason_prop system_jvmti_agent_prop userspace_reboot_exported_prop config_prop cppreopt_prop dalvik_prop debuggerd_prop default_prop device_logging_prop dhcp_prop dumpstate_prop exported2_default_prop exported3_system_prop exported_dumpstate_prop exported_fingerprint_prop exported_secure_prop exported_vold_prop ffs_prop fingerprint_prop heapprofd_prop net_radio_prop pan_result_prop persist_debug_prop shell_prop system_radio_prop test_harness_prop theme_prop use_memfd_prop vold_prop ))
 (typeattribute system_public_property_type)
-(typeattributeset system_public_property_type (apk_verity_prop cpu_variant_prop exported_audio_prop exported_camera_prop exported_config_prop exported_default_prop exported3_default_prop graphics_config_prop incremental_prop media_variant_prop storage_config_prop userspace_reboot_config_prop vehicle_hal_prop vendor_security_patch_level_prop vendor_socket_hook_prop vndk_prop virtual_ab_prop audio_prop bluetooth_a2dp_offload_prop bluetooth_audio_hal_prop bluetooth_prop ctl_default_prop ctl_interface_start_prop ctl_start_prop ctl_stop_prop debug_prop dumpstate_options_prop exported_system_prop exported2_config_prop exported2_radio_prop exported2_system_prop exported2_vold_prop exported3_radio_prop exported_bluetooth_prop exported_dalvik_prop exported_ffs_prop exported_overlay_prop exported_pm_prop exported_radio_prop exported_system_radio_prop exported_wifi_prop sota_prop hwservicemanager_prop lmkd_prop logd_prop logpersistd_logging_prop log_prop log_tag_prop lowpan_prop nfc_prop ota_prop powerctl_prop radio_prop serialno_prop system_prop wifi_log_prop wifi_prop ))
+(typeattributeset system_public_property_type (apk_verity_prop cpu_variant_prop exported_audio_prop exported_camera_prop exported_config_prop exported_default_prop exported3_default_prop graphics_config_prop incremental_prop media_variant_prop storage_config_prop userspace_reboot_config_prop vehicle_hal_prop vendor_security_patch_level_prop vendor_socket_hook_prop vndk_prop virtual_ab_prop adbd_config_prop audio_prop bluetooth_a2dp_offload_prop bluetooth_audio_hal_prop bluetooth_prop ctl_default_prop ctl_interface_start_prop ctl_start_prop ctl_stop_prop debug_prop dumpstate_options_prop exported_system_prop exported2_config_prop exported2_radio_prop exported2_system_prop exported2_vold_prop exported3_radio_prop exported_bluetooth_prop exported_dalvik_prop exported_ffs_prop exported_overlay_prop exported_pm_prop exported_radio_prop exported_system_radio_prop exported_wifi_prop sota_prop hwservicemanager_prop lmkd_prop logd_prop logpersistd_logging_prop log_prop log_tag_prop lowpan_prop nfc_prop ota_prop powerctl_prop radio_prop serialno_prop system_prop wifi_log_prop wifi_prop ))
 (typeattribute vendor_property_type)
 (typeattributeset vendor_property_type (rebootescrow_hal_prop ))
 (typeattribute vendor_internal_property_type)
@@ -1582,6 +1583,8 @@
 (roletype object_r proc_kmsg)
 (type proc_loadavg)
 (roletype object_r proc_loadavg)
+(type proc_locks)
+(roletype object_r proc_locks)
 (type proc_lowmemorykiller)
 (roletype object_r proc_lowmemorykiller)
 (type proc_max_map_count)
@@ -2791,6 +2794,8 @@
 (roletype object_r vndk_prop)
 (type virtual_ab_prop)
 (roletype object_r virtual_ab_prop)
+(type adbd_config_prop)
+(roletype object_r adbd_config_prop)
 (type audio_prop)
 (roletype object_r audio_prop)
 (type bluetooth_a2dp_offload_prop)
@@ -8596,7 +8601,7 @@
 (allow dev_type tmpfs (filesystem (associate)))
 (allow app_fuse_file app_fusefs (filesystem (associate)))
 (allow postinstall_file self (filesystem (associate)))
-;;* lmx 550 system/sepolicy/public/file.te
+;;* lmx 551 system/sepolicy/public/file.te
 
 (neverallow fs_type file_type (filesystem (associate)))
 ;;* lme
@@ -13031,43 +13036,43 @@
 (neverallow base_typeattr_229 virtual_ab_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 177 system/sepolicy/public/property.te
+;;* lmx 178 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_487 rebootescrow_hal_prop (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
 (allow property_type tmpfs (filesystem (associate)))
-;;* lmx 258 system/sepolicy/public/property.te
+;;* lmx 259 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_220 base_typeattr_488 (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 258 system/sepolicy/public/property.te
+;;* lmx 259 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_220 base_typeattr_489 (property_service (set)))
 ;;* lme
 
-;;* lmx 258 system/sepolicy/public/property.te
+;;* lmx 259 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_487 base_typeattr_490 (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 258 system/sepolicy/public/property.te
+;;* lmx 259 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_491 base_typeattr_492 (property_service (set)))
 ;;* lme
 
-;;* lmx 300 system/sepolicy/public/property.te
+;;* lmx 301 system/sepolicy/public/property.te
 
 (neverallow domain property_type (file (ioctl lock)))
 ;;* lme
 
-;;* lmx 360 system/sepolicy/public/property.te
+;;* lmx 361 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_182 base_typeattr_493 (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 368 system/sepolicy/public/property.te
+;;* lmx 369 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_229 ctl_sigstop_prop (property_service (set)))
 ;;* lme
@@ -13080,119 +13085,119 @@
 (dontaudit domain ctl_mdnsd_prop (property_service (set)))
 (dontaudit domain ctl_rildaemon_prop (property_service (set)))
 (dontaudit domain ctl_default_prop (property_service (set)))
-;;* lmx 386 system/sepolicy/public/property.te
+;;* lmx 387 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_181 init_svc_debug_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 393 system/sepolicy/public/property.te
+;;* lmx 394 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_494 init_svc_debug_prop (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_495 base_typeattr_496 (property_service (set)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_497 nfc_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_498 exported3_radio_prop (property_service (set)))
 (neverallow base_typeattr_498 exported_radio_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_499 exported2_radio_prop (property_service (set)))
 (neverallow base_typeattr_499 radio_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_500 bluetooth_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_501 exported_bluetooth_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_502 exported_camera_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_503 wifi_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_504 exported_wifi_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_495 base_typeattr_505 (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_497 nfc_prop (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_499 radio_prop (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_500 bluetooth_prop (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 395 system/sepolicy/public/property.te
+;;* lmx 396 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_503 wifi_prop (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 564 system/sepolicy/public/property.te
+;;* lmx 565 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_506 base_typeattr_507 (property_service (set)))
 ;;* lme
 
-;;* lmx 582 system/sepolicy/public/property.te
+;;* lmx 583 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_508 userspace_reboot_log_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 590 system/sepolicy/public/property.te
+;;* lmx 591 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_508 system_adbd_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 598 system/sepolicy/public/property.te
+;;* lmx 599 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_509 adbd_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 606 system/sepolicy/public/property.te
+;;* lmx 607 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_510 userspace_reboot_test_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 613 system/sepolicy/public/property.te
+;;* lmx 614 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_511 graphics_config_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 620 system/sepolicy/public/property.te
+;;* lmx 621 system/sepolicy/public/property.te
 
 (neverallow base_typeattr_512 surfaceflinger_display_prop (property_service (set)))
 ;;* lme
@@ -15201,10 +15206,15 @@
 (allow adbd init (unix_stream_socket (connectto)))
 (allow adbd adbd_prop (property_service (set)))
 (allow adbd adbd_prop (file (read getattr map open)))
+(allow adbd property_socket (sock_file (write)))
+(allow adbd init (unix_stream_socket (connectto)))
+(allow adbd adbd_config_prop (property_service (set)))
+(allow adbd adbd_config_prop (file (read getattr map open)))
 (allow adbd device_logging_prop (file (read getattr map open)))
 (allow adbd serialno_prop (file (read getattr map open)))
 (allow adbd test_harness_prop (file (read getattr map open)))
 (allow adbd system_adbd_prop (file (read getattr map open)))
+(allow adbd adbd_config_prop (file (read getattr map open)))
 (allow adbd persistent_properties_ready_prop (file (read getattr map open)))
 (allow adbd sysfs_dt_firmware_android (dir (ioctl read getattr lock open watch watch_reads search)))
 (allow adbd sysfs_dt_firmware_android (file (ioctl read getattr lock map open watch watch_reads)))
@@ -15263,12 +15273,12 @@
 (allow adbd perfetto_traces_data_file (dir (ioctl read getattr lock open watch watch_reads search)))
 (allow adbd shell (unix_stream_socket (read write shutdown)))
 (allow adbd shell (fd (use)))
-;;* lmx 204 system/sepolicy/private/adbd.te
+;;* lmx 208 system/sepolicy/private/adbd.te
 
 (neverallow adbd base_typeattr_552 (process (transition)))
 ;;* lme
 
-;;* lmx 205 system/sepolicy/private/adbd.te
+;;* lmx 209 system/sepolicy/private/adbd.te
 
 (neverallow adbd base_typeattr_553 (process (dyntransition)))
 ;;* lme
@@ -15433,6 +15443,7 @@
 ;;* lme
 
 (allow appdomain test_harness_prop (file (read getattr map open)))
+(allow appdomain adbd_config_prop (file (read getattr map open)))
 (allow appdomain traced (fd (use)))
 (allow appdomain traced_tmpfs (file (read write getattr map)))
 (allow appdomain traced_producer_socket (sock_file (write)))
@@ -15441,22 +15452,22 @@
 (dontaudit appdomain storage_stub_file (dir (getattr)))
 (dontaudit appdomain system_data_file (dir (write)))
 (dontaudit appdomain vendor_default_prop (file (read)))
-;;* lmx 27 system/sepolicy/private/app.te
+;;* lmx 29 system/sepolicy/private/app.te
 
 (neverallow appdomain system_server (udp_socket (ioctl create setattr lock relabelfrom relabelto append bind listen accept shutdown name_bind)))
 ;;* lme
 
-;;* lmx 35 system/sepolicy/private/app.te
+;;* lmx 37 system/sepolicy/private/app.te
 
 (neverallow base_typeattr_556 base_typeattr_557 (process (transition)))
 ;;* lme
 
-;;* lmx 37 system/sepolicy/private/app.te
+;;* lmx 39 system/sepolicy/private/app.te
 
 (neverallow base_typeattr_556 base_typeattr_199 (process (dyntransition)))
 ;;* lme
 
-;;* lmx 40 system/sepolicy/private/app.te
+;;* lmx 42 system/sepolicy/private/app.te
 
 (neverallow base_typeattr_558 storage_config_prop (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
@@ -19657,6 +19668,7 @@
 (allow netd clatd (process (signal)))
 (allow netd bpfloader (bpf (map_read map_write prog_run)))
 (allow netd self (key_socket (create)))
+(allow netd adbd_config_prop (file (read getattr map open)))
 (allow netd bpf_progs_loaded_prop (file (read getattr map open)))
 (allow netd statsdw_socket (sock_file (write)))
 (allow netd statsd (unix_dgram_socket (sendto)))
@@ -21928,6 +21940,7 @@
 (allow system_server proc_qtaguid_stat (lnk_file (ioctl read getattr lock map open watch watch_reads)))
 (allow system_server proc_cmdline (file (ioctl read getattr lock map open watch watch_reads)))
 (allow system_server proc_loadavg (file (ioctl read getattr lock map open watch watch_reads)))
+(allow system_server proc_locks (file (ioctl read getattr lock map open watch watch_reads)))
 (allow system_server proc_meminfo (file (ioctl read getattr lock map open watch watch_reads)))
 (allow system_server proc_pagetypeinfo (file (ioctl read getattr lock map open watch watch_reads)))
 (allow system_server proc_pipe_conf (file (ioctl read getattr lock map open watch watch_reads)))
@@ -21961,17 +21974,17 @@
 (allow system_server functionfs (file (ioctl read write getattr lock append map open watch watch_reads)))
 (allow system_server time_prop (file (read getattr map open)))
 (allow system_server system_lmk_prop (file (read getattr map open)))
-;;* lmx 981 system/sepolicy/private/system_server.te
+;;* lmx 982 system/sepolicy/private/system_server.te
 
 (neverallow system_server sdcard_type (dir (read write open)))
 ;;* lme
 
-;;* lmx 982 system/sepolicy/private/system_server.te
+;;* lmx 983 system/sepolicy/private/system_server.te
 
 (neverallow system_server sdcard_type (file (ioctl read write getattr lock append map open watch watch_reads)))
 ;;* lme
 
-;;* lmx 995 system/sepolicy/private/system_server.te
+;;* lmx 996 system/sepolicy/private/system_server.te
 
 (neverallow system_server shell_data_file (file (create unlink link open)))
 (neverallow system_server bluetooth_data_file (file (create unlink link open)))
@@ -21980,32 +21993,32 @@
 (neverallow system_server privapp_data_file (file (create unlink link open)))
 ;;* lme
 
-;;* lmx 1006 system/sepolicy/private/system_server.te
+;;* lmx 1007 system/sepolicy/private/system_server.te
 
 (neverallow system_server base_typeattr_733 (file (execute_no_trans)))
 ;;* lme
 
-;;* lmx 1010 system/sepolicy/private/system_server.te
+;;* lmx 1011 system/sepolicy/private/system_server.te
 
 (neverallow system_server base_typeattr_187 (process (transition)))
 ;;* lme
 
-;;* lmx 1011 system/sepolicy/private/system_server.te
+;;* lmx 1012 system/sepolicy/private/system_server.te
 
 (neverallow system_server base_typeattr_182 (process (dyntransition)))
 ;;* lme
 
-;;* lmx 1014 system/sepolicy/private/system_server.te
+;;* lmx 1015 system/sepolicy/private/system_server.te
 
 (neverallow base_typeattr_734 system_ndebug_socket (sock_file (write open)))
 ;;* lme
 
-;;* lmx 1024 system/sepolicy/private/system_server.te
+;;* lmx 1025 system/sepolicy/private/system_server.te
 
 (neverallow base_typeattr_735 system_unsolzygote_socket (sock_file (write open)))
 ;;* lme
 
-;;* lmx 1042 system/sepolicy/private/system_server.te
+;;* lmx 1043 system/sepolicy/private/system_server.te
 
 (neverallow base_typeattr_736 device_config_activity_manager_native_boot_prop (property_service (set)))
 (neverallow base_typeattr_736 device_config_input_native_boot_prop (property_service (set)))
@@ -22018,33 +22031,33 @@
 (neverallow base_typeattr_736 device_config_window_manager_native_boot_prop (property_service (set)))
 ;;* lme
 
-;;* lmx 1048 system/sepolicy/private/system_server.te
+;;* lmx 1049 system/sepolicy/private/system_server.te
 
 (neverallow system_server dex2oat_exec (file (execute execute_no_trans)))
 ;;* lme
 
-;;* lmx 1053 system/sepolicy/private/system_server.te
+;;* lmx 1054 system/sepolicy/private/system_server.te
 
 (neverallow system_server data_file_type (file (execute execute_no_trans)))
 ;;* lme
 
-;;* lmx 1058 system/sepolicy/private/system_server.te
+;;* lmx 1059 system/sepolicy/private/system_server.te
 
 (neverallow system_server base_typeattr_737 (blk_file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 1066 system/sepolicy/private/system_server.te
+;;* lmx 1067 system/sepolicy/private/system_server.te
 
 (neverallow system_server self (process (execmem)))
 ;;* lme
 
-;;* lmx 1069 system/sepolicy/private/system_server.te
+;;* lmx 1070 system/sepolicy/private/system_server.te
 
 (neverallow system_server ashmem_device (chr_file (execute)))
 (neverallow system_server ashmem_libcutils_device (chr_file (execute)))
 ;;* lme
 
-;;* lmx 1072 system/sepolicy/private/system_server.te
+;;* lmx 1073 system/sepolicy/private/system_server.te
 
 (neverallow system_server system_server_tmpfs (file (execute)))
 ;;* lme
@@ -22094,34 +22107,34 @@
 (allow system_server init (unix_stream_socket (connectto)))
 (allow system_server userspace_reboot_log_prop (property_service (set)))
 (allow system_server userspace_reboot_log_prop (file (read getattr map open)))
-;;* lmx 1136 system/sepolicy/private/system_server.te
+;;* lmx 1137 system/sepolicy/private/system_server.te
 
 (neverallow base_typeattr_627 system_jvmti_agent_prop (file (ioctl read write create setattr lock relabelfrom append unlink link rename open watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
 (allow system_server proc_pressure_mem (file (ioctl read write getattr lock append map open watch watch_reads)))
-;;* lmx 1143 system/sepolicy/private/system_server.te
+;;* lmx 1144 system/sepolicy/private/system_server.te
 
 (neverallow system_server dexoptanalyzer_exec (file (execute execute_no_trans)))
 ;;* lme
 
-;;* lmx 1146 system/sepolicy/private/system_server.te
+;;* lmx 1147 system/sepolicy/private/system_server.te
 
 (neverallow system_server base_typeattr_280 (process (ptrace)))
 ;;* lme
 
-;;* lmx 1150 system/sepolicy/private/system_server.te
+;;* lmx 1151 system/sepolicy/private/system_server.te
 
 (neverallow system_server system_server (capability (sys_resource)))
 (neverallow system_server system_server (cap_userns (sys_resource)))
 ;;* lme
 
-;;* lmx 1153 system/sepolicy/private/system_server.te
+;;* lmx 1154 system/sepolicy/private/system_server.te
 
 (neverallow base_typeattr_233 password_slot_metadata_file (dir (ioctl read write create getattr setattr lock relabelfrom relabelto append map unlink link rename execute quotaon mounton audit_access open execmod watch watch_mount watch_sb watch_with_perm watch_reads add_name remove_name reparent search rmdir)))
 ;;* lme
 
-;;* lmx 1158 system/sepolicy/private/system_server.te
+;;* lmx 1159 system/sepolicy/private/system_server.te
 
 (neverallow base_typeattr_233 password_slot_metadata_file (file (ioctl read write create setattr lock relabelfrom append map unlink link rename execute quotaon mounton audit_access open execmod watch watch_mount watch_sb watch_with_perm watch_reads execute_no_trans entrypoint)))
 (neverallow base_typeattr_233 password_slot_metadata_file (lnk_file (ioctl read write create setattr lock relabelfrom append map unlink link rename execute quotaon mounton audit_access open execmod watch watch_mount watch_sb watch_with_perm watch_reads)))
@@ -22129,7 +22142,7 @@
 (neverallow base_typeattr_233 password_slot_metadata_file (fifo_file (ioctl read write create setattr lock relabelfrom append map unlink link rename execute quotaon mounton audit_access open execmod watch watch_mount watch_sb watch_with_perm watch_reads)))
 ;;* lme
 
-;;* lmx 1159 system/sepolicy/private/system_server.te
+;;* lmx 1160 system/sepolicy/private/system_server.te
 
 (neverallow base_typeattr_233 password_slot_metadata_file (file (ioctl read write create getattr setattr lock relabelfrom relabelto append map unlink link rename execute quotaon mounton audit_access open execmod watch watch_mount watch_sb watch_with_perm watch_reads execute_no_trans entrypoint)))
 (neverallow base_typeattr_233 password_slot_metadata_file (lnk_file (ioctl read write create getattr setattr lock relabelfrom relabelto append map unlink link rename execute quotaon mounton audit_access open execmod watch watch_mount watch_sb watch_with_perm watch_reads)))
@@ -22141,18 +22154,18 @@
 (allow system_server init (unix_stream_socket (connectto)))
 (allow system_server binder_cache_system_server_prop (property_service (set)))
 (allow system_server binder_cache_system_server_prop (file (read getattr map open)))
-;;* lmx 1164 system/sepolicy/private/system_server.te
+;;* lmx 1165 system/sepolicy/private/system_server.te
 
 (neverallow base_typeattr_233 binder_cache_system_server_prop (property_service (set)))
 ;;* lme
 
 (allow system_server self (perf_event (open cpu kernel write)))
-;;* lmx 1169 system/sepolicy/private/system_server.te
+;;* lmx 1170 system/sepolicy/private/system_server.te
 
 (neverallow system_server self (perf_event (tracepoint read)))
 ;;* lme
 
-;;* lmx 1172 system/sepolicy/private/system_server.te
+;;* lmx 1173 system/sepolicy/private/system_server.te
 
 (neverallow base_typeattr_233 socket_hook_prop (property_service (set)))
 ;;* lme
@@ -22733,6 +22746,10 @@
 (typetransition init vdc_exec process vdc)
 (dontaudit vendor_init sysfs (dir (write)))
 (allow vendor_init system_data_root_file (dir (ioctl read write getattr lock open watch watch_reads add_name remove_name search)))
+(allow vendor_init property_socket (sock_file (write)))
+(allow vendor_init init (unix_stream_socket (connectto)))
+(allow vendor_init adbd_config_prop (property_service (set)))
+(allow vendor_init adbd_config_prop (file (read getattr map open)))
 (typetransition viewcompiler tmpfs file viewcompiler_tmpfs)
 (allow viewcompiler viewcompiler_tmpfs (file (read write getattr map)))
 (allow viewcompiler installd (fd (use)))
