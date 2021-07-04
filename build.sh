@@ -54,6 +54,7 @@ WLAN_DISABLE_BUILD_TAG=y
 
 COMPILE_KERNEL=true
 WITH_CFI_CLANG=false
+WITH_LTO_CLANG=false
 WITH_KASAN=false
 
 FUNC_MAKE()
@@ -114,6 +115,29 @@ FUNC_BUILD_KERNEL()
 		-d CFI_CLANG_SHADOW \
 		-d SHADOW_CALL_STACK_VMAP \
 		-e SHADOW_CALL_STACK \
+		-e TRIM_UNUSED_KSYMS \
+		-e UNUSED_KSYMS_WHITELIST_ONLY \
+		--set-str UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist abi_gki_aarch64_qcom_internal_whitelist abi_gki_aarch64_instantnoodlep_whitelist abi_gki_aarch64_cuttlefish_whitelist scripts/lto-used-symbollist.txt"
+	fi
+
+	if [[ "$WITH_LTO_CLANG" = "true" ]] ; then
+		CC=$CLANG_CC
+		LD=$CLANG_LD
+		AR=$CLANG_AR
+		NM=$CLANG_NM
+
+		echo ""
+		echo "Enable LTO_CLANG"
+
+		$RDIR/scripts/config --file $BUILD_DIR/.config \
+		-d LTO_NONE \
+		-e LTO_CLANG \
+		-e THINLTO \
+		-d CFI_CLANG \
+		-d CFI_PERMISSIVE \
+		-d CFI_CLANG_SHADOW \
+		-d SHADOW_CALL_STACK_VMAP \
+		-d SHADOW_CALL_STACK \
 		-e TRIM_UNUSED_KSYMS \
 		-e UNUSED_KSYMS_WHITELIST_ONLY \
 		--set-str UNUSED_KSYMS_WHITELIST "abi_gki_aarch64_qcom_whitelist abi_gki_aarch64_qcom_internal_whitelist abi_gki_aarch64_instantnoodlep_whitelist abi_gki_aarch64_cuttlefish_whitelist scripts/lto-used-symbollist.txt"
@@ -182,6 +206,9 @@ FUNC_BUILD_RECOVERY_IMG()
 		case $var in
 			"--with-cfi-clang")
 				WITH_CFI_CLANG=true
+			;;
+			"--with-lto-clang")
+				WITH_LTO_CLANG=true
 			;;
 			"--with-kasan")
 				WITH_KASAN=true
