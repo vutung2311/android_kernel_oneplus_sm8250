@@ -1,3 +1,5 @@
+ccflags-y += $(DISABLE_LTO)
+
 # oem device deriver
 obj-y += input/
 #obj-y += framework/
