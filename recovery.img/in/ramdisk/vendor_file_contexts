@@ -649,6 +649,7 @@
 /dev/block/platform/soc/1d84000.ufshc/by-name/opproduct_[ab]     u:object_r:vendor_custom_ab_block_device:s0
 /dev/block/platform/soc/1d84000.ufshc/by-name/oem_cust1_[ab]     u:object_r:vendor_custom_ab_block_device:s0
 /dev/block/platform/soc/1d84000.ufshc/by-name/oem_cust2_[ab]     u:object_r:vendor_custom_ab_block_device:s0
+/dev/block/platform/soc/1d84000.ufshc/by-name/aging_kernel       u:object_r:vendor_efs_boot_dev:s0
 /dev/block/platform/soc/1d84000.ufshc/by-name/rawdump  u:object_r:vendor_rawdump_block_device:s0
 /data/vendor/wifi/wigig_sockets(/.*)?                               u:object_r:vendor_wifi_vendor_wpa_socket:s0
 /data/vendor/wifi/wigig_hostapd(/.*)?                               u:object_r:vendor_wigig_hostapd_socket:s0
