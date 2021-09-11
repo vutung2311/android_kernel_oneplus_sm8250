@@ -247,7 +247,7 @@ struct bq27541_device_info {
 	int short_time_standby_count;
 
 	bool lcd_is_off;
-	bool allow_reading;
+	atomic_t allow_reading;
 	bool fastchg_started;
 	bool wlchg_started;
 	bool bq_present;

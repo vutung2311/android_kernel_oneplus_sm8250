@@ -81,7 +81,7 @@ static void bq28z610_modify_soc_smooth_parameter(struct bq27541_device_info *di)
 static int bq28z610_get_time_to_full(void);
 static int bq27541_get_batt_bq_soc(void);
 static bool get_dash_started(void);
-static int bq27541_set_allow_reading(int enable);
+static int bq27541_set_allow_reading(bool enable);
 
 static int bq27541_read(u8 reg, int *rt_value, int b_single,
 		struct bq27541_device_info *di)
@@ -129,7 +129,7 @@ static int bq27541_battery_temperature(struct bq27541_device_info *di)
 	if (atomic_read(&di->suspended) == 1)
 		return di->temp_pre + ZERO_DEGREE_CELSIUS_IN_TENTH_KELVIN;
 
-	if (di->allow_reading) {
+	if (atomic_read(&di->allow_reading) == 1) {
 
 #ifdef CONFIG_GAUGE_BQ27411
 		ret = bq27541_read(di->cmd_addr.reg_temp,
@@ -263,7 +263,7 @@ static int bq27541_battery_voltage(struct bq27541_device_info *di)
 	if (atomic_read(&di->suspended) == 1)
 		return di->batt_vol_pre;
 
-	if (di->allow_reading) {
+	if (atomic_read(&di->allow_reading) == 1) {
 #ifdef CONFIG_GAUGE_BQ27411
 		ret = bq27541_read(di->cmd_addr.reg_volt,
 				&volt, 0, di);
@@ -313,7 +313,7 @@ static int bq28z610_get_balancing_config(struct bq27541_device_info *di)
 	}
 
 	if (di->batt_bq28z610) {
-		if (di->allow_reading) {
+		if (atomic_read(&di->allow_reading) == 1) {
 			mutex_lock(&bq28z610_alt_manufacturer_access);
 			bq27541_i2c_txsubcmd(BQ28Z610_OPERATION_STATUS_EN_ADDR,
 				BQ28Z610_OPERATION_STATUS_CMD, di);
@@ -764,7 +764,7 @@ struct bq27541_device_info *di, int suspend_time_ms)
 		return di->soc_pre;
 	}
 
-	if (di->allow_reading) {
+	if (atomic_read(&di->allow_reading) == 1) {
 #ifdef CONFIG_GAUGE_BQ27411
 		ret = bq27541_read(di->cmd_addr.reg_soc,
 				&soc, 0, di);
@@ -838,7 +838,7 @@ static int bq27541_average_current(struct bq27541_device_info *di)
 	if (atomic_read(&di->suspended) == 1)
 		return -di->current_pre;
 
-	if (di->allow_reading) {
+	if (atomic_read(&di->allow_reading) == 1) {
 #ifdef CONFIG_GAUGE_BQ27411
 		ret = bq27541_read(di->cmd_addr.reg_ai,
 				&curr, 0, di);
@@ -866,7 +866,7 @@ static int bq27541_remaining_capacity(struct bq27541_device_info *di)
 
 	if (atomic_read(&di->suspended) == 1)
 		return di->remain_pre;
-	if (di->allow_reading || panel_flag1) {
+	if (atomic_read(&di->allow_reading) == 1 || panel_flag1) {
 #ifdef CONFIG_GAUGE_BQ27411
 		ret = bq27541_read(di->cmd_addr.reg_rm,
 				&cap, 0, di);
@@ -894,7 +894,7 @@ static int get_batt_full_available_capacity(struct bq27541_device_info *di)
 
         if (atomic_read(&di->suspended) == 1)
                 return di->full_available_capacity_pre;
-        if (di->allow_reading || panel_flag1) {
+        if (atomic_read(&di->allow_reading) == 1 || panel_flag1) {
 #ifdef CONFIG_GAUGE_BQ27411
                 ret = bq27541_read(BQ27411_REG_FAC,
                                 &cap, 0, di);
@@ -923,7 +923,7 @@ static int get_batt_full_available_capacity_filtered(struct bq27541_device_info 
 
         if (atomic_read(&di->suspended) == 1)
                 return di->full_available_capacity_filtered_pre;
-        if (di->allow_reading || panel_flag1) {
+        if (atomic_read(&di->allow_reading) == 1 || panel_flag1) {
 #ifdef CONFIG_GAUGE_BQ27411
                 ret = bq27541_read(BQ27411_REG_FCCF,
                                 &cap, 0, di);
@@ -953,7 +953,7 @@ static int bq27541_full_chg_capacity(struct bq27541_device_info *di)
 	if (atomic_read(&di->suspended) == 1)
 		return di->cap_pre;
 
-	if (di->allow_reading || panel_flag2) {
+	if (atomic_read(&di->allow_reading) == 1 || panel_flag2) {
 #ifdef CONFIG_GAUGE_BQ27411
 		if (di->batt_bq28z610)
 			ret = bq27541_read(BQ28Z610_REG_CHARGE_FULL_CAPACITY,
@@ -984,7 +984,7 @@ static int bq27541_batt_health(struct bq27541_device_info *di)
 	int ret;
 	int health = 0;
 
-	if (di->allow_reading) {
+	if (atomic_read(&di->allow_reading) == 1) {
 		if (di->batt_bq28z610)
 			ret = bq27541_read(BQ28Z610_REG_BATTERY_HEALTH,
 					&health, 0, di);
@@ -1037,14 +1037,14 @@ static int bq27541_get_batt_bq_soc(void)
 	int soc;
 
 	if (!get_dash_started()) {
-		if (!bq27541_di->allow_reading)
+		if (atomic_read(&bq27541_di->allow_reading) != 1)
 			bq27541_set_allow_reading(true);
 	}
 	bq27541_di->disable_calib_soc = true;
 	soc = bq27541_battery_soc(bq27541_di, 0);
 	bq27541_di->disable_calib_soc = false;
 	if (!get_dash_started()) {
-		if (bq27541_di->allow_reading)
+		if (atomic_read(&bq27541_di->allow_reading) == 1)
 			bq27541_set_allow_reading(false);
 	}
 	return soc;
@@ -1131,10 +1131,10 @@ static int bq27541_get_average_current(void)
 	return bq27541_average_current(bq27541_di);
 }
 
-static int bq27541_set_allow_reading(int enable)
+static int bq27541_set_allow_reading(bool enable)
 {
 	if (bq27541_di)
-		bq27541_di->allow_reading = enable;
+		atomic_set(&bq27541_di->allow_reading, enable ? 1 : 0);
 
 	return 0;
 }
@@ -1289,7 +1289,7 @@ static void update_battery_soc_work(struct work_struct *work)
 			return;
 		if (bq27541_di->set_smoothing)
 			return;
-		if (!bq27541_di->allow_reading)
+		if (atomic_read(&bq27541_di->allow_reading) != 1)
 			bq27541_set_allow_reading(true);
 		return;
 	}
@@ -1473,7 +1473,7 @@ static void bq27541_hw_config(struct work_struct *work)
 	if (type == DEVICE_TYPE_BQ28Z610) {
 		di->cmd_addr.reg_ai = Bq28Z610_REG_TI;
 	}
-	di->allow_reading = true;
+	atomic_set(&di->allow_reading, 1);
 #endif
 
 	bq27541_registered = true;
@@ -2429,7 +2429,7 @@ static int bq28z610_get_time_to_full(void)
 	if (get_dash_started())
 		return -ENODATA;
 
-	if (bq27541_di->allow_reading) {
+	if (atomic_read(&bq27541_di->allow_reading) == 1) {
 		ret = bq27541_read(BQ28Z610_REG_TIME_TO_FULL, &time_to_full, 0, bq27541_di);
 		if (ret < 0) {
 			pr_err("error reading time to full,ret:%d\n", ret);
@@ -2502,7 +2502,7 @@ static int bq27541_battery_probe(struct i2c_client *client,
 	di->soc_pre = DEFAULT_INVALID_SOC_PRE;
 	di->temp_pre = 0;
 #ifndef CONFIG_GAUGE_BQ27411
-	di->allow_reading = true;
+	atomic_set(&di->allow_reading, 1);
 #endif
 	/* Add for retry when config fail */
 	di->retry_count = MAX_RETRY_COUNT;
