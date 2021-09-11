@@ -432,7 +432,7 @@ static struct i2c_client *new_client;
 
 #define SHORT_TIME_STANDBY_SOC_CHECK_COUNT     15
 #define LOW_BATTERY_LEVEL_THRESHOLD            8
-#define BATTERY_SOC_UPDATE_MS 12000
+#define BATTERY_SOC_UPDATE_MS 30000
 #define LOW_BAT_SOC_UPDATE_MS 6000
 
 #define RESUME_SCHDULE_SOC_UPDATE_WORK_MS 60000
@@ -1157,8 +1157,6 @@ static int bq27541_set_lcd_off_status(int off)
 		} else {
 			bq27541_di->lcd_is_off = false;
 			bq27541_di->lcd_off_delt_soc = 0;
-			schedule_delayed_work(&bq27541_di->battery_soc_work,
-				msecs_to_jiffies(RESUME_SCHDULE_SOC_UPDATE_WORK_MS));
 		}
 	}
 	return 0;
@@ -1307,7 +1305,7 @@ static void update_battery_soc_work(struct work_struct *work)
 		schedule_delayed_work(
 		&bq27541_di->modify_soc_smooth_parameter, 1000);
 	if (bq27541_di->lcd_is_off)
-		schedule_time = 2 * RESUME_SCHDULE_SOC_UPDATE_WORK_MS;
+		schedule_time = RESUME_SCHDULE_SOC_UPDATE_WORK_MS;
 	else
 		schedule_time =
 			vbat < 3600 ? LOW_BAT_SOC_UPDATE_MS : BATTERY_SOC_UPDATE_MS;
