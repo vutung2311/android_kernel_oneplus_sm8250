@@ -838,19 +838,15 @@ static int bq27541_average_current(struct bq27541_device_info *di)
 	if (atomic_read(&di->suspended) == 1)
 		return -di->current_pre;
 
-	if (bq27541_get_allow_reading(di)) {
 #ifdef CONFIG_GAUGE_BQ27411
-		ret = bq27541_read(di->cmd_addr.reg_ai,
+	ret = bq27541_read(di->cmd_addr.reg_ai,
 				&curr, 0, di);
 #else
-		ret = bq27541_read(BQ27541_REG_AI, &curr, 0, di);
+	ret = bq27541_read(BQ27541_REG_AI, &curr, 0, di);
 #endif
-		if (ret) {
-			pr_err("error reading current.\n");
-			return ret;
-		}
-	} else {
-		return -di->current_pre;
+	if (ret) {
+		pr_err("error reading current.\n");
+		return ret;
 	}
 	/* negative current */
 	if (curr & 0x8000)
@@ -1307,7 +1303,6 @@ static void update_battery_soc_work(struct work_struct *work)
 	bq27541_set_allow_reading(true);
 	bq28z610_get_time_to_full();
 	vbat = bq27541_get_battery_mvolts()/1000;
-	bq27541_get_average_current();
 	temp = bq27541_get_battery_temperature();
 	bq27541_get_battery_soc();
 	bq27541_get_batt_remaining_capacity();
