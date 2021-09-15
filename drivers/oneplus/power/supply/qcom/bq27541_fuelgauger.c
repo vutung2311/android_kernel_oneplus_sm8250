@@ -49,9 +49,6 @@ static DEFINE_IDR(battery_id);
 static DEFINE_MUTEX(battery_mutex);
 static DEFINE_MUTEX(bq28z610_alt_manufacturer_access);
 
-int panel_flag1;
-int panel_flag2;
-
 struct update_pre_capacity_data {
 	struct delayed_work work;
 	int suspend_time;
@@ -862,7 +859,7 @@ static int bq27541_remaining_capacity(struct bq27541_device_info *di)
 
 	if (atomic_read(&di->suspended) == 1)
 		return di->remain_pre;
-	if (bq27541_get_allow_reading(di) || panel_flag1) {
+	if (bq27541_get_allow_reading(di)) {
 #ifdef CONFIG_GAUGE_BQ27411
 		ret = bq27541_read(di->cmd_addr.reg_rm,
 				&cap, 0, di);
@@ -873,8 +870,6 @@ static int bq27541_remaining_capacity(struct bq27541_device_info *di)
 			pr_err("error reading capacity.\n");
 			return ret;
 		}
-		if (panel_flag1)
-			panel_flag1 = 0;
 	} else {
 		return di->remain_pre;
 	}
@@ -885,59 +880,55 @@ static int bq27541_remaining_capacity(struct bq27541_device_info *di)
 
 static int get_batt_full_available_capacity(struct bq27541_device_info *di)
 {
-        int ret;
-        int cap = 0;
+	int ret;
+	int cap = 0;
 
-        if (atomic_read(&di->suspended) == 1)
-                return di->full_available_capacity_pre;
-        if (bq27541_get_allow_reading(di) || panel_flag1) {
+	if (atomic_read(&di->suspended) == 1)
+		return di->full_available_capacity_pre;
+	if (bq27541_get_allow_reading(di)) {
 #ifdef CONFIG_GAUGE_BQ27411
-                ret = bq27541_read(BQ27411_REG_FAC,
-                                &cap, 0, di);
+		ret = bq27541_read(BQ27411_REG_FAC,
+						&cap, 0, di);
 #else
-                ret = bq27541_read(BQ27541_REG_RM, &cap, 0, di);
+		ret = bq27541_read(BQ27541_REG_RM, &cap, 0, di);
 #endif
-                if (ret) {
-                        pr_err("error reading full_available_capacity.\n");
-                        return ret;
-                }
-                if (panel_flag1)
-                        panel_flag1 = 0;
-        } else {
-                return di->full_available_capacity_pre;
-        }
+		if (ret) {
+			pr_err("error reading full_available_capacity.\n");
+			return ret;
+		}
+	} else {
+		return di->full_available_capacity_pre;
+	}
 
-        di->full_available_capacity_pre = cap;
-        return cap;
+	di->full_available_capacity_pre = cap;
+	return cap;
 }
 
 
 static int get_batt_full_available_capacity_filtered(struct bq27541_device_info *di)
 {
-        int ret;
-        int cap = 0;
+	int ret;
+	int cap = 0;
 
-        if (atomic_read(&di->suspended) == 1)
-                return di->full_available_capacity_filtered_pre;
-        if (bq27541_get_allow_reading(di) || panel_flag1) {
+	if (atomic_read(&di->suspended) == 1)
+		return di->full_available_capacity_filtered_pre;
+	if (bq27541_get_allow_reading(di)) {
 #ifdef CONFIG_GAUGE_BQ27411
-                ret = bq27541_read(BQ27411_REG_FCCF,
-                                &cap, 0, di);
+		ret = bq27541_read(BQ27411_REG_FCCF,
+						&cap, 0, di);
 #else
-                ret = bq27541_read(BQ27541_REG_RM, &cap, 0, di);
+		ret = bq27541_read(BQ27541_REG_RM, &cap, 0, di);
 #endif
-                if (ret) {
-                        pr_err("error reading full_available_capacity_filtered_pre.\n");
-                        return ret;
-                }
-                if (panel_flag1)
-                        panel_flag1 = 0;
-        } else {
-                return di->full_available_capacity_filtered_pre;
-        }
+		if (ret) {
+			pr_err("error reading full_available_capacity_filtered_pre.\n");
+			return ret;
+		}
+	} else {
+		return di->full_available_capacity_filtered_pre;
+	}
 
-        di->full_available_capacity_filtered_pre = cap;
-        return cap;
+	di->full_available_capacity_filtered_pre = cap;
+	return cap;
 }
 
 static int bq27541_full_chg_capacity(struct bq27541_device_info *di)
@@ -949,7 +940,7 @@ static int bq27541_full_chg_capacity(struct bq27541_device_info *di)
 	if (atomic_read(&di->suspended) == 1)
 		return di->cap_pre;
 
-	if (bq27541_get_allow_reading(di) || panel_flag2) {
+	if (bq27541_get_allow_reading(di)) {
 #ifdef CONFIG_GAUGE_BQ27411
 		if (di->batt_bq28z610)
 			ret = bq27541_read(BQ28Z610_REG_CHARGE_FULL_CAPACITY,
@@ -964,8 +955,6 @@ static int bq27541_full_chg_capacity(struct bq27541_device_info *di)
 			pr_err("error reading full chg capacity.\n");
 			return ret;
 		}
-		if (panel_flag2)
-			panel_flag2 = 0;
 	} else {
 		return di->cap_pre;
 	}
@@ -1012,12 +1001,12 @@ static int bq27541_get_batt_remaining_capacity(void)
 
 static int bq27541_get_batt_full_available_capacity(void)
 {
-        return get_batt_full_available_capacity(bq27541_di);
+	return get_batt_full_available_capacity(bq27541_di);
 }
 
 static int bq27541_get_batt_full_available_capacity_filtered(void)
 {
-        return get_batt_full_available_capacity_filtered(bq27541_di);
+	return get_batt_full_available_capacity_filtered(bq27541_di);
 }
 
 static int bq27541_get_batt_full_chg_capacity(void)
@@ -1198,9 +1187,9 @@ static struct external_battery_gauge bq27541_batt_gauge = {
 	.get_batt_remaining_capacity
 		= bq27541_get_batt_remaining_capacity,
 	.get_batt_full_available_capacity
-                = bq27541_get_batt_full_available_capacity,
+				= bq27541_get_batt_full_available_capacity,
 	.get_batt_full_available_capacity_filtered
-                = bq27541_get_batt_full_available_capacity_filtered,
+				= bq27541_get_batt_full_available_capacity_filtered,
 	.get_batt_full_chg_capacity
 		= bq27541_get_batt_full_chg_capacity,
 	.get_batt_health        = bq27541_get_batt_health,
