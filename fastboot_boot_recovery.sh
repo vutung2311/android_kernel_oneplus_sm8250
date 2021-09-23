@@ -1,5 +1,7 @@
 #!/bin/bash
 
+FASTBOOT=$(./get_fastboot.sh)
+
 RDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-fastboot boot $RDIR/recovery.img/out/recovery.img
+$FASTBOOT boot $RDIR/recovery.img/out/recovery.img
