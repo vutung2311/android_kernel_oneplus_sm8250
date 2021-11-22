@@ -21218,8 +21218,6 @@
 (allow system_app anr_data_file (dir (ioctl read write getattr lock open watch watch_reads add_name search)))
 (allow system_app anr_data_file (file (ioctl read write create getattr setattr lock append map unlink rename open watch watch_reads)))
 (allow system_app asec_apk_file (file (ioctl read getattr lock map open watch watch_reads)))
-(allow system_app apk_data_file (file (write)))
-(allow system_app incremental_control_file (file (ioctl read getattr lock map open watch watch_reads)))
 (allow system_app statsd (binder (call transfer)))
 (allow statsd system_app (binder (transfer)))
 (allow system_app statsd (fd (use)))
@@ -21247,17 +21245,17 @@
 (allow system_app runtime_event_log_tags_file (file (ioctl read getattr lock map open watch watch_reads)))
 (allow system_app device_logging_prop (file (read getattr map open)))
 (allow system_app system_server (udp_socket (read write getattr connect getopt setopt recvfrom sendto)))
-;;* lmx 164 system/sepolicy/private/system_app.te
+;;* lmx 158 system/sepolicy/private/system_app.te
 
 (neverallow system_app fuse_device (chr_file (ioctl read write create getattr setattr lock relabelfrom relabelto append map unlink link rename execute quotaon mounton audit_access open execmod watch watch_mount watch_sb watch_with_perm watch_reads execute_no_trans entrypoint)))
 ;;* lme
 
-;;* lmx 170 system/sepolicy/private/system_app.te
+;;* lmx 164 system/sepolicy/private/system_app.te
 
 (neverallow system_app shell_data_file (dir (read write create setattr relabelfrom link rename open add_name remove_name reparent search rmdir)))
 ;;* lme
 
-;;* lmx 171 system/sepolicy/private/system_app.te
+;;* lmx 165 system/sepolicy/private/system_app.te
 
 (neverallow system_app shell_data_file (file (ioctl read lock open)))
 ;;* lme
